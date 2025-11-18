@@ -7,8 +7,9 @@ library(httr2)
 library(xml2)
 library(lubridate)
 library(DT)
+library(rollama)
 
-# 1. Approval Notifications ----
+# 1. Retrieve Approval Notifications ----
 
 ## 2020 - 2025 ----
 
@@ -56,13 +57,6 @@ datatable(
     pageLength = 20,
     scrollX = TRUE
   )
-)
-
-combinations <- fda_approvals %>% 
-  filter(str_detect(
-  title,
-  regex("combination", ignore_case = TRUE)) |
-    str_detect(description, regex("combination", ignore_case = TRUE))
 )
 
 # Write table
@@ -371,3 +365,41 @@ fda_approvals_2006_2016 <- rbind(fda_approvals_2013_2016, fda_approvals_2012,
 write.csv(fda_approvals_2006_2016, file = "results/FDA/approval_notifications_2006_2016.csv")
 
 
+# 2. Filter Drug Combination Approvals ----
+
+approval_notifications <- read.csv("results/FDA/approval_notifications_2020_2025.csv", row.names = 1)
+old_approvals <- read.csv("results/FDA/approval_notifications_2017_2020.csv", row.names = 1)
+old_approvals <- rbind(old_approvals, read.csv("results/FDA/approval_notifications_2006_2016.csv", row.names = 1))
+
+approval_notifications <- bind_rows(approval_notifications, old_approvals)
+
+ping_ollama()
+pull_model("llama3.2:3b")
+
+approval_notifications_annotated <- approval_notifications %>%
+  mutate(
+    combo_label = make_query(
+      text = description,
+      template = "{text}\n{prompt}",
+      prompt = "Categories: combination, single",
+      system = paste(
+        "You are a biomedical text classifier.",
+        "For each FDA approval description, decide whether the APPROVED REGIMEN is:",
+        "- a drug COMBINATION treatment (two or more drugs used together in the approved regimen), or",
+        "- a SINGLE drug treatment.",
+        "",
+        "Important:",
+        "- Ignore drugs only mentioned as prior therapies or comparators.",
+        "- Answer with exactly one word: 'combination' or 'single'."
+      )
+    ) %>%
+      query(screen = FALSE, output = "text") |>
+      # clean up model answers
+      str_trim() %>%
+      tolower(),
+    
+    is_combination = combo_label == "combination"
+  )
+
+
+openxlsx2::write_xlsx(approval_notifications_annotated, "results/FDA/approval_notifications_annotated.xlsx")
