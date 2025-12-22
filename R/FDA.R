@@ -1000,5 +1000,5 @@ single_efficacy <- multi_nct_rows %>% filter(nct_claim == "single_efficacy")
 approval_notifications_combinations <- approval_notifications_combinations %>% 
   filter(!nct %in% single_efficacy$nct, !is.na(nct), nct != "NA")
 
-openxlsx2::write_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+openxlsx2::write_xlsx(approval_notifications_combinations, "results/FDA/approval_notifications_combinations_final.xlsx")
 
