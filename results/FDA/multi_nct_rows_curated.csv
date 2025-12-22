@@ -1,0 +1,1105 @@
+,title,description,url,date,type,query_text,drug_name,AA_indication,AA_date,TA_date,withdrawal_date,qwen3_8b,deepseek_r1_8b,phi4,ensemble,disagreement,ensemble_corrected,comments,full_text,row_ID,nct,nct_claim
+1,FDA approves retifanlimab-dlwr with carboplatin and paclitaxel and as a single agent for squamous cell carcinoma of the anal canal,"On May 15, 2025, the Food and Drug Administration approved retifanlimab-dlwr (Zynyz, Incyte Corporation) with carboplatin and paclitaxel for the first-line treatment of adults with inoperable locally recurrent or metastatic squamous cell carcinoma of the anal canal (SCAC). The FDA also approved retifanlimab-dlwr, as a single agent, for adults with locally recurrent or metastatic SCAC with disease progression on or intolerance to platinum-based chemotherapy.",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-retifanlimab-dlwr-carboplatin-and-paclitaxel-and-single-agent-squamous-cell-carcinoma,5/15/2025,ApprovalNotifications,"On May 15, 2025, the Food and Drug Administration approved retifanlimab-dlwr (Zynyz, Incyte Corporation) with carboplatin and paclitaxel for the first-line treatment of adults with inoperable locally recurrent or metastatic squamous cell carcinoma of the anal canal (SCAC). The FDA also approved retifanlimab-dlwr, as a single agent, for adults with locally recurrent or metastatic SCAC with disease progression on or intolerance to platinum-based chemotherapy.",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves retifanlimab-dlwr with carboplatin and paclitaxel and as a single agent for squamous cell carcinoma of the anal canal
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On May 15, 2025, the Food and Drug Administration approved retifanlimab-dlwr (Zynyz, Incyte Corporation) with carboplatin and paclitaxel for the first-line treatment of adults with inoperable locally recurrent or metastatic squamous cell carcinoma of the anal canal (SCAC). The FDA also approved retifanlimab-dlwr, as a single agent, for adults with locally recurrent or metastatic SCAC with disease progression on or intolerance to platinum-based chemotherapy.
+
+Full prescribing information for Zynyz will be posted on Drugs@FDA.
+
+Efficacy of retifanlimab-dlwr with carboplatin and paclitaxel was evaluated in POD1UM-303/InterAACT 2 (NCT04472429), a randomized, multicenter, double-blind trial in 308 patients with chemotherapy-naïve inoperable locally recurrent or metastatic SCAC. Patients received carboplatin AUC of 5 on Day 1, and paclitaxel 80 mg/m2 on Days 1, 8, and 15 for 6 cycles and were randomized (1:1) to receive either:
+
+retifanlimab-dlwr 500 mg intravenously every 4 weeks, or
+placebo intravenously every 4 weeks. 
+
+The major efficacy outcome measure was progression-free survival (PFS) as assessed by blinded independent central review (BICR) according to RECIST v1.1. Overall survival (OS) was a key secondary endpoint. Additional efficacy outcome measures were overall response rate (ORR) and duration of response (DOR) as assessed by BICR. Median PFS was 9.3 months (95% CI: 7.5, 11.3) in the retifanlimab-dlwr arm and 7.4 months (95% CI: 7.1, 7.7) in the placebo arm (hazard ratio 0.63 [95% CI: 0.47, 0.84] p-value 0.0006). Interim OS results were not statistically significant: median OS was 29.2 months (95% CI: 24.2, not estimable [NE]) and 23 months (95% CI: 15.1, 27.9) in the respective arms (hazard ratio 0.70 [95% CI: 0.49, 1.01]). Forty-five percent of patients who received placebo received retifanlimab-dlwr after disease progression. ORR was 56% (95% CI: 48, 64) and 44% (95% CI: 36, 52) in the respective arms.
+
+Efficacy of retifanlimab-dlwr as a single agent was evaluated in POD1UM-202 (NCT03597295), an open-label, multicenter, single-arm trial in 94 patients with locally recurrent or metastatic SCAC with disease progression on or intolerance to platinum-based chemotherapy. Patients received retifanlimab-dlwr 500 mg intravenously every 4 weeks until disease progression, unacceptable toxicity, or up to 24 months. The major efficacy outcome measures were ORR and DOR as assessed by an independent review committee (IRC) according to RECIST v1.1. ORR was 14% (95% CI: 8, 23) and median DOR was 9.5 months (95% CI: 4.4, not estimable [NE]).
+
+The prescribing information for retifanlimab-dlwr includes warnings and precautions for severe and fatal immune-mediated adverse reactions, infusion-related reactions, complications of allogeneic HSCT, and embryo-fetal toxicity.
+
+The recommended retifanlimab-dlwr dose in combination with carboplatin and paclitaxel is 500 mg every 4 weeks until disease progression, unacceptable toxicity, or up to 12 months. The recommended dose of retifanlimab-dlwr as a single agent is 500 mg every 4 weeks until disease progression, unacceptable toxicity, or up to 24 months. Refer to the prescribing information for carboplatin and paclitaxel for recommended dosing information in combination with retifanlimab.
+
+This review used the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+Retifanlimab-dlwr was granted orphan drug designation for the treatment of anal cancer and this application was granted fast track designation and priority review. FDA expedited programs are described in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+Follow the Oncology Center of Excellence on X: @FDAOncology. 
+
+Content current as of:
+
+05/15/2025
+
+Regulated Product(s)
+Drugs",study_ 8,NCT04472429;NCT03597295,combination_efficacy;single_efficacy
+2,FDA approves penpulimab-kcqx for non-keratinizing nasopharyngeal carcinoma,"On April 23, 2025, the Food and Drug Administration approved penpulimab-kcqx (Akeso Biopharma Co., Ltd.) with cisplatin or carboplatin and gemcitabine for the first-line treatment of adults with recurrent or metastatic non-keratinizing nasopharyngeal carcinoma (NPC).",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-penpulimab-kcqx-non-keratinizing-nasopharyngeal-carcinoma,4/23/2025,ApprovalNotifications,"On April 23, 2025, the Food and Drug Administration approved penpulimab-kcqx (Akeso Biopharma Co., Ltd.) with cisplatin or carboplatin and gemcitabine for the first-line treatment of adults with recurrent or metastatic non-keratinizing nasopharyngeal carcinoma (NPC).",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves penpulimab-kcqx for non-keratinizing nasopharyngeal carcinoma
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On April 23, 2025, the Food and Drug Administration approved penpulimab-kcqx (Akeso Biopharma Co., Ltd.) with cisplatin or carboplatin and gemcitabine for the first-line treatment of adults with recurrent or metastatic non-keratinizing nasopharyngeal carcinoma (NPC). FDA also approved penpulimab-kcqx as a single agent for adults with metastatic non-keratinizing NPC with disease progression on or after platinum-based chemotherapy and at least one other prior line of therapy.
+
+Full prescribing information for penpulimab-kcqx will be posted on Drugs@FDA.
+
+Efficacy and Safety
+
+Efficacy of penpulimab-kcqx with cisplatin or carboplatin and gemcitabine was evaluated in Study AK105-304 (NCT04974398), a randomized, double-blind, multi-center trial in 291 patients with recurrent or metastatic NPC who had not received previous systemic chemotherapy for recurrent or metastatic disease. Patients were randomized (1:1) to receive either penpulimab-kcqx with cisplatin or carboplatin and gemcitabine, followed by penpulimab-kcqx, or placebo with cisplatin or carboplatin and gemcitabine, followed by placebo. Chemotherapy regimens are described in the full prescribing information.
+
+The primary efficacy outcome measure was progression-free survival (PFS), as assessed by a Blinded Independent Review Committee according to RECIST v1.1. Overall survival (OS) was a key secondary endpoint. Median PFS was 9.6 months (95% CI: 7.1, 12.5) in the penpulimab-kcqx arm and 7.0 months (95% CI: 6.9, 7.3) in the placebo arm (hazard ratio [HR] 0.45 [95% CI: 0.33, 0.62], two-sided p-value <0.0001), with 31% and 11% of patients alive and progression-free after 12 months of follow-up in the penpulimab-kcqx and placebo arms, respectively. While OS results were immature, with 70% of pre-specified deaths for the final analysis reported, no detrimental trend was observed.
+
+Efficacy of single-agent penpulimab-kcqx was evaluated in Study AK105-202 (NCT03866967), an open-label, multicenter, single-arm trial conducted in a single country. The trial included a total of 125 patients with unresectable or metastatic non-keratinizing NPC who had disease progression after platinum-based chemotherapy and at least one other line of therapy. Patients received penpulimab-kcqx until disease progression or unacceptable toxicity, for a maximum of 24 months.
+
+The major efficacy outcome measures were objective response rate (ORR) and duration of response (DOR) according to RECIST v1.1 as assessed by an Independent Radiology Review Committee. The ORR was 28% (95% CI: 20, 37) and median DOR was not reached (95% CI: 9.2, not estimable).
+
+Immune-mediated adverse reactions occurred with penpulimab-kcqx including pneumonitis, colitis, hepatitis, endocrinopathies, nephritis with renal dysfunction, and skin adverse reactions. The most common adverse reactions (≥20%) for penpulimab-kcqx with cisplatin or carboplatin and gemcitabine were nausea, vomiting, hypothyroidism, constipation, decreased appetite, decreased weight, cough, COVID-19 infection, fatigue, rash, and pyrexia. The most common adverse reactions (≥20%) for single-agent penpulimab-kcqx were hypothyroidism and musculoskeletal pain. Fatal adverse reactions occurred in 1% of patients, including a case each of pneumonitis, septic shock, colitis, and hepatitis.
+
+The recommended penpulimab-kcqx dose with cisplatin or carboplatin and gemcitabine is 200 mg every three weeks until disease progression or unacceptable toxicity, for a maximum of 24 months. The recommended single-agent penpulimab-kcqx dose for previously treated NPC is 200 mg every two weeks until disease progression or unacceptable toxicity, for a maximum of 24 months.
+
+Expedited Programs
+
+This review used the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted fast track designation, breakthrough designation, and orphan drug designation. FDA expedited programs are described in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+Follow the Oncology Center of Excellence on X: @FDAOncology.
+
+Content current as of:
+
+04/24/2025
+
+Regulated Product(s)
+Drugs",study_ 10,NCT04974398;NCT03866967,combination_efficacy;single_efficacy
+3,FDA approves zolbetuximab-clzb with chemotherapy for gastric or gastroesophageal junction adenocarcinoma,"On October 18, 2024, the Food and Drug Administration approved zolbetuximab-clzb (Vyloy, Astellas Pharma US, Inc.), a claudin 18.2 (CLDN18.2)-directed cytolytic antibody, with fluoropyrimidine- and platinum-containing chemotherapy, for the first-line treatment of adults with locally advanced unresectable or metastatic human epidermal growth factor receptor 2 (HER2)-negative gastric or gastroesophageal junction (GEJ) adenocarcinoma whose tumors are CLDN18.2 positive, as determined by an FDA-approved test.",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-zolbetuximab-clzb-chemotherapy-gastric-or-gastroesophageal-junction-adenocarcinoma,10/18/2024,ApprovalNotifications,"On October 18, 2024, the Food and Drug Administration approved zolbetuximab-clzb (Vyloy, Astellas Pharma US, Inc.), a claudin 18.2 (CLDN18.2)-directed cytolytic antibody, with fluoropyrimidine- and platinum-containing chemotherapy, for the first-line treatment of adults with locally advanced unresectable or metastatic human epidermal growth factor receptor 2 (HER2)-negative gastric or gastroesophageal junction (GEJ) adenocarcinoma whose tumors are CLDN18.2 positive, as determined by an FDA-approved test.",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves zolbetuximab-clzb with chemotherapy for gastric or gastroesophageal junction adenocarcinoma
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On October 18, 2024, the Food and Drug Administration approved zolbetuximab-clzb (Vyloy, Astellas Pharma US, Inc.), a claudin 18.2 (CLDN18.2)-directed cytolytic antibody, with fluoropyrimidine- and platinum-containing chemotherapy, for the first-line treatment of adults with locally advanced unresectable or metastatic human epidermal growth factor receptor 2 (HER2)-negative gastric or gastroesophageal junction (GEJ) adenocarcinoma whose tumors are CLDN18.2 positive, as determined by an FDA-approved test.
+
+Today, FDA also approved the VENTANA CLDN18 (43-14A) RxDx Assay (Ventana Medical Systems, Inc./Roche Diagnostics) as a companion diagnostic device to identify patients with gastric or GEJ adenocarcinoma who may be eligible for treatment with zolbetuximab.
+
+Full prescribing information for Vyloy will be posted on Drugs@FDA.
+
+Efficacy and Safety
+
+Efficacy was evaluated in trials SPOTLIGHT (NCT03504397) and GLOW (NCT03653507). Both were randomized (1:1), double-blind, multicenter trials that enrolled patients with CLDN18.2 positive advanced unresectable or metastatic HER2-negative gastric or GEJ adenocarcinoma. The major efficacy outcome measure in both trials was progression-free survival (PFS), as assessed per RECIST v1.1 by an independent review committee. Overall survival (OS) was an additional efficacy outcome measure.
+
+In SPOTLIGHT, 565 patients were randomized to receive zolbetuximab-clzb with mFOLFOX6 chemotherapy or placebo with mFOLFOX6 chemotherapy. Median PFS was 10.6 months (95% CI: 8.9, 12.5) in the zolbetuximab-clzb/chemotherapy arm and 8.7 months (95% CI: 8.2, 10.3) in the placebo/chemotherapy arm (hazard ratio [HR] 0.751 [95% CI: 0.598, 0.942]; 1-sided p-value=0.0066). Median OS was 18.2 months (95% CI: 16.4, 22.9) and 15.5 months (95% CI: 13.5, 16.5), respectively, (HR 0.750 [95% CI: 0.601, 0.936]; 1-sided p-value=0.0053).
+
+In GLOW, 507 patients were randomized to receive either zolbetuximab-clzb with CAPOX chemotherapy or placebo with CAPOX chemotherapy. Median PFS was 8.2 months (95% CI: 7.5, 8.8) in the zolbetuximab-clzb/chemotherapy arm and 6.8 months (95% CI: 6.1, 8.1) in the placebo/chemotherapy arm (hazard ratio [HR] 0.687 [95% CI: 0.544, 0.866]; 1-sided p-value=0.0007). Median OS was 14.4 months (95% CI: 12.3, 16.5) and 12.2 months (95% CI: 10.3, 13.7), respectively (HR 0.771 [95% CI: 0.615, 0.965]; 1-sided p-value=0.0118).
+
+The most common serious adverse reactions in SPOTLIGHT (≥2%) were vomiting, nausea, neutropenia, febrile neutropenia, diarrhea, intestinal obstruction, pyrexia, pneumonia, respiratory failure, pulmonary embolism, decreased appetite, and sepsis. The most common serious adverse reactions in GLOW (≥2%) were vomiting, nausea, decreased appetite, decreased platelet count, upper gastrointestinal hemorrhage, diarrhea, pneumonia, pulmonary embolism, and pyrexia.
+
+The recommended zolbetuximab-clzb dosage with fluoropyrimidine- and platinum-containing chemotherapy is:
+
+First dose: 800 mg/m2 intravenously,
+Subsequent dosages:
+600 mg/m2 intravenously every 3 weeks, or
+400 mg/m2 intravenously every 2 weeks.
+Expedited Programs
+
+This review used the Real-Time Oncology Review (RTOR) pilot program, which streamlined data submission prior to the filing of the entire clinical application, and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted priority review, fast track, and orphan drug designation. FDA expedited programs are described in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+Follow the Oncology Center of Excellence on X (formerly Twitter): @FDAOncology.
+
+Content current as of:
+
+10/18/2024",study_ 20,NCT03504397;NCT03653507,combination_efficacy;combination_efficacy
+4,FDA approves blinatumomab as consolidation for CD19-positive Philadelphia chromosome-negative B-cell precursor acute lymphoblastic leukemia,"On June 14, 2024, the Food and Drug Administration approved blinatumomab (Blincyto, Amgen Inc.) for adult and pediatric patients one month and older with CD19-positive Philadelphia chromosome-negative B-cell precursor acute lymphoblastic leukemia (Ph-negative BCP ALL) in the consolidation phase of multiphase chemotherapy.",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-blinatumomab-consolidation-cd19-positive-philadelphia-chromosome-negative-b-cell,6/14/2024,ApprovalNotifications,"On June 14, 2024, the Food and Drug Administration approved blinatumomab (Blincyto, Amgen Inc.) for adult and pediatric patients one month and older with CD19-positive Philadelphia chromosome-negative B-cell precursor acute lymphoblastic leukemia (Ph-negative BCP ALL) in the consolidation phase of multiphase chemotherapy.",NA,NA,NA,NA,NA,single,combination,single,combination,TRUE,yes,NA,"FDA approves blinatumomab as consolidation for CD19-positive Philadelphia chromosome-negative B-cell precursor acute lymphoblastic leukemia
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On June 14, 2024, the Food and Drug Administration approved blinatumomab (Blincyto, Amgen Inc.) for adult and pediatric patients one month and older with CD19-positive Philadelphia chromosome-negative B-cell precursor acute lymphoblastic leukemia (Ph-negative BCP ALL) in the consolidation phase of multiphase chemotherapy.
+
+Full prescribing information for Blincyto will be posted on Drugs@FDA.
+
+Efficacy and Safety
+
+Efficacy was evaluated in Study E1910 (NCT02003222), a randomized, controlled trial in adult patients with newly diagnosed Ph-negative BCP ALL. Eligible patients in hematologic complete remission (CR) or CR with incomplete peripheral blood count recovery (CRi) following induction and intensification chemotherapy were randomized 1:1 to receive a consolidation regimen comprised of multiple blinatumomab monotherapy cycles plus multiple cycles of intensive chemotherapy (blinatumomab arm) or to intensive chemotherapy alone (chemotherapy arm). Randomization was stratified by age, CD20 status, rituximab use, and intent to undergo allogeneic hematopoietic stem cell transplantation (HSCT). There were 112 patients randomized to the blinatumomab arm and 112 to the chemotherapy arm.
+
+The major efficacy outcome measure was overall survival (OS). The 3-year OS was 84.8% (95% CI: 76.3, 90.4) and 69% (95% CI: 58.7, 77.2) in the blinatumomab and chemotherapy arms, respectively. The hazard ratio [HR] for OS was 0.42 [95% CI: 0.24, 0.75] p-value 0.003). In a later analysis with a median follow-up of 4.5 years, the 5-year OS was 82.4 % [95% CI (73.7, 88.4)] in the blinatumomab arm and 62.5 % [95% CI (52.0, 71.3)] in the chemotherapy arm. The hazard ratio was 0.44 [95% CI (0.25, 0.76)].
+
+Efficacy also was evaluated in Study 20120215 (NCT02393859), a randomized, controlled, open-label, multicenter trial. Pediatric and young adult patients with Ph-negative BCP ALL were randomized 1:1 to receive blinatumomab or the IntReALLHR2010 HC3 intensive combination chemotherapy as the third consolidation cycle. Randomization was stratified by age, minimal residual disease status at the end of induction based on local assessment, and bone marrow status at the end of the second block of consolidation chemotherapy. There were 54 patients randomized to the blinatumomab arm and 57 to the chemotherapy arm.
+
+The major efficacy outcome measures were OS and relapse-free survival (RFS). The 5‑year OS was 78.4% (95% CI: 64.2, 87.4) and 41.4% (95% CI: 26.3, 55.9) in the blinatumomab and chemotherapy arms, respectively (OS HR 0.35 [95% CI: 0.17, 0.70]). The 5-year RFS was 61.1% (95% CI: 46.3, 72.9) and 27.6% (95% CI: 16.2, 40.3) in the blinatumomab and chemotherapy arms, respectively (RFS HR 0.38 [95% CI: 0.22, 0.66].
+
+In Study E1910, the most common adverse reactions (≥20%) in the blinatumomab arm were neutropenia, thrombocytopenia, anemia, leukopenia, headache, infection, nausea, lymphopenia, diarrhea, musculoskeletal pain, and tremor. In Study 20120215, the most common adverse reactions (≥20%) in the blinatumomab arm were pyrexia, nausea, headache, rash, hypogammaglobulinemia, and anemia.
+
+See the full prescribing information for the recommended dose by patient weight and schedule.
+
+Expedited Programs
+
+This review was conducted under Project Orbis, an initiative of the FDA Oncology Center of Excellence. Project Orbis provides a framework for concurrent submission and review of oncology drugs among international partners. For this review, FDA collaborated with the Brazilian Health Regulatory Agency (ANVISA), Health Canada (HC), Switzerland’s Swissmedic (SMC), and United Kingdom’s Medicines and Healthcare products Regulatory Agency (MHRA). The application reviews are ongoing at the other regulatory agencies.
+
+This review used the Real-Time Oncology Review (RTOR) pilot program, which streamlined data submission prior to the filing of the entire clinical application, and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted priority review, breakthrough designation, and orphan drug designation. FDA expedited programs are described in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+Follow the Oncology Center of Excellence on X @FDAOncology
+
+notionvc: 63a4541b-712c-49e2-9099-24d3d158904e
+
+Content current as of:
+
+06/14/2024",study_ 33,NCT02003222;NCT02393859,combination_efficacy;single_efficacy
+5,FDA approves toripalimab-tpzi for nasopharyngeal carcinoma,"On October 27, 2023, the Food and Drug Administration approved toripalimab-tpzi (LOQTORZ, Coherus BioSciences, Inc.) with cisplatin and gemcitabine for the first-line treatment of adults with metastatic or recurrent, locally advanced nasopharyngeal carcinoma (NPC). FDA also approved toripalimab-tpzi as a single agent for adults with recurrent unresectable or metastatic NPC with disease progression on or after a platinum-containing chemotherapy.",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-toripalimab-tpzi-nasopharyngeal-carcinoma,10/27/2023,ApprovalNotifications,"On October 27, 2023, the Food and Drug Administration approved toripalimab-tpzi (LOQTORZ, Coherus BioSciences, Inc.) with cisplatin and gemcitabine for the first-line treatment of adults with metastatic or recurrent, locally advanced nasopharyngeal carcinoma (NPC). FDA also approved toripalimab-tpzi as a single agent for adults with recurrent unresectable or metastatic NPC with disease progression on or after a platinum-containing chemotherapy.",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves toripalimab-tpzi for nasopharyngeal carcinoma
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On October 27, 2023, the Food and Drug Administration approved toripalimab-tpzi (LOQTORZ, Coherus BioSciences, Inc.) with cisplatin and gemcitabine for the first-line treatment of adults with metastatic or recurrent, locally advanced nasopharyngeal carcinoma (NPC). FDA also approved toripalimab-tpzi as a single agent for adults with recurrent unresectable or metastatic NPC with disease progression on or after a platinum-containing chemotherapy.
+
+View full prescribing information for LOQTORZI.
+
+Efficacy of toripalimab-tpzi with cisplatin and gemcitabine was evaluated in JUPITER-02 (NCT03581786), a randomized, multicenter, single region, double-blind, placebo-controlled trial in 289 patients with metastatic or recurrent, locally advanced NPC who had not received previous systemic chemotherapy for recurrent or metastatic disease. Patients were randomized (1:1) to either toripalimab-tpzi with cisplatin and gemcitabine, followed by toripalimab-tpzi, or placebo with cisplatin and gemcitabine, followed by placebo. Chemotherapy regimens are described in the above link for full prescribing information.
+
+The primary efficacy outcome measure was progression-free survival (PFS), as assessed by a Blinded Independent Review Committee (BIRC) according to RECIST v1.1. Overall survival (OS) was an additional endpoint. A statistically significant PFS improvement was observed with a median PFS of 11.7 months versus 8.0 months (hazard ratio [HR] 0.52 [95% CI: 0.36, 0.74], p-value=0.0003) for the toripalimab-tpzi and placebo-containing regimens, respectively. A statistically significant OS improvement was also observed with median OS not reached (95% CI: 38.7 months, not estimable) for the toripalimab-tpzi-containing regimen and 33.7 months (95% CI: 27.0, 44.2) for the placebo-containing regimen (HR 0.63 [95% CI: 0.45, 0.89], p-value=0.0083). 
+
+Efficacy of toripalimab-tpzi as a single agent was evaluated in POLARIS-02 (NCT02915432), an open-label, multicenter, single country, multicohort trial in 172 patients with unresectable or metastatic NPC who had received prior platinum-based chemotherapy or had disease progression within 6 months of completion of platinum-based chemotherapy administered as neoadjuvant, adjuvant, or definitive chemoradiation treatment for locally advanced disease. Patients received toripalimab-tpzi until disease progression per RECIST v1.1 or unacceptable toxicity.
+
+The major efficacy outcome measures were confirmed overall response rate (ORR) and duration of response (DOR) as assessed by BIRC using RECIST v1.1. ORR was 21% (95% CI: 15, 28) and median DOR was 14.9 months (95% CI: 10.3, not estimable).
+
+Immune-mediated adverse reactions occurred with toripalimab-tpzi, including pneumonitis, colitis, hepatitis, endocrinopathies, nephritis with renal dysfunction, and skin adverse reactions. The most common adverse reactions (≥20%) for toripalimab-tpzi with cisplatin and gemcitabine were nausea, vomiting, decreased appetite, constipation, hypothyroidism, rash, pyrexia, diarrhea, peripheral neuropathy, cough, musculoskeletal pain, upper respiratory infection, insomnia, dizziness, and malaise. The most common adverse reactions (≥20%) for toripalimab-tpzi as a single agent were fatigue, hypothyroidism, and musculoskeletal pain.
+
+The recommended toripalimab-tpzi dose with cisplatin and gemcitabine is 240 mg every three weeks until disease progression, unacceptable toxicity, or up to 24 months. The recommended toripalimab-tpzi dose as a single agent for previously treated NPC is 3 mg/kg every two weeks until disease progression or unacceptable toxicity.
+
+This review used the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted priority review, breakthrough designation and orphan drug designation. FDA expedited programs are described in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+Follow the Oncology Center of Excellence on X (formerly Twitter) @FDAOncology.
+
+Content current as of:
+
+10/30/2023",study_ 48,NCT03581786;NCT02915432,combination_efficacy;single_efficacy
+6,FDA grants accelerated approval to dabrafenib in combination with trametinib for unresectable or metastatic solid tumors with BRAF V600E mutation,"On June 22, 2022, the Food and Drug Administration granted accelerated approval to dabrafenib (Tafinlar, Novartis) in combination with trametinib (Mekinist, Novartis) for the treatment of adult and pediatric patients ≥ 6 years of age with unresectable or metastatic solid tumors with BRAF V600E mutation who have progressed following prior treatment and have no satisfactory alternative treatment options.",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-dabrafenib-combination-trametinib-unresectable-or-metastatic-solid,6/22/2022,ApprovalNotifications,"On June 22, 2022, the Food and Drug Administration granted accelerated approval to dabrafenib (Tafinlar, Novartis) in combination with trametinib (Mekinist, Novartis) for the treatment of adult and pediatric patients ≥ 6 years of age with unresectable or metastatic solid tumors with BRAF V600E mutation who have progressed following prior treatment and have no satisfactory alternative treatment options.",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA grants accelerated approval to dabrafenib in combination with trametinib for unresectable or metastatic solid tumors with BRAF V600E mutation
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On June 22, 2022, the Food and Drug Administration granted accelerated approval to dabrafenib (Tafinlar, Novartis) in combination with trametinib (Mekinist, Novartis) for the treatment of adult and pediatric patients ≥ 6 years of age with unresectable or metastatic solid tumors with BRAF V600E mutation who have progressed following prior treatment and have no satisfactory alternative treatment options. Dabrafenib in combination with trametinib is not indicated for patients with colorectal cancer because of known intrinsic resistance to BRAF inhibition. Dabrafenib is not indicated for patients with wild-type BRAF solid tumors.
+
+The safety and efficacy were evaluated in 131 adult patients from open-label, multiple cohort trials BRF117019 (NCT02034110) and NCI-MATCH (NCT02465060), 36 pediatric patients from CTMT212X2101 (NCT02124772), and supported by results in COMBI-d, COMBI-v, and BRF113928 (studies in melanoma and lung cancer already described in product labeling). Study BRF117019 enrolled patients with BRAF V600E mutation positive specific solid tumors including high grade glioma (HGG), biliary tract cancer, low grade glioma (LGG), adenocarcinoma of small intestine, gastrointestinal stromal tumor, and anaplastic thyroid cancer (ATC). NCI-MATCH Subprotocol H enrolled adult patients with BRAF V600E mutation positive solid tumors except patients with melanoma, thyroid cancer, or CRC. Parts C and D of Study CTMT212X2101 enrolled 36 pediatric patients with BRAF V600 refractory or recurrent LGG or HGG. The major efficacy outcome measure of these studies was overall response rate (ORR) using standard response criteria. For the 131 adult patients, a total of 54 (41%, 95% CI: 33, 50) experienced an objective response. The studies enrolled patients with 24 tumor types, including different subtypes of LGG and HGG. Among the highest representative tumor types, ORR was 46% (95% CI: 31, 61) for biliary tract cancer, 33% (95% CI: 20, 48) for high grade glioma (combined) and 50% (95% CI: 23, 77) for low grade glioma (combined). For the 36 pediatric patients, the ORR was 25% (95% CI: 12, 42); DOR was ≥6 months for 78% of patients and ≥24 months for 44% of patients.
+
+The most common (≥20%) adverse reactions in adult patients were pyrexia, fatigue, nausea, rash, chills, headache, hemorrhage, cough, vomiting, constipation, diarrhea, myalgia, arthralgia, and edema.
+
+The most common (≥20%) adverse reactions in pediatric patients were pyrexia, rash, vomiting, fatigue, dry skin, cough, diarrhea, dermatitis acneiform, headache, abdominal pain, nausea, hemorrhage, constipation, and paronychia.
+
+The recommended dabrafenib dose in adult patients is 150 mg (two 75 mg capsules) orally twice daily in combination with trametinib 2 mg orally once daily. The recommended doses for dabrafenib and trametinib in pediatric patients are based on body weight. A recommended dose has not been established in patients who weigh less than 26 kg.
+
+View full prescribing information for Tafinlar and Mekinist
+
+This review used the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted priority review. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology
+
+ 
+
+Content current as of:
+
+06/23/2022
+
+Regulated Product(s)
+Drugs",study_ 68,NCT02034110;NCT02465060;NCT02124772,combination_efficacy;combination_efficacy;combination_efficacy
+7,FDA grants accelerated approval to naxitamab for high-risk neuroblastoma in bone or bone marrow,"Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy. ",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-naxitamab-high-risk-neuroblastoma-bone-or-bone-marrow,11/25/2020,ApprovalNotifications,"Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy. ",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA grants accelerated approval to naxitamab for high-risk neuroblastoma in bone or bone marrow
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+ 
+
+On November 25, 2020, the Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy.
+
+Efficacy was evaluated in patients with relapsed or refractory neuroblastoma in the bone or bone marrow enrolled in two single-arm, open-label trials: Study 201 (NCT 03363373) and Study 12-230 (NCT 01757626). Patients with progressive disease following their most recent therapy were excluded. Patients received 3 mg/kg naxitamab administered as an intravenous infusion on days 1, 3, and 5 of each 4-week cycle in combination with GM-CSF subcutaneously at 250 µg/m2/day on days -4 to 0 and at 500 µg/m2/day on days 1 to 5. At the investigator’s discretion, patients were permitted to receive pre-planned radiation to the primary disease site in Study 201 and radiation therapy to non-target bony lesions or soft tissue disease in Study 12-230.
+
+The main efficacy outcome measures were confirmed overall response rate (ORR) per the revised International Neuroblastoma Response Criteria (INRC) and duration of response (DOR). Among 22 patients treated in the multicenter Study 201, the ORR was 45% (95% CI: 24%, 68%) and 30% of responders had a DOR greater or equal to 6 months. Among 38 patients treated in the single-center Study 12-230, the ORR was 34% (95% CI: 20%, 51%) with 23% of patients having a DOR greater or equal to 6 months. For both trials, responses were observed in either the bone, bone marrow or both.
+
+The prescribing information contains a Boxed Warning stating that naxitamab can cause serious infusion-related reactions and neurotoxicity, including severe neuropathic pain, transverse myelitis and reversible posterior leukoencephalopathy syndrome (RPLS). To mitigate these risks, patients should receive premedication prior to each naxitamab infusion and be closely monitored during and for at least two hours following completion of each infusion.
+
+The most common adverse reactions (incidence ≥25% in either trial) in patients receiving naxitamab were infusion-related reactions, pain, tachycardia, vomiting, cough, nausea, diarrhea, decreased appetite, hypertension, fatigue, erythema multiforme, peripheral neuropathy, urticaria, pyrexia, headache, injection site reaction, edema, anxiety, localized edema, and irritability. The most common Grade 3 or 4 laboratory abnormalities (≥5% in either trial) were decreased lymphocytes, decreased neutrophils, decreased hemoglobin, decreased platelet count, decreased potassium, increased alanine aminotransferase, decreased glucose, decreased calcium, decreased albumin, decreased sodium and decreased phosphate.
+
+The recommended naxitamab dose is 3 mg/kg/day (up to 150 mg/day) on days 1, 3, and 5 of each treatment cycle, administered after dilution as an intravenous infusion in combination with GM-CSF, subcutaneously at 250 µg/m2/day on days -4 to 0 and at 500 µg/m2/day on days 1 to 5. Treatment cycles are repeated every 4 to 8 weeks.
+
+View full prescribing information for DANYELZA. https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761171lbl.pdf
+
+This review used the Real-Time Oncology Review (RTOR) pilot program and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted accelerated approval based on overall response rate and duration of response. Continued approval may be contingent upon verification and description of clinical benefit in confirmatory trials.
+
+This application was granted priority review, breakthrough therapy, and orphan drug designation. A priority review voucher was issued for this rare pediatric disease product application. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+11/27/2020
+
+Regulated Product(s)
+Drugs
+Oncology",study_ 93,NCT03363373;NCT01757626,combination_efficacy;combination_efficacy
+8,FDA grants regular approval to venetoclax in combination for untreated acute myeloid leukemia,Food and Drug Administration grants regular approval to venetoclax in combination for untreated acute myeloid leukemia.,https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-regular-approval-venetoclax-combination-untreated-acute-myeloid-leukemia,10/16/2020,ApprovalNotifications,Food and Drug Administration grants regular approval to venetoclax in combination for untreated acute myeloid leukemia.,NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA grants regular approval to venetoclax in combination for untreated acute myeloid leukemia
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On October 16, 2020, the Food and Drug Administration granted regular approval to venetoclax (VENCLEXTA ®, AbbVie Inc. and Genentech Inc.) in combination with azacitidine, decitabine, or low-dose cytarabine (LDAC) for newly-diagnosed acute myeloid leukemia (AML) in adults 75 years or older, or who have comorbidities precluding intensive induction chemotherapy.
+
+Venetoclax was initially granted accelerated approval for this indication in November 2018.
+
+Efficacy was confirmed in two randomized, double-blind, placebo-controlled trials in patients with AML described above.
+
+In VIALE-A (NCT02993523), patients were randomized to receive venetoclax plus azacitidine (n=286) or placebo plus azacitidine (n=145). Efficacy was established based on an improvement in overall survival (OS). The median OS was 14.7 months (95% CI: 11.9, 18.7) in patients treated with venetoclax plus azacitidine compared to 9.6 months (95% CI: 7.4, 12.7) in those receiving placebo plus azacitidine (HR 0.66; 95% CI: 0.52, 0.85; p<0.001). Patients treated with venetoclax plus azacitidine also demonstrated an improvement in complete remission (CR) rate: 37% (95% CI: 31%, 43%) versus 18% (95% CI: 12%, 25%).
+
+In VIALE-C (NCT03069352), patients were randomized to receive venetoclax plus LDAC (n=143) or placebo plus LDAC (n=68). Efficacy was based on CR rate and duration of CR. The CR rate on the venetoclax plus LDAC arm was 27% (95% CI: 20%, 35%) with a median duration of 11.1 months (95% CI: 6.1, not reached) compared to 7.4% (95% CI: 2.4%, 16%) with a median duration of 8.3 months (95% CI: 3.1, not reached) in those receiving placebo plus LDAC. Venetoclax plus LDAC did not significantly improve OS versus placebo plus LDAC (HR 0.75; 95% CI 0.52, 1.07; p=0.114). 
+
+The most common adverse reactions of venetoclax in combination with azacitidine, decitabine, or low-dose cytarabine (≥30% in any trial) were nausea, diarrhea, thrombocytopenia, constipation, neutropenia, febrile neutropenia, fatigue, vomiting, edema, pyrexia, pneumonia, dyspnea, hemorrhage, anemia, rash, abdominal pain, sepsis, musculoskeletal pain, dizziness, cough, oropharyngeal pain, and hypotension.
+
+The recommended venetoclax dose depends upon the combination regimen and is described in prescribing information. View full prescribing information for VENCLEXTA.
+
+This review was conducted under Project Orbis, an initiative of the FDA Oncology Center of Excellence. Project Orbis provides a framework for concurrent submission and review of oncology drugs among international partners. For this review, FDA collaborated with the Australian Therapeutic Goods Administration (TGA), the Brazilian Health Regulatory Agency (ANVISA), Health Canada, and Switzerland’s Swissmedic. The application reviews are ongoing at the other regulatory agencies.
+
+This review used the Real-Time Oncology Review (RTOR) pilot program and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment. The FDA approved this application 5 weeks ahead of the FDA goal date.
+
+FDA granted this application priority review, breakthrough designation, and orphan drug designation. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+Content current as of:
+
+10/16/2020
+
+Regulated Product(s)
+Drugs
+Prescription Drugs",study_ 95,NCT02993523;NCT03069352,combination_efficacy;combination_efficacy
+9,FDA approves carfilzomib and daratumumab with dexamethasone for multiple myeloma,"On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy. ",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-carfilzomib-and-daratumumab-dexamethasone-multiple-myeloma,8/20/2020,ApprovalNotifications,"On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy. ",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves carfilzomib and daratumumab with dexamethasone for multiple myeloma
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy.
+
+The efficacy of carfilzomib and daratumumab with dexamethasone was evaluated in two clinical trials, CANDOR and EQUULEUS.
+
+CANDOR (NCT03158688) was a randomized, open label, multicenter trial evaluating the combination of carfilzomib (20/56 mg/m2 twice weekly regimen) with intravenous daratumumab and dexamethasone (DKd) versus carfilzomib (20/56 mg/m2 twice weekly regimen) and dexamethasone (Kd) in patients with relapsed or refractory multiple myeloma who had received 1 to 3 prior lines of therapy. A total of 466 patients were randomized; 312 to the DKd arm and 154 to the Kd arm.
+
+Efficacy was assessed by an independent review committee (IRC) evaluation of progression-free survival (PFS) using International Myeloma Working Group (IMWG) response criteria. Median PFS was not reached for the DKd arm and was 15.8 months (95% CI: 12.1, NE) for the Kd arm (HR 0.63; 95% CI: 0.46, 0.85; 1-sided p-value 0.0014).
+
+EQUULEUS (NCT01998971) was an open label, multicohort trial evaluating the combination of carfilzomib (20/70 mg/m2 once weekly regimen) with intravenous daratumumab and dexamethasone (DKd). Efficacy was based on overall response rate (ORR) as assessed by IRC using IMWG response criteria. Of the 85 patients with relapsed or refractory multiple myeloma who had received 1 to 3 prior lines of therapy enrolled in the DKd cohort, the ORR was 81% (95% CI: 71, 89) with a duration of response of 27.5 months (20.5, not estimable).
+
+The most common adverse reactions occurring in at least 20% of patients treated with carfilzomib and daratumumab in the combination therapy trials were infusion related reactions, anemia, diarrhea, fatigue, hypertension, pyrexia, respiratory tract infection, thrombocytopenia, neutropenia, lymphopenia, cough, dyspnea, insomnia, headache and back pain.
+
+The recommended dosage regimens of carfilzomib, when administered in combination with intravenous daratumumab and dexamethasone, are:
+
+Once weekly 20/70 mg/m2 regimen: administer carfilzomib intravenously as a 30-minute infusion on Days 1, 8, and 15 of each 28-day cycle at a dose of 20 mg/m2 on Cycle 1 Day 1 and, if tolerated, increased to 70 mg/m2 on Cycle 1 Day 8 and thereafter OR
+Twice weekly 20/56 mg/m2 regimen: administer carfilzomib intravenously as a 30-minute infusion on Days 1, 2, 8, 9, 15, and 16 of each 28-day cycle at a dose of 20 mg/m2 on Days 1 and 2 of Cycle 1 and, if tolerated, increased to 56 mg/m2 on Cycle 1 Day 8 and thereafter.
+
+The recommended dosage regimen of intravenous daratumumab, when administered in combination with carfilzomib and dexamethasone, is 16 mg/kg actual body weight administered as split dosing of 8 mg/kg on Days 1 and 2 of Cycle 1, followed by standard dosing of 16 mg/kg for subsequent doses administered weekly from Weeks 2 to 8, every two weeks from Weeks 9 to 24, and every four weeks from Week 25 and thereafter.
+
+View full prescribing information for KYPROLIS.
+View full prescribing information for DARZALEX.
+
+This review used the Assessment Aid, a voluntary submission from the applicants to facilitate the FDA’s assessment. The FDA approved the carfilzomib and daratumumab applications 3 and 4 months ahead of the FDA goal dates, respectively.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+08/21/2020
+
+Regulated Product(s)
+Drugs",study_ 98,NCT03158688;NCT01998971,combination_efficacy;combination_efficacy
+10,FDA approves oral combination of decitabine and cedazuridine for myelodysplastic syndromes,"Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following: ",https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-oral-combination-decitabine-and-cedazuridine-myelodysplastic-syndromes,7/7/2020,ApprovalNotifications,"Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following: ",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves oral combination of decitabine and cedazuridine for myelodysplastic syndromes
+Resources for Information | Approved Drugs
+Oncology (Cancer)/Hematologic Malignancies Approval Notifications
+Ongoing | Cancer Accelerated Approvals
+Verified Clinical Benefit | Cancer Accelerated Approvals
+Withdrawn | Cancer Accelerated Approvals
+Other | Cancer Accelerated Approvals
+
+ 
+
+On July 7, 2020, the Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following:
+
+previously treated and untreated, de novo and secondary MDS with the following French-American-British subtypes (refractory anemia, refractory anemia with ringed sideroblasts, refractory anemia with excess blasts, and chronic myelomonocytic leukemia [CMML]) and
+intermediate-1, intermediate-2, and high-risk International Prognostic Scoring System groups.
+
+Inqovi was investigated in two open-label, randomized, crossover trials. Trial ASTX727-01-B (NCT02103478) included 80 adult patients with MDS (International Prognostic Scoring System [IPSS] Intermediate-1, Intermediate-2, or high-risk) or CMML and trial ASTX727-02 (NCT03306264) included 133 adult patients with MDS or CMML, including all French-American-British classification criteria and IPSS Intermediate-1, Intermediate-2, or high-risk prognostic scores.
+
+In both trials, patients were randomized 1:1 to receive Inqovi (35 mg decitabine and 100 mg cedazuridine) orally in cycle 1 and decitabine 20 mg/m2 intravenously in cycle 2 or the reverse sequence. Both Inqovi and intravenous decitabine were administered once daily on days 1 through 5 of a 28-day cycle. Starting with cycle 3, all patients received Inqovi orally once daily on days 1 through 5 of each 28-day cycle until disease progression or unacceptable toxicity. Both trials provided comparison of exposure and safety in the first two cycles between oral Inqovi and IV decitabine and description of disease response with Inqovi. Comparison of disease response between the Inqovi and IV decitabine was not possible because all patients received Inqovi starting from Cycle 3.
+
+The 01-B trial demonstrated a complete response (CR) rate of 18% (95% CI: 10, 28) and median duration of CR was 8.7 months (range: 1.1, 18.2). Among the 41 patients who were dependent on red blood cell (RBC) and/or platelet transfusions at baseline, 20 (49%) became independent of RBC and platelet transfusions during any consecutive 56-day post-baseline period. Of the 39 patients who were independent of both RBC and platelet transfusions at baseline, 25 (64%) remained transfusion-independent during any consecutive 56-day post-baseline period.
+
+The 02 trial demonstrated a geometric mean ratio of the 5-day cumulative decitabine AUC following 5 consecutive once daily doses of Inqovi compared to that of intravenous decitabine was 99% (90% CI: 93, 106). Efficacy results demonstrated that 21% of patients achieved CR (95% CI: 15, 29) and median duration of CR was 7.5 months (range: 1.6, 17.5). Among the 57 patients who were dependent on RBC and/or platelet transfusions at baseline, 30 (53%) became independent of RBC and platelet transfusions during any 56-day post-baseline period. Of the 76 patients who were independent of both RBC and platelet transfusions at baseline, 63% remained transfusion-independent during any 56-day post-baseline period. 
+
+Most common adverse reactions (incidence ≥ 20%) to Inqovi are fatigue, constipation, hemorrhage, myalgia, mucositis, arthralgia, nausea, dyspnea, diarrhea, rash, dizziness, febrile neutropenia, edema, headache, cough, decreased appetite, upper respiratory tract infection, pneumonia, and transaminase increased. The most common grade 3 or 4 laboratory abnormalities (≥ 50%) were leukocytes decreased, platelet count decreased, neutrophil count decreased, and hemoglobin decreased. The overall safety profile of oral Inqovi was similar to IV decitabine. 
+
+The recommended Inqovi dose is 1 tablet (35 mg decitabine and 100 mg cedazuridine) taken orally on an empty stomach once daily on days 1 through 5 of each 28‑day cycle.
+
+View full prescribing information for INQOVI.
+
+This review used the Oncology Center of Excellence Assessment Aid as well as the Office of Pharmaceutical Quality’s Assessment Aid for quality review. These are voluntary submissions from the applicant to facilitate the FDA’s assessment.
+
+The FDA collaborated with international agency counterparts on the review of this application as part of Project Orbis.
+
+This application was granted priority review. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+07/07/2020
+
+Regulated Product(s)
+Drugs
+Prescription Drugs",study_ 101,NCT02103478;NCT03306264,combination_efficacy;combination_efficacy
+11,NA,"Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy. More Information. November 25, 2020",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/drug-approvals-and-databases/fda-grants-accelerated-approval-naxitamab-high-risk-neuroblastoma-bone-or-bone-marrow,NA,ApprovalNotifications,"Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy. More Information. November 25, 2020",NA,NA,NA,NA,NA,combination,single,combination,combination,TRUE,no,NA,"FDA grants accelerated approval to naxitamab for high-risk neuroblastoma in bone or bone marrow
+Share
+Tweet
+Linkedin
+Email
+Print
+
+ 
+
+On November 25, 2020, the Food and Drug Administration granted accelerated approval to naxitamab (DANYELZA, Y-mAbs Therapeutics, Inc.) in combination with granulocyte-macrophage colony-stimulating factor (GM-CSF) for pediatric patients one year of age and older and adult patients with relapsed or refractory high-risk neuroblastoma in the bone or bone marrow demonstrating a partial response, minor response, or stable disease to prior therapy.
+
+Efficacy was evaluated in patients with relapsed or refractory neuroblastoma in the bone or bone marrow enrolled in two single-arm, open-label trials: Study 201 (NCT 03363373) and Study 12-230 (NCT 01757626). Patients with progressive disease following their most recent therapy were excluded. Patients received 3 mg/kg naxitamab administered as an intravenous infusion on days 1, 3, and 5 of each 4-week cycle in combination with GM-CSF subcutaneously at 250 µg/m2/day on days -4 to 0 and at 500 µg/m2/day on days 1 to 5. At the investigator’s discretion, patients were permitted to receive pre-planned radiation to the primary disease site in Study 201 and radiation therapy to non-target bony lesions or soft tissue disease in Study 12-230.
+
+The main efficacy outcome measures were confirmed overall response rate (ORR) per the revised International Neuroblastoma Response Criteria (INRC) and duration of response (DOR). Among 22 patients treated in the multicenter Study 201, the ORR was 45% (95% CI: 24%, 68%) and 30% of responders had a DOR greater or equal to 6 months. Among 38 patients treated in the single-center Study 12-230, the ORR was 34% (95% CI: 20%, 51%) with 23% of patients having a DOR greater or equal to 6 months. For both trials, responses were observed in either the bone, bone marrow or both.
+
+The prescribing information contains a Boxed Warning stating that naxitamab can cause serious infusion-related reactions and neurotoxicity, including severe neuropathic pain, transverse myelitis and reversible posterior leukoencephalopathy syndrome (RPLS). To mitigate these risks, patients should receive premedication prior to each naxitamab infusion and be closely monitored during and for at least two hours following completion of each infusion.
+
+The most common adverse reactions (incidence ≥25% in either trial) in patients receiving naxitamab were infusion-related reactions, pain, tachycardia, vomiting, cough, nausea, diarrhea, decreased appetite, hypertension, fatigue, erythema multiforme, peripheral neuropathy, urticaria, pyrexia, headache, injection site reaction, edema, anxiety, localized edema, and irritability. The most common Grade 3 or 4 laboratory abnormalities (≥5% in either trial) were decreased lymphocytes, decreased neutrophils, decreased hemoglobin, decreased platelet count, decreased potassium, increased alanine aminotransferase, decreased glucose, decreased calcium, decreased albumin, decreased sodium and decreased phosphate.
+
+The recommended naxitamab dose is 3 mg/kg/day (up to 150 mg/day) on days 1, 3, and 5 of each treatment cycle, administered after dilution as an intravenous infusion in combination with GM-CSF, subcutaneously at 250 µg/m2/day on days -4 to 0 and at 500 µg/m2/day on days 1 to 5. Treatment cycles are repeated every 4 to 8 weeks.
+
+View full prescribing information for DANYELZA. https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761171lbl.pdf
+
+This review used the Real-Time Oncology Review (RTOR) pilot program and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment.
+
+This application was granted accelerated approval based on overall response rate and duration of response. Continued approval may be contingent upon verification and description of clinical benefit in confirmatory trials.
+
+This application was granted priority review, breakthrough therapy, and orphan drug designation. A priority review voucher was issued for this rare pediatric disease product application. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+11/27/2020
+
+Regulated Product(s)
+Drugs
+Oncology
+Drug Approvals and Databases
+Resources for Information | Approved Drugs",study_ 116,NCT03363373;NCT01757626,combination_efficacy;combination_efficacy
+12,NA,"Food and Drug Administration grants regular approval to venetoclax in combination for untreated acute myeloid leukemia. More Information. October 16, 2020",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/drug-approvals-and-databases/fda-grants-regular-approval-venetoclax-combination-untreated-acute-myeloid-leukemia,NA,ApprovalNotifications,"Food and Drug Administration grants regular approval to venetoclax in combination for untreated acute myeloid leukemia. More Information. October 16, 2020",NA,NA,NA,NA,NA,single,combination,combination,combination,TRUE,no,NA,"FDA grants regular approval to venetoclax in combination for untreated acute myeloid leukemia
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On October 16, 2020, the Food and Drug Administration granted regular approval to venetoclax (VENCLEXTA ®, AbbVie Inc. and Genentech Inc.) in combination with azacitidine, decitabine, or low-dose cytarabine (LDAC) for newly-diagnosed acute myeloid leukemia (AML) in adults 75 years or older, or who have comorbidities precluding intensive induction chemotherapy.
+
+Venetoclax was initially granted accelerated approval for this indication in November 2018.
+
+Efficacy was confirmed in two randomized, double-blind, placebo-controlled trials in patients with AML described above.
+
+In VIALE-A (NCT02993523), patients were randomized to receive venetoclax plus azacitidine (n=286) or placebo plus azacitidine (n=145). Efficacy was established based on an improvement in overall survival (OS). The median OS was 14.7 months (95% CI: 11.9, 18.7) in patients treated with venetoclax plus azacitidine compared to 9.6 months (95% CI: 7.4, 12.7) in those receiving placebo plus azacitidine (HR 0.66; 95% CI: 0.52, 0.85; p<0.001). Patients treated with venetoclax plus azacitidine also demonstrated an improvement in complete remission (CR) rate: 37% (95% CI: 31%, 43%) versus 18% (95% CI: 12%, 25%).
+
+In VIALE-C (NCT03069352), patients were randomized to receive venetoclax plus LDAC (n=143) or placebo plus LDAC (n=68). Efficacy was based on CR rate and duration of CR. The CR rate on the venetoclax plus LDAC arm was 27% (95% CI: 20%, 35%) with a median duration of 11.1 months (95% CI: 6.1, not reached) compared to 7.4% (95% CI: 2.4%, 16%) with a median duration of 8.3 months (95% CI: 3.1, not reached) in those receiving placebo plus LDAC. Venetoclax plus LDAC did not significantly improve OS versus placebo plus LDAC (HR 0.75; 95% CI 0.52, 1.07; p=0.114). 
+
+The most common adverse reactions of venetoclax in combination with azacitidine, decitabine, or low-dose cytarabine (≥30% in any trial) were nausea, diarrhea, thrombocytopenia, constipation, neutropenia, febrile neutropenia, fatigue, vomiting, edema, pyrexia, pneumonia, dyspnea, hemorrhage, anemia, rash, abdominal pain, sepsis, musculoskeletal pain, dizziness, cough, oropharyngeal pain, and hypotension.
+
+The recommended venetoclax dose depends upon the combination regimen and is described in prescribing information. View full prescribing information for VENCLEXTA.
+
+This review was conducted under Project Orbis, an initiative of the FDA Oncology Center of Excellence. Project Orbis provides a framework for concurrent submission and review of oncology drugs among international partners. For this review, FDA collaborated with the Australian Therapeutic Goods Administration (TGA), the Brazilian Health Regulatory Agency (ANVISA), Health Canada, and Switzerland’s Swissmedic. The application reviews are ongoing at the other regulatory agencies.
+
+This review used the Real-Time Oncology Review (RTOR) pilot program and the Assessment Aid, a voluntary submission from the applicant to facilitate the FDA’s assessment. The FDA approved this application 5 weeks ahead of the FDA goal date.
+
+FDA granted this application priority review, breakthrough designation, and orphan drug designation. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+Content current as of:
+
+10/16/2020
+
+Regulated Product(s)
+Drugs
+Prescription Drugs
+Drug Approvals and Databases
+Resources for Information | Approved Drugs",study_ 118,NCT02993523;NCT03069352,combination_efficacy;combination_efficacy
+13,NA,"On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy. More Information. August 20, 2020",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/drug-approvals-and-databases/fda-approves-carfilzomib-and-daratumumab-dexamethasone-multiple-myeloma,NA,ApprovalNotifications,"On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy. More Information. August 20, 2020",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves carfilzomib and daratumumab with dexamethasone for multiple myeloma
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On August 20, 2020, the Food and Drug Administration approved carfilzomib (KYPROLIS, Onyx Pharmaceuticals, Inc.) and daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with dexamethasone for adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy.
+
+The efficacy of carfilzomib and daratumumab with dexamethasone was evaluated in two clinical trials, CANDOR and EQUULEUS.
+
+CANDOR (NCT03158688) was a randomized, open label, multicenter trial evaluating the combination of carfilzomib (20/56 mg/m2 twice weekly regimen) with intravenous daratumumab and dexamethasone (DKd) versus carfilzomib (20/56 mg/m2 twice weekly regimen) and dexamethasone (Kd) in patients with relapsed or refractory multiple myeloma who had received 1 to 3 prior lines of therapy. A total of 466 patients were randomized; 312 to the DKd arm and 154 to the Kd arm.
+
+Efficacy was assessed by an independent review committee (IRC) evaluation of progression-free survival (PFS) using International Myeloma Working Group (IMWG) response criteria. Median PFS was not reached for the DKd arm and was 15.8 months (95% CI: 12.1, NE) for the Kd arm (HR 0.63; 95% CI: 0.46, 0.85; 1-sided p-value 0.0014).
+
+EQUULEUS (NCT01998971) was an open label, multicohort trial evaluating the combination of carfilzomib (20/70 mg/m2 once weekly regimen) with intravenous daratumumab and dexamethasone (DKd). Efficacy was based on overall response rate (ORR) as assessed by IRC using IMWG response criteria. Of the 85 patients with relapsed or refractory multiple myeloma who had received 1 to 3 prior lines of therapy enrolled in the DKd cohort, the ORR was 81% (95% CI: 71, 89) with a duration of response of 27.5 months (20.5, not estimable).
+
+The most common adverse reactions occurring in at least 20% of patients treated with carfilzomib and daratumumab in the combination therapy trials were infusion related reactions, anemia, diarrhea, fatigue, hypertension, pyrexia, respiratory tract infection, thrombocytopenia, neutropenia, lymphopenia, cough, dyspnea, insomnia, headache and back pain.
+
+The recommended dosage regimens of carfilzomib, when administered in combination with intravenous daratumumab and dexamethasone, are:
+
+Once weekly 20/70 mg/m2 regimen: administer carfilzomib intravenously as a 30-minute infusion on Days 1, 8, and 15 of each 28-day cycle at a dose of 20 mg/m2 on Cycle 1 Day 1 and, if tolerated, increased to 70 mg/m2 on Cycle 1 Day 8 and thereafter OR
+Twice weekly 20/56 mg/m2 regimen: administer carfilzomib intravenously as a 30-minute infusion on Days 1, 2, 8, 9, 15, and 16 of each 28-day cycle at a dose of 20 mg/m2 on Days 1 and 2 of Cycle 1 and, if tolerated, increased to 56 mg/m2 on Cycle 1 Day 8 and thereafter.
+
+The recommended dosage regimen of intravenous daratumumab, when administered in combination with carfilzomib and dexamethasone, is 16 mg/kg actual body weight administered as split dosing of 8 mg/kg on Days 1 and 2 of Cycle 1, followed by standard dosing of 16 mg/kg for subsequent doses administered weekly from Weeks 2 to 8, every two weeks from Weeks 9 to 24, and every four weeks from Week 25 and thereafter.
+
+View full prescribing information for KYPROLIS.
+View full prescribing information for DARZALEX.
+
+This review used the Assessment Aid, a voluntary submission from the applicants to facilitate the FDA’s assessment. The FDA approved the carfilzomib and daratumumab applications 3 and 4 months ahead of the FDA goal dates, respectively.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+08/21/2020
+
+Regulated Product(s)
+Drugs
+Drug Approvals and Databases
+Resources for Information | Approved Drugs",study_ 121,NCT03158688;NCT01998971,combination_efficacy;combination_efficacy
+14,NA,"Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following: More Information. July 7, 2020",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/drug-approvals-and-databases/fda-approves-oral-combination-decitabine-and-cedazuridine-myelodysplastic-syndromes,NA,ApprovalNotifications,"Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following: More Information. July 7, 2020",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves oral combination of decitabine and cedazuridine for myelodysplastic syndromes
+Share
+Tweet
+Linkedin
+Email
+Print
+
+ 
+
+On July 7, 2020, the Food and Drug Administration approved an oral combination of decitabine and cedazuridine (INQOVI, Astex Pharmaceuticals, Inc.) for adult patients with myelodysplastic syndromes (MDS) including the following:
+
+previously treated and untreated, de novo and secondary MDS with the following French-American-British subtypes (refractory anemia, refractory anemia with ringed sideroblasts, refractory anemia with excess blasts, and chronic myelomonocytic leukemia [CMML]) and
+intermediate-1, intermediate-2, and high-risk International Prognostic Scoring System groups.
+
+Inqovi was investigated in two open-label, randomized, crossover trials. Trial ASTX727-01-B (NCT02103478) included 80 adult patients with MDS (International Prognostic Scoring System [IPSS] Intermediate-1, Intermediate-2, or high-risk) or CMML and trial ASTX727-02 (NCT03306264) included 133 adult patients with MDS or CMML, including all French-American-British classification criteria and IPSS Intermediate-1, Intermediate-2, or high-risk prognostic scores.
+
+In both trials, patients were randomized 1:1 to receive Inqovi (35 mg decitabine and 100 mg cedazuridine) orally in cycle 1 and decitabine 20 mg/m2 intravenously in cycle 2 or the reverse sequence. Both Inqovi and intravenous decitabine were administered once daily on days 1 through 5 of a 28-day cycle. Starting with cycle 3, all patients received Inqovi orally once daily on days 1 through 5 of each 28-day cycle until disease progression or unacceptable toxicity. Both trials provided comparison of exposure and safety in the first two cycles between oral Inqovi and IV decitabine and description of disease response with Inqovi. Comparison of disease response between the Inqovi and IV decitabine was not possible because all patients received Inqovi starting from Cycle 3.
+
+The 01-B trial demonstrated a complete response (CR) rate of 18% (95% CI: 10, 28) and median duration of CR was 8.7 months (range: 1.1, 18.2). Among the 41 patients who were dependent on red blood cell (RBC) and/or platelet transfusions at baseline, 20 (49%) became independent of RBC and platelet transfusions during any consecutive 56-day post-baseline period. Of the 39 patients who were independent of both RBC and platelet transfusions at baseline, 25 (64%) remained transfusion-independent during any consecutive 56-day post-baseline period.
+
+The 02 trial demonstrated a geometric mean ratio of the 5-day cumulative decitabine AUC following 5 consecutive once daily doses of Inqovi compared to that of intravenous decitabine was 99% (90% CI: 93, 106). Efficacy results demonstrated that 21% of patients achieved CR (95% CI: 15, 29) and median duration of CR was 7.5 months (range: 1.6, 17.5). Among the 57 patients who were dependent on RBC and/or platelet transfusions at baseline, 30 (53%) became independent of RBC and platelet transfusions during any 56-day post-baseline period. Of the 76 patients who were independent of both RBC and platelet transfusions at baseline, 63% remained transfusion-independent during any 56-day post-baseline period. 
+
+Most common adverse reactions (incidence ≥ 20%) to Inqovi are fatigue, constipation, hemorrhage, myalgia, mucositis, arthralgia, nausea, dyspnea, diarrhea, rash, dizziness, febrile neutropenia, edema, headache, cough, decreased appetite, upper respiratory tract infection, pneumonia, and transaminase increased. The most common grade 3 or 4 laboratory abnormalities (≥ 50%) were leukocytes decreased, platelet count decreased, neutrophil count decreased, and hemoglobin decreased. The overall safety profile of oral Inqovi was similar to IV decitabine. 
+
+The recommended Inqovi dose is 1 tablet (35 mg decitabine and 100 mg cedazuridine) taken orally on an empty stomach once daily on days 1 through 5 of each 28‑day cycle.
+
+View full prescribing information for INQOVI.
+
+This review used the Oncology Center of Excellence Assessment Aid as well as the Office of Pharmaceutical Quality’s Assessment Aid for quality review. These are voluntary submissions from the applicant to facilitate the FDA’s assessment.
+
+The FDA collaborated with international agency counterparts on the review of this application as part of Project Orbis.
+
+This application was granted priority review. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+For assistance with single-patient INDs for investigational oncology products, healthcare professionals may contact OCE’s Project Facilitate at 240-402-0004 or email OncProjectFacilitate@fda.hhs.gov.
+
+For information on the COVID-19 pandemic, see the following resources:
+
+FDA: Coronavirus Disease 2019 (COVID-19)
+NCI: Coronavirus: What People With Cancer Should Know
+CDC: Coronavirus (COVID-19)
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+ 
+
+Content current as of:
+
+07/07/2020
+
+Regulated Product(s)
+Drugs
+Prescription Drugs
+Drug Approvals and Databases
+Resources for Information | Approved Drugs",study_ 124,NCT02103478;NCT03306264,combination_efficacy;combination_efficacy
+15,NA,"FDA approved lenalidomide (REVLIMID, Celgene Corp.) in combination with a rituximab product for previously treated follicular lymphoma (FL) and previously treated marginal zone lymphoma (MZL). More Information. May 28, 2019",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-lenalidomide-follicular-and-marginal-zone-lymphoma,NA,ApprovalNotifications,"FDA approved lenalidomide (REVLIMID, Celgene Corp.) in combination with a rituximab product for previously treated follicular lymphoma (FL) and previously treated marginal zone lymphoma (MZL). More Information. May 28, 2019",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves lenalidomide for follicular and marginal zone lymphoma
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On May 28, 2019, the Food and Drug Administration approved lenalidomide (REVLIMID®, Celgene Corp.) in combination with a rituximab product for previously treated follicular lymphoma (FL) and previously treated marginal zone lymphoma (MZL).
+
+Approval was based on two clinical trials: AUGMENT (NCT01938001) and MAGNIFY (NCT01996865). In AUGMENT, 358 patients with relapsed or refractory FL or MZL were randomized (1:1) to receive lenalidomide and rituximab or rituximab and placebo. In the single-arm component of MAGNIFY, 232 patients with relapsed or refractory FL, MZL, or mantle cell lymphoma received 12 induction cycles of lenalidomide and rituximab.
+
+In AUGMENT, the primary endpoint was progression-free survival (PFS) in the intent-to-treat population, as determined by an independent review committee (IRC). Median PFS was 39.4 months (95% CI: 22.9, NE) in the lenalidomide arm and 14.1 months (95% CI: 11.4, 16.7) in the placebo-containing arm (HR 0.46; 95% CI: 0.34, 0.62; p<0.0001). The objective response rate (ORR) by IRC assessment for patients with follicular lymphoma was 80% (118/147; 95% CI: 73%, 86%) in the lenalidomide arm compared with 55.4% (82/148; 95% CI: 47%, 64%) in the control arm. For patients with marginal zone lymphoma, the ORR by IRC assessment was 65% (20/31; 95% CI: 45%, 81%) compared with 44% (14/32; 95% CI: 26%, 62%), respectively.
+
+In MAGNIFY, the ORR by investigator assessment was 59% (104/177; 95% CI: 51%, 66%) for patients with follicular lymphoma. Median response duration was not reached with a median follow-up of 7.9 months (95% CI: 4.6, 9.2). For patients with marginal zone lymphoma, the ORR by investigator assessment was 51% (23/45; 95% CI: 36%, 66%). Median response duration was not reached with a median follow-up of 11.5 months (95% CI: 8.0, 18.9).
+
+Across both trials, the most common adverse reactions occurring in at least 20% of patients were neutropenia, fatigue, diarrhea, constipation, nausea, and cough.
+
+The prescribing information includes a Boxed Warning alerting health care professionals and patients about the risk of embryo-fetal toxicity, hematologic toxicity, and venous and arterial thromboembolism which may be life-threatening or fatal.
+
+The recommended lenalidomide dose for FL or MZL is 20 mg once daily orally on days 1-21 of repeated 28-day cycles for up to 12 cycles.
+
+View full prescribing information for REVLIMID.
+
+FDA granted this application priority review and orphan drug designation. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+Check out recent approvals at the OCE’s podcast, Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.).
+
+Content current as of:
+
+05/28/2019
+
+Regulated Product(s)
+Drugs
+Resources for Information | Approved Drugs
+Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.)
+Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) Short Description",study_ 144,NCT01938001;NCT01996865,combination_efficacy;combination_efficacy
+16,NA,"FDA approved atezolizumab (TECENTRIQ, Genentech, Inc.), in combination with bevacizumab, paclitaxel, and carboplatin for the first-line treatment of patients with metastatic non-squamous, non-small cell lung cancer (NSq NSCLC) with no EGFR or ALK genomic tumor aberrations. More Information. December 6, 2018",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/resources-information-approved-drugs/atezolizumab-tecentriq,NA,ApprovalNotifications,"FDA approved atezolizumab (TECENTRIQ, Genentech, Inc.), in combination with bevacizumab, paclitaxel, and carboplatin for the first-line treatment of patients with metastatic non-squamous, non-small cell lung cancer (NSq NSCLC) with no EGFR or ALK genomic tumor aberrations. More Information. December 6, 2018",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Atezolizumab (TECENTRIQ)
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On October 18, 2016, FDA approved atezolizumab (TECENTRIQ, Genentech Oncology) for the treatment of patients with metastatic non-small cell lung cancer (NSCLC) whose disease progressed during or following platinum-containing chemotherapy. Patients with EGFR or ALK genomic tumor aberrations should have disease progression on FDA-approved therapy for these aberrations prior to receiving atezolizumab.
+
+Atezolizumab is a programmed death-ligand 1 (PD-L1) blocking antibody that previously received FDA accelerated approval for the treatment of locally advanced or metastatic urothelial carcinoma that has progressed after platinum-containing chemotherapy.
+
+This approval was based on two international, randomized, open-label clinical trials (OAK and POPLAR) that demonstrated consistent results in efficacy and safety in a total of 1137 patients with NSCLC. Compared with docetaxel, treatment with atezolizumab in the intended patient population in the two trials resulted in a 4.2 and a 2.9 month improvement in overall survival (OS), respectively.
+
+The median OS in OAK was 13.8 months (95% confidence interval [CI] 11.8,15.7) in the atezolizumab arm compared to 9.6 months (95% CI 8.6,11.2) in the docetaxel arm (hazard ratio [HR]=0.74 [95% CI 0.63,0.87]; p=0.0004). The median OS in POPLAR was 12.6 months (95% CI 9.7, 16.0) and 9.7 months (95% CI 8.6, 12.0) (HR=0.69 [95% CI 0.52, 0.92]) for the atezolizumab and docetaxel arms, respectively.
+
+The most common (greater than or equal to 20%) adverse reactions in patients in the primary safety analysis population (POPLAR trial) in patients treated with atezolizumab were fatigue, decreased appetite, dyspnea, cough, nausea, musculoskeletal pain, and constipation. The most common (greater than or equal to 2%) grade 3-4 adverse events in patients treated with atezolizumab were dyspnea, pneumonia, hypoxia, hyponatremia, fatigue, anemia, musculoskeletal pain, AST increase, ALT increase, dysphagia, and arthralgia. Clinically significant immune-related adverse events for patients receiving atezolizumab included pneumonitis, hepatitis, colitis, and thyroid disease.
+
+The recommended atezolizumab dose is 1200 mg administered as an intravenous infusion over 60 minutes every three weeks until disease progression or unacceptable toxicity.
+ 
+Full prescribing information is available at: http://www.accessdata.fda.gov/drugsatfda_docs/label/2016/761041lbl.pdf
+ 
+ 
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System by completing a form online athttp://www.fda.gov/medwatch/report.htm, by faxing (1-800-FDA-0178) or mailing the postage-paid address form provided online, or by telephone (1-800-FDA-1088). 
+ 
+ 
+
+ 
+
+ 
+ is a death-ligand 1 (PD-L1) blocking antibody that previously received FDA accelerated approval for the treatment of locally advanced or metastatic urothelial carcinoma that has progressed after platinum-containing chemotherapy. style=""> 
+ 
+ 
+>
+Content current as of:
+
+10/19/2016
+
+Resources for Information | Approved Drugs
+Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.)
+Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) Short Description",study_ 151,NCT02008227;NCT01903993,single_efficacy;single_efficacy
+17,NA,"FDA expanded the indication for ribociclib (Kisqali, Novartis Pharmaceuticals Corporation) in combination with an aromatase inhibitor for pre/perimenopausal women with HR-positive, HER2-negative advanced or metastatic breast cancer, as initial endocrine-based therapy. More Information. July 18, 2018",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/approved-drugs/fda-expands-ribociclib-indication-hr-positive-her2-negative-advanced-or-metastatic-breast-cancer,NA,ApprovalNotifications,"FDA expanded the indication for ribociclib (Kisqali, Novartis Pharmaceuticals Corporation) in combination with an aromatase inhibitor for pre/perimenopausal women with HR-positive, HER2-negative advanced or metastatic breast cancer, as initial endocrine-based therapy. More Information. July 18, 2018",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA expands ribociclib indication in HR-positive, HER2-negative advanced or metastatic breast cancer
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On July 18, 2018, the Food and Drug Administration expanded the indication for ribociclib (Kisqali, Novartis Pharmaceuticals Corporation) in combination with an aromatase inhibitor for pre/perimenopausal women with HR-positive, HER2-negative advanced or metastatic breast cancer, as initial endocrine-based therapy.
+
+FDA also approved ribociclib in combination with fulvestrant for postmenopausal women with HR-positive, HER2-negative advanced or metastatic breast cancer, as initial endocrine-based therapy or following disease progression on endocrine therapy.
+
+Ribociclib was previously approved for postmenopausal women with HR-positive, HER2-negative advanced or metastatic breast cancer in combination with an aromatase inhibitor as initial endocrine therapy. 
+
+The efficacy of ribociclib in combination with an aromatase inhibitor for pre/perimenopausal women was based on MONALEESA-7 (NCT02278120), a randomized, double-blind, placebo-controlled trial. Pre/perimenopausal women were randomized to ribociclib plus either a non-steroidal aromatase inhibitor (NSAI) or tamoxifen and goserelin versus placebo plus either an NSAI or tamoxifen and goserelin. Results from the pre-specified NSAI-only subgroup of 495 pre/peri-menopausal women with HR-positive, HER2-negative, advanced breast cancer who received no prior endocrine therapy for advanced disease showed an estimated median progression-free survival (PFS, RECIST 1.1) of 27.5 months for patients on the ribociclib arm compared with 13.8 months for those on the placebo arm (HR 0.569; 95% CI: 0.436, 0.743). Ribociclib is not indicated for concomitant use with tamoxifen.
+
+The efficacy of ribociclib in combination with fulvestrant was demonstrated in MONALEESA-3 (NCT02422615), a randomized double-blind, placebo-controlled trial of ribociclib in combination with fulvestrant in 726 postmenopausal women with HR-positive, HER2-negative, advanced breast cancer who received no or only one line of prior endocrine treatment. The estimated median PFS was 20.5 months for patients taking ribociclib compared with 12.8 months for those who received placebo (HR 0.593; 95% CI: 0.480, 0.732; p
+
+The most common adverse reactions in at least 20% of patients were neutropenia, nausea, infections, fatigue, diarrhea, leukopenia, vomiting, alopecia, headache, constipation, rash and cough.
+
+The recommended starting ribociclib dose is 600 mg orally (three 200 mg tablets) once daily with or without food for 21 consecutive days followed by 7 days off treatment.
+
+View full prescribing information for Kisqali.
+
+This is the first FDA approval using the Real Time Oncology Review and the Assessment Aid, pilot programs that enabled the FDA review team to begin analyzing data before the application submission. The FDA was able to approve the application less than one month after it was submitted.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+Check out recent approvals at the OCE’s podcast, Drug Information Soundcast in Clinical Oncology.
+
+Content current as of:
+
+07/18/2018
+
+Resources for Information | Approved Drugs
+Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.)
+Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) Short Description",study_ 157,NCT02278120;NCT02422615,combination_efficacy;combination_efficacy
+18,NA,"FDA approved abemaciclib (VERZENIO, Eli Lilly and Company) in combination with fulvestrant for women with HR-positive, HER2-negative advanced or metastatic breast cancer with disease progression following endocrine therapy. More Inforrmation. September 28, 2017",https://wayback.archive-it.org/7993/20201219232235/https%3A//www.fda.gov/drugs/approved-drugs/fda-approves-abemaciclib-hr-positive-her2-negative-breast-cancer,NA,ApprovalNotifications,"FDA approved abemaciclib (VERZENIO, Eli Lilly and Company) in combination with fulvestrant for women with HR-positive, HER2-negative advanced or metastatic breast cancer with disease progression following endocrine therapy. More Inforrmation. September 28, 2017",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves abemaciclib for HR-positive, HER2-negative breast cancer
+Share
+Tweet
+Linkedin
+Email
+Print
+
+On September 28, 2017, the Food and Drug Administration approved abemaciclib (VERZENIO, Eli Lilly and Company) in combination with fulvestrant for women with HR-positive, HER2-negative advanced or metastatic breast cancer with disease progression following endocrine therapy. In addition, abemaciclib was approved as monotherapy for women and men with HR-positive, HER2-negative advanced or metastatic breast cancer with disease progression following endocrine therapy and prior chemotherapy in the metastatic setting.
+
+ 
+
+The approval in combination with fulvestrant was based on MONARCH 2, a randomized, placebo-controlled, multicenter trial in women with HR-positive, HER2-negative metastatic breast cancer with disease progression following endocrine therapy who had not received chemotherapy in the metastatic setting. The trial randomized 669 patients to receive either abemaciclib or placebo orally twice daily plus intramuscular injection of 500 mg fulvestrant on days 1 and 15 of cycle 1 and then on day 1 of cycle 2 and beyond (28-day cycles). Patients remained on continuous treatment with abemaciclib until development of progressive disease or unmanageable toxicity. Median progression-free survival for patients taking abemaciclib with fulvestrant was 16.4 months compared with 9.3 months for those taking placebo with fulvestrant (HR 0.553; 95% CI: 0.449, 0.681; p0.0001).>
+
+ 
+
+The approval as monotherapy was based on MONARCH 1, a single-arm, open-label, multicenter study in women with measurable HR-positive, HER2-negative metastatic breast cancer whose disease progressed during or after endocrine therapy, had received a taxane in any setting, and who received one or two prior chemotherapy regimens in the metastatic setting. A total of 132 patients received 200 mg abemaciclib orally twice daily on a continuous schedule until progressive disease or unmanageable toxicity. Objective response rate was 19.7 percent (95% CI: 13.3, 27.5) with a median response duration of 8.6 months (95% CI: 5.8, 10.2).
+
+ 
+
+The most common adverse reactions in greater than 20% of patients taking abemaciclib were diarrhea, neutropenia, nausea, abdominal pain, infections, fatigue, anemia, leukopenia, decreased appetite, vomiting, headache, and thrombocytopenia. The most frequently reported (≥5%) grade 3 or 4 adverse reactions in patients taking abemaciclib with fulvestrant were neutropenia, diarrhea, leukopenia, anemia, and infections.
+
+ 
+
+The recommended starting doses are 150 mg twice daily in combination with fulvestrant or 200 mg twice daily as monotherapy. 
+
+ 
+
+Full dosing information is available at:
+
+https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/208716s000lbl.pdf
+
+ 
+
+FDA granted priority review and Breakthrough Therapy Designation to abemaciclib for this indication. Approval was granted approximately three months prior to the due date. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics, available at: http://www.fda.gov/downloads/drugs/guidancecomplianceregulatoryinformation/guidances/ucm358301.pdf.
+
+ 
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System by completing a form online at http://www.fda.gov/medwatch/report.htm, by faxing (1-800-FDA-0178) or mailing the postage-paid address form provided online, or by telephone (1-800-FDA-1088).
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+ 
+
+Check out recent approvals at the OCE’s new podcast, Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.), available at www.fda.gov/DISCO.
+ 
+
+Content current as of:
+
+09/28/2017
+
+Resources for Information | Approved Drugs
+Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.)
+Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) Short Description",study_ 169,NCT02107703;NCT02102490,combination_efficacy;single_efficacy
+19,NA,"FDA approved daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with lenalidomide and dexamethasone, or bortezomib and dexamethasone, for the treatment of patients with multiple myeloma who have received at least one prior therapy. More Information. November 21, 2016",https://wayback.archive-it.org/7993/20170111064250/http%3A//www.fda.gov/Drugs/InformationOnDrugs/ApprovedDrugs/ucm530249.htm,NA,ApprovalNotifications,"FDA approved daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with lenalidomide and dexamethasone, or bortezomib and dexamethasone, for the treatment of patients with multiple myeloma who have received at least one prior therapy. More Information. November 21, 2016",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Daratumumab (DARZALEX)
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+ 
+
+On November 21, 2016, the U.S. Food and Drug Administration approved daratumumab (DARZALEX, Janssen Biotech, Inc.) in combination with lenalidomide and dexamethasone, or bortezomib and dexamethasone, for the treatment of patients with multiple myeloma who have received at least one prior therapy.
+ 
+Daratumumab was previously granted accelerated approval in November 2015 as monotherapy for patients with multiple myeloma who have received at least three prior lines of therapy, including a proteasome inhibitor (PI) and an immunomodulatory agent, or who are double refractory to a PI and an immunomodulatory agent.
+ 
+The current approval was based on two randomized, open-label trials in which daratumumab was added to standard therapies. The POLLUX trial (also known as MMY3003), demonstrated substantial improvement in progression-free survival (PFS) when daratumumab was added to lenalidomide and dexamethasone compared with lenalidomide and dexamethasone alone. The estimated median PFS had not been reached in the daratumumab arm and was 18.4 months in the control arm (HR=0.37; 95% CI: 0.27, 0.52; p<0.0001), representing a 63% reduction in the risk of disease progression or death in patients treated with daratumumab.
+ 
+Similar results were observed in the CASTOR trial (also known as MMY3004), which compared the combination of daratumumab, bortezomib, and dexamethasone with bortezomib and dexamethasone. The estimated median PFS was not reached in the daratumumab arm and was 7.2 months in the control arm (HR=0.39; 95% CI: 0.28, 0.53; p<0.0001), representing a 61% reduction in the risk of disease progression or death for patients treated with daratumumab.
+ 
+The most frequently reported adverse reactions (greater than or equal to 20%) in MMY3003 were infusion reactions, diarrhea, nausea, fatigue, pyrexia, upper respiratory tract infection, muscle spasm, cough and dyspnea. The most frequently reported adverse reactions (greater than or equal to 20%) in MMY3004 were infusion reactions, diarrhea, peripheral edema, upper respiratory tract infection, peripheral sensory Neutropenia and thrombocytopenia have been added to the Warnings and Precautions of the DARZALEX label.
+ 
+The recommended dose of daratumumab is 16 mg/kg intravenously (calculated on actual body weight).
+ 
+FDA granted daratumumab breakthrough therapy and orphan drug designation, as well as priority review. The current approval was granted three months prior to the PDUFA date of February 17, 2017. A description of these expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions—Drugs and Biologics, available at: http://www.fda.gov/downloads/drugs/guidancecomplianceregulatoryinformation/guidances/ucm358301.pdf.
+ 
+Full prescribing information is available at: http://www.accessdata.fda.gov/drugsatfda_docs/label/2016/761036s004lbl.pdf
+ 
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System by completing a form online at http://www.fda.gov/medwatch/report.htm, by faxing (1-800-FDA-0178) or mailing the postage-paid address form provided online, or by telephone (1-800-FDA-1088).",study_ 175,NCT02076009;NCT02136134,combination_efficacy;combination_efficacy
+20,NA,"FDA granted approval to cetuximab (Erbitux, ImClone LLC, a wholly owned subsidiary of Eli Lilly and Co) for use in combination with FOLFIRI (irinotecan, 5-fluorouracil, leucovorin) for first-line treatment of patients with K-ras mutation-negative (wild-type), EGFR-expressing metastatic colorectal cancer (mCRC) as determined by FDA-approved tests for this use.
+FDA also approved the Therascreen KRAS RGQ PCR Kit (QIAGEN Manchester, Ltd) concurrent with this cetuximab approval. More Information36. July 9, 2012",https://wayback.archive-it.org/7993/20170111231726/http://www.fda.gov/Drugs/InformationOnDrugs/ApprovedDrugs/ucm310933.htm,NA,ApprovalNotifications,"FDA granted approval to cetuximab (Erbitux, ImClone LLC, a wholly owned subsidiary of Eli Lilly and Co) for use in combination with FOLFIRI (irinotecan, 5-fluorouracil, leucovorin) for first-line treatment of patients with K-ras mutation-negative (wild-type), EGFR-expressing metastatic colorectal cancer (mCRC) as determined by FDA-approved tests for this use.
+FDA also approved the Therascreen KRAS RGQ PCR Kit (QIAGEN Manchester, Ltd) concurrent with this cetuximab approval. More Information36. July 9, 2012",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Cetuximab in Combination with Folfiri / Therascreen
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+On July 6, 2012 , the U. S. Food and Drug Administration granted approval to cetuximab (Erbitux, ImClone LLC, a wholly owned subsidiary of Eli Lilly and Co) for use in combination with FOLFIRI (irinotecan, 5-fluorouracil, leucovorin) for first-line treatment of patients with K-ras mutation-negative (wild-type), EGFR-expressing metastatic colorectal cancer (mCRC) as determined by FDA-approved tests for this use.
+FDA also approved the Therascreen KRAS RGQ PCR Kit (QIAGEN Manchester, Ltd) concurrent with this cetuximab approval. 
+
+This approval was based on retrospective analyses in the patient subsets according to K-ras mutation status in tumor samples from patients enrolled in the CRYSTAL trial and in two supportive studies, CA225025 and EMR 62 202-047 (OPUS). The addition of cetuximab to chemotherapy or best supportive care (BSC) resulted in improved survival (OS), progression-free survival (PFS), and overall responses rates (ORR) in the subset with K-ras wild-type tumors; whereas, there was no benefit or potential harm in patients with K-ras mutant tumors. The approval of the companion diagnostic, the QIAGEN Therascreen KRAS RGQ PCR Kit, provides a reliable way to identify these subsets of patients with colon cancer. This QIAGEN test, a genetic assay, is a real-time polymerase chain reaction assay detecting 7 different mutations of the K-ras gene in a tumor specimen. Tumors that are K-ras mutation-negative in this assay are commonly referred to as K-ras wild-type.
+
+CRYSTAL was an open-label, randomized, controlled trial in patients with EGFR-expressing mCRC who had not received prior chemotherapy for metastatic disease. A total of 1217 patients, irrespective of K-ras mutation status, were randomized (1:1) to receive either cetuximab in combination with FOLFIRI or FOLFIRI alone. PFS was the primary efficacy endpoint.
+
+A statistically significant improvement in PFS was observed with cetuximab plus FOLFIRI arm compared to the FOLFIRI alone [median PFS 8.9 vs. 8.1 months, HR 0.85, (95% CI: 0.74, 0.99), p-value=0.036] in the overall population. OS, a secondary endpoint, was not significant in the planned analysis [HR 0.93, (95% CI: 0.82, 1.07), p-value 0.327, 838 events]. In an updated analysis with an additional 162 events, the median OS was 19.6 compared to 18.5 months for cetuximab-containing arm and FOLFIRI alone arm [HR 0.88 (95% CI: 0.78, 1.00)]. 
+
+Retrospective efficacy analyses in patient subsets with K-ras wild-type and mutant tumors, demonstrated that in the wild-type subgroup, the addition of cetuximab to FOLFIRI resulted in a favorable effect on OS, PFS and ORR. Tumor tissue was evaluable for K-ras mutation status assessment in 89% of the patients (N=1079/1217); 676 (63%) had wild-type and 403 (37%) had mutant tumors. 
+
+The median OS for the wild-type subgroup was 23.5 versus 19.5 months for the cetuximab plus FOLFIRI and FOLFIRI alone, respectively [HR 0.80 (95% CI: 0.67, 0.94)]. PFS and ORR findings in the K-ras wild-type subgroup supported the efficacy of cetuximab in combination with FOLFIRI; the median PFS was 9.5 versus 8.1 months for cetuximab plus FOLFIRI and FOLFIRI alone, respectively [HR 0.70 (95% CI: 0.57, 0.86)]. ORR was 57% with cetuximab plus FOLFIRI compared to 39% with FOLFIRI alone. In the mutant subgroup, improvements in OS, PFS or ORR were not observed with the addition of cetuximab to FOLFIRI compared to FOLFIRI alone.
+
+Retrospective analyses of two supportive studies, CA225025 and OPUS by tumor K-ras mutation status supported cetuximab’s efficacy in the wild-type subgroup: 
+
+CA225025 was an open-label, randomized, trial comparing cetuximab plus best supportive care (BSC) with BSC alone in patients with previously treated EGFR-expressing mCRC. CA225025 demonstrated a statistically significant improvement in OS in the cetuximab plus BSC arm compared to BSC alone. The planned efficacy results served as the basis for the full approval of cetuximab in October 2007 as a single agent for EGFR-expressing mCRC after failure of both irinotecan- and oxaliplatin-based regimens or in patients intolerant to irinotecan-based regimens. 
+
+Tumor tissue was evaluable for K-ras mutation status in 79% of patients (N=453/572). In the wild-type subgroup, cetuximab plus BSC resulted in an improvement in OS compared to those receiving BSC alone [HR 0.63 (95% CI: 0.47, 0.84)]. The median OS was 8.6 versus 5.0 months in the cetuximab plus BSC and BSC arms, respectively. The median PFS was 3.8 and 1.9 months for the cetuximab plus BSC and the BSC alone, respectively [HR 0.42 (95% CI: 0.32, 0.56)]. In the mutant subgroup, no improvements in OS, PFS or ORR were observed with the addition of cetuximab to BSC compared to BSC alone.
+
+OPUS was a randomized, open-label, phase 2 study comparing cetuximab in combination with 5-flourouracil, folinic acid, and oxaliplatin (FOLFOX-4) to FOLFOX-4 alone as first-line treatment of EGFR-expressing mCRC. Tumor tissue was evaluable for retrospective K-ras mutation status analysis in 93% of patients (N=315/337). ORR was the trial’s primary endpoint. In the wild-type subgroup (N=179/315, 57%), ORR was 57% (95% CI: 46, 68) in the cetuximab plus FOLFOX-4 arm compared to 34% (95% CI: 25, 44) with FOLFOX-4. A numerical improvement in PFS was noted in the wild-type subgroup [HR 0.57 (95% CI: 0.38, 0.86)]. The median PFS was 8.3 compared to 7.2 months favoring the cetuximab-containing arm. A numerical OS improvement was also observed in the wild-type subgroup [HR 0.86 (95% CI: 0.60, 1.22)]. The median OS for the cetuximab-containing arm was 22.8 versus 18.5 months in the control arm. In the K-ras mutant subgroup (N=136/315, 43%), improvement in OS, PFS or ORR were not observed with cetuximab plus FOLFOX-4 compared to FOLFOX-4 alone.
+
+Safety data were evaluated in 317 patients in the wild-type subgroup who received cetuximab in combination with FOLFIRI in the CRYSTAL study and in 118 patients with wild-type tumors who received cetuximab monotherapy in CA225025. 
+
+The frequency and nature of the adverse events, including adverse events associated with cetuximab (acne-like rash, infusion reactions, cardiac events, and hypomagnesemia) observed in CRYSTAL, CA225025, and OPUS in the wild-type population were consistent with the known adverse drug reaction profiles of either cetuximab, chemotherapy agents, or the underlying disease. No significant differences between the wild-type, mutant and the overall safety populations have been noted.
+
+The recommended dose and schedule for cetuximab is 400 mg/m2 administered intravenously as a 120-minute infusion as an initial dose, followed by 250 mg/m2 infused over 30 minutes weekly in combination with FOLFIRI. Cetuximab administration should be completed 1 hour prior to FOLFIRI.
+
+Product labeling for cetuximab provides “Limitation of Use” information specifying that cetuximab is not indicated for treatment of K-ras mutation-positive colorectal cancer.
+
+Full prescribing information, including clinical trial information, safety, dosing, drug-drug interactions and contraindications is available at: http://www.accessdata.fda.gov/drugsatfda_docs/label/2012/125084s225lbl.pdf
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System by completing a form online at http://www.fda.gov/medwatch/report.htm, by faxing (1-800-FDA-0178) or mailing the postage-paid address form provided online, or by telephone (1-800-FDA-1088).
+
+ ",study_ 208,NCT00154102;NCT00079066;NCT00125034,combination_efficacy;single_efficacy;combination_efficacy
+21,NA,"FDA granted approval to rituximab (Rituxan, Genentech), in combination with fludarabine and cyclophosphamide (FC), for the treatment of previously untreated and previously treated patients with chronic lymphocytic leukemia (CLL). More Information77 (February 18, 2010)",https://wayback.archive-it.org/7993/20170111231728/http://www.fda.gov/AboutFDA/CentersOffices/OfficeofMedicalProductsandTobacco/CDER/ucm201392.htm,NA,ApprovalNotifications,"FDA granted approval to rituximab (Rituxan, Genentech), in combination with fludarabine and cyclophosphamide (FC), for the treatment of previously untreated and previously treated patients with chronic lymphocytic leukemia (CLL). More Information77 (February 18, 2010)",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Rituximab
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+On February 18, 2010, the U.S. Food and Drug Administration granted approval to rituximab (Rituxan, Genentech), in combination with fludarabine and cyclophosphamide (FC), for the treatment of previously untreated and previously treated patients with chronic lymphocytic leukemia (CLL). The approval was based on a clinically meaningful and statistically significant increase in progression-free survival (PFS) observed in two randomized multicenter open-label trials in patients randomized to receive either FC or the combination of FC with rituximab (R-FC).
+
+In both studies patients received intravenous (i.v.) fludarabine 25 mg/m2/day and cyclophosphamide 250 mg/m2/day, daily for 3 days, repeated every 28 days for a total of 6 cycles. Rituximab 375 mg/m2 by i.v. infusion was administered on day 1 of the first cycle (the day before chemotherapy) and 500 mg/m2 i.v. on day 1 of subsequent cycles (on the same day as chemotherapy). The primary efficacy outcome was PFS, defined as the time from randomization to either disease progression, relapse, or death. Secondary endpoints included overall survival (OS) and overall response rates determined by the 1996 National Cancer Institute-sponsored Working Group Guidelines. 
+
+Study ML17102, also known as CLL8, was conducted by the German CLL Study Group and enrolled treatment-naïve patients. A total of 408 patients were randomized to the R-FC arm and 409 patients to the FC arm. The median age was 61 years (30% were ≥ 65 years old), 74% were male, 31% were Binet stage C, 45% had B symptoms, and more than 99% had ECOG performance status (PS) 0-1.
+
+The primary efficacy endpoint was PFS as determined by the investigators. The median PFS were 39.8 months and 31.5 months in the R-FC and FC arms, respectively [HR 0.56 (95% CI: 0.43, 0.71), p <0.01, log rank test]. Overall response rates were 86% (95% CI 82, 89) in the R-FC arm and 73% (95% CI 68, 77) in the FC arm.
+
+Study BO17072, also known as REACH, conducted by Roche and Biogen Idec, enrolled 552 patients with relapsed or refractory CLL following prior systemic therapy. Patients were randomized to receive either R-FC (n=276) or FC (n=276). The median age was 62 years old (44% ≥65 years old), and 67% were male. Eighty-two percent received a prior alkylator-containing regimen and 18% received a fludarabine-containing regimen. “B” symptoms were present in 28% and 100% were ECOG PS 0-1.
+
+The median PFS was 26.7 versus 21.7 months for the R-FC and FC arms, respectively, as determined by an independent review committee [HR 0.76 (95% CI: 0.60, 0.96), p= 0.022, log-rank test]. Overall response rates were 54% (95% CI: 48, 60) in the R-FC arm and 45% (95% CI: 37, 51) in the FC arm. 
+
+Too few events occurred at the time of regulatory submission to conduct a meaningful analysis of OS in either study. Follow-up of patients for OS is ongoing. 
+
+Across both studies, 100 patients who received R-FC and 89 patients who received FC were ≥70 years old. The results of exploratory analyses in this elderly population did not suggest a treatment benefit for the addition of Rituxan to FC in either the previously untreated [HR 1.17 (95% CI: 0.51, 2.66)] or previously treated settings [HR 1.22 (95% CI: 0.73, 2.04)].
+
+The safety of rituximab when combined with FC was assessed in 676 patients who received the R-FC regimen. In both studies, 71% received 6 cycles and 90% received at least 3 cycles of Rituxan-based therapy. Grade 3-4 infusion reactions occurred in 7-9% of R-FC treated patients. The following Grade 3-4 adverse events were more frequently observed in the R-FC arm compared to FC arm alone: neutropenia, febrile neutropenia, leukopenia thrombocytopenia, hypotension, hepatitis B, and pancytopenia.
+
+Rituxan is approved as a single agent for the treatment of relapsed or refractory low-grade or follicular CD-20 positive non-Hodgkin’s lymphoma (NHL) and for the treatment of patients with non-progressing low-grade CD-20 positive NHL following first-line CVP chemotherapy, or in conduction with CVP for first-line treatment of previously untreated CD20, B-cell follicular NHL and in combination with CHOP or other anthracycline-based chemotherapy regimens for the treatment of previously untreated diffuse, large B-cell CD20 positive NHL.
+
+Serious adverse reactions of Rituxan include fatal infusion reactions, tumor lysis syndrome, severe mucocutaneous reactions, and progressive multifocal leukoencephalopathy (PML). Adverse reactions occurring in more than 25% of Rituxan-treatment patients with lymphoid malignancies are infusion reactions, fever, lymphopenia, chills, infection, and asthenia.
+
+Full prescribing information, including clinical trial information, safety, dosing, drug-drug interactions and contraindications is available at: http://www.accessdata.fda.gov/drugsatfda_docs/label/2010/103705s5311lbl.pdf
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System by completing a form online at http://www.fda.gov/medwatch/report.htm, by faxing (1-800-FDA-0178) or mailing the postage-paid address form provided online, or by telephone (1-800-FDA-1088).",study_ 215,NCT00281918;NCT00090051,combination_efficacy;combination_efficacy
+22,NA,"FDA granted approval for the use of bevacizumab (Avastin, Genentech, Inc.) in combination with interferon alfa for the treatment of patients with metastatic renal cell carcinoma. More Information (July 31, 2009)",https://wayback.archive-it.org/7993/20170111231729/http%3A//www.fda.gov/AboutFDA/CentersOffices/OfficeofMedicalProductsandTobacco/CDER/ucm176025.htm,NA,ApprovalNotifications,"FDA granted approval for the use of bevacizumab (Avastin, Genentech, Inc.) in combination with interferon alfa for the treatment of patients with metastatic renal cell carcinoma. More Information (July 31, 2009)",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Bevacizumab (Avastin) in Combination with Interferon Alfa
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+On July 31, 2009 the U.S. Food and Drug Administration granted approval for the use of bevacizumab (Avastin, Genentech, Inc.) in combination with interferon alfa for the treatment of patients with metastatic renal cell carcinoma. The approval was based on results from the BO17705 trial which demonstrated a 5 month improvement in median progression-free survival (PFS) in bevacizumab-treated patients.
+ 
+
+The BO17705 trial was a randomized, double-blind, placebo-controlled, multinational, clinical trial conducted in patients with metastatic renal cell carcinoma who had undergone nephrectomy. The study compared the combination of bevacizumab plus interferon alfa-2a to interferon alfa-2a plus placebo. This trial was conducted by Hoffmann-La-Roche in Europe, Asia, and Australia. The primary outcome measure of the trial, assessed by study investigators, was PFS. The determination of PFS by an independent review committee, blinded to treatment assignment, supported the investigators’ PFS assessment.
+ 
+
+A total of 649 patients (327 bevacizumab plus interferon, 322 interferon plus placebo) were enrolled. The median PFS was 10.2 months for the bevacizumab plus interferon arm compared to 5.4 months for the interferon and placebo arm [hazard ratio (HR) 0.60 (95% CI: 0.49, 0.72) p < 0.0001]. The independent review committee analysis of 569 patients with radiographs available for review yielded similar results [median PFS 10.4 versus 5.5 months, HR 0.57 (95% CI: 0.45, 0.72)].
+ 
+
+The BO17705 trial did not demonstrate a statistically significant advantage in overall survival for bevacizumab plus interferon arm compared to interferon plus placebo treatment [HR 0.86 (95% CI: 0.72, 1.04), p= 0.13].
+
+Additional support for the results of the BO17705 trial was provided by the published results of the 90206 trial, a randomized, open label, study of bevacizumab plus interferon alfa-2b compared to interferon alfa-2b alone in patients with metastatic renal cell carcinoma. The Cancer and Leukemia Group B conducted this trial in North America. A similar prolongation in PFS was reported in the 90206 trial with a median PFS of 8.4 versus 4.9 months for the bevacizumab-containing combination and the single agent interferon alfa-2b arms, respectively. An improvement in overall survival was not observed.
+ 
+
+In the BO17705 trial, the combination of bevacizumab plus interferon alfa-2a resulted in a higher overall incidence and more severe toxicities than observed with interferon alfa-2a alone. 
+
+Serious adverse events were reported in 31% of patients on the bevacizumab plus interferon arm and in 19% of patients on the interferon plus placebo arm. NCI CTCAE grade 3 and greater adverse events were reported in 63% versus 47% of patients on the bevacizumab- plus interferon and interferon plus placebo arms, respectively. Grade 3 and greater adverse events attributable to bevacizumab (≥ 2% greater incidence in the bevacizumab plus interferon arm compared to the interferon plus placebo arm) included bleeding, hypertension, proteinuria, and venous or arterial thrombosis. Two patients with grade 5 bleeding events (ruptured aneurysm and hemoptysis), two patients with hypertensive encephalopathy, and four patients with grade 4 pulmonary embolism were reported in the bevacizumab plus interferon arm.
+
+The most common bevacizumab-related toxicities were bleeding/hemorrhage, hypertension, proteinuria and venous or arterial thromboembolic events. Among the 20% of patients with reports of proteinuria, the median onset of proteinuria was 5.6 months (range 15 days to 37 months) after initiation of bevacizumab. The median time-to-resolution was 6.1 months. Proteinuria did not resolve in 40% of patients after a median follow-up of 11.2 months. Bevacizumab was permanently discontinued in 30% of the patients who developed proteinuria.
+ 
+
+Full prescribing information, including clinical trial information, safety, dosing, drug-drug interactions and contraindications is available at http://www.accessdata.fda.gov/drugsatfda_docs/label/2009/125085s0168lbl.pdf
+
+ 
+
+ ",study_ 217,NCT00738530;NCT00072046,combination_efficacy;combination_efficacy
+23,NA,Bevacizumab (Avastin) was granted accelerated approval for use in combination with paclitaxel for the treatment of patients who have not received chemotherapy for metastatic HER2 negative breast cancer. More information (Feb. 22),https://wayback.archive-it.org/7993/20170111231729/http%3A//www.fda.gov/AboutFDA/CentersOffices/OfficeofMedicalProductsandTobacco/CDER/ucm129230.htm,NA,ApprovalNotifications,Bevacizumab (Avastin) was granted accelerated approval for use in combination with paclitaxel for the treatment of patients who have not received chemotherapy for metastatic HER2 negative breast cancer. More information (Feb. 22),NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"Bevacizumab Granted Accelerated Approval
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+On February 22, 2008, the U.S. Food and Drug Administration granted accelerated approval for bevacizumab (Avastin, Genentech, Inc.) to be used in combination with paclitaxel for the treatment of patients who have not received chemotherapy for metastatic HER2 negative breast cancer. 
+
+The approval was based on the demonstration of an improvement in progression-free survival (PFS) in patients receiving Avastin with paclitaxel compared to those receiving paclitaxel alone as a first-line treatment for metastatic breast cancer. No data are currently available that demonstrate an improvement in disease-related symptoms or increased overall survival with Avastin in breast cancer.
+
+The efficacy and safety of Avastin as first-line treatment of patients with metastatic breast cancer was studied in a single, open-label, randomized, multicenter study (Study 7 or E2100). Patients who had not received chemotherapy for locally recurrent or metastatic breast cancer were randomized to receive either paclitaxel (N=354 patients) alone at 90 mg/m2 weekly for 3 doses with one week rest (28-day cycle) or in combination with Avastin 10 mg/kg every 14 days (N=368 patients). Patients with HER2-overexpressing breast cancer were not eligible unless they had received prior therapy with Herceptin.
+
+The addition of Avastin to paclitaxel resulted in an improvement in PFS with no significant improvement in overall survival. The median PFS was 11.3 months (95% CI 10.5,13.3) and 5.8 months (95% CI 5.4, 8.2) months for the Avastin plus paclitaxel arms versus the paclitaxel alone, respectively (p<0.0001, HR 0.48, 95% CI 0.39, 0.61) Partial response rates in patients with measurable disease were higher with Avastin plus paclitaxel: 48.9% versus 22.2% (p<0.001). No complete responses were observed.
+
+The efficacy and safety of Avastin as a second and third line treatment of patients with metastatic breast cancer were studied in a single open-label randomized study (Study 8 or AVF2119). Patients who had received prior anthracycline and taxane therapy in the adjuvant setting or for their metastatic breast cancer were randomized to receive either capecitabine alone or in combination with Avastin. The study enrolled 462 patients. The study failed to demonstrate a statistically significant effect on PFS or overall survival. The product labeling specifies that Avastin is not indicated for patients with breast cancer that has progressed following anthracycline and taxane chemotherapy administered for metastatic disease. 
+
+Data collection in Trial 7 was limited to NCI-CTC grade 3-5 non-hematologic and Grade 4-5 hematologic adverse events. A 20% increase in grade 3-5 adverse events was observed in the Avastin plus paclitaxel arm compared to paclitaxel alone. Severe and life-threatening adverse events occurring more frequently on the Avastin-containing arm included sensory neuropathy, hypertension, fatigue, infection without neutopenia, neutropenia, vomiting, diarrhea, bone pain, headache, proteinuria, and cerebrovascular ischemia. Fatal adverse reactions occurred in 6/363 (1.7%) of patients who received paclitaxel plus Avastin. Causes of death were gastrointestinal perforation (2 patients), myocardial infarction (2 patients), diarrhea/abdominal pain/weakness/hypotension (2 patients).
+
+The most serious, and sometimes fatal, Avastin adverse events have been previously described in product labeling and include gastrointestinal perforation, wound healing complications, hemorrhage, arterial thromboembolic events, hypertensive crisis, nephrotic syndrome, congestive heart failure, and neutropenic sepsis. The most common Avastin adverse events previously described in product labeling include asthenia, pain, abdominal pain, headache, hypertension, diarrhea, nausea, vomiting, anorexia, stomatitis, constipation, upper respiratory infection, epistaxis, dyspnea, exfoliative dermatitis, and proteinuria.
+
+Full prescribing information, including clinical trial information, safety, dosing, drug-drug interactions and contraindications, is available in Drugs@FDA 
+
+Back to Top Back to What's New
+
+ PDF requires the free Adobe Acrobat Reader
+
+Date created: March 13, 2008",study_ 219,NCT00028990;NCT00109239,combination_efficacy;combination_efficacy
+24,NA,"On February 10, FDA granted approval to rituximab (Rituxan) for use in the first‑line treatment of patients with diffuse large B-cell, CD20‑positive, non-Hodgkin's lymphoma in combination with CHOP or other anthracycline‑based chemotherapy regimens. More information ",https://wayback.archive-it.org/7993/20170111231729/http%3A//www.fda.gov/AboutFDA/CentersOffices/OfficeofMedicalProductsandTobacco/CDER/ucm095666.htm,NA,ApprovalNotifications,"On February 10, FDA granted approval to rituximab (Rituxan) for use in the first‑line treatment of patients with diffuse large B-cell, CD20‑positive, non-Hodgkin's lymphoma in combination with CHOP or other anthracycline‑based chemotherapy regimens. More information ",NA,NA,NA,NA,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves rituximab (Rituxan) for use in the first‑line treatment of patients with diffuse large B-cell, CD20‑positive, non-Hodgkin's lymphoma in combination with CHOP or other anthracycline‑based chemotherapy regimens
+Share
+Tweet
+Linkedin
+Pin it
+More sharing options
+Linkedin
+Pin it
+Email
+Print
+
+On February 10, 2006, the U.S. Food and Drug Administration granted approval to rituximab (Rituxan, Genentech and Biogen-Idec) for use in the first‑line treatment of patients with diffuse large B-cell, CD20‑positive, non-Hodgkin's lymphoma in combination with CHOP or other anthracycline‑based chemotherapy regimens.
+
+Safety and efficacy were demonstrated in three randomized, active-controlled, open-label, multicenter studies with a collective enrollment of 1854 patients. These trials enrolled primarily patients with diffuse large B-cell lymphoma who had not received prior therapy. Two of the three studies (E4494 and LNH 98-5/GELA) were restricted to patients 60 years of age or greater, while the third (M39045/MiNT) enrolled patients between ages 18 and 60 years. In E4494 and LNH98-5, the majority of patients had Stage 3-4 disease, while the majority had stage 1-2 disease in M39045. Patients received rituximab 375 mg/m2 by differing schedules in combination with cyclophosphamide, doxorubicin, vincristine and prednisone (CHOP) or other anthracycline‑based chemotherapy regimens (R-CHEMO). Each study utilized composite time-to-event endpoints, incorporating disease progression events as the main outcome measure and included overall survival among secondary analyses. Determination of the primary endpoint was based upon investigator-assessment.
+
+In each study, hazard ratios for the main outcome measures favored the rituximab-containing arms. In addition, each study showed an overall survival benefit among patients receiving rituximab. With two years of follow-up, more patients were alive by Kaplan-Meier estimates in the rituximab-containing versus control arms for each study as follows: 74% vs. 63%, 69% vs. 58%, and 95% vs. 86%. In one of the studies, 5-year data were available and demonstrated that the survival advantage persisted with estimated 5-year survival rates of 58% vs. 46% for R-CHOP and CHOP, respectively. Results were generally consistent across subgroups, including age, gender and disease prognostic variables. There was neither additional improvement in progression-free survival nor overall survival for patients in E4494 receiving R-CHOP who were subsequently randomized to additional rituximab after achieving a complete or partial response as compared to those who received R-CHOP alone.
+
+In all three studies, the dose intensity for rituximab in the R-CHOP and R-CHEMO induction arms was high and rituximab treatment was not associated with a reduction in the dose intensities of individual chemotherapy components. Adverse events associated with rituximab were generally consistent with the labeled adverse reactions described for single-agent rituximab. Grade 3/ 4 adverse events occurring with ≥ 2% excess in the rituximab arm in at least one study included infection, thrombocytopenia and lung toxicity/dyspnea. The following serious adverse reactions, some with fatal outcomes, have been reported in patients receiving rituximab: severe or fatal infusion reactions, tumor lysis syndrome, severe mucocutaneous reactions, hepatitis B reactivation with fulminant hepatitis, other viral infections, hypersensitivity reactions, cardiac arrhythmias, renal toxicity, and bowel obstruction and perforation.
+
+Full prescribing information, including clinical trial information, safety, dosing, drug-drug interactions and contraindications is available at Drugs@FDA 
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA's MedWatch Reporting System by phone at 1-800-FDA-1088; by facsimile 1-800-FDA-0178 by mail using the Form 3500",study_ 227,NCT00898157;NA;NCT00064116,combination_efficacy;NA;combination_efficacy
+25,NA,NA,https://www.fda.gov/drugs/fda-approves-venetoclax-combination-aml-adults,NA,AA_VerifiedBenefit,"Venclexta (venetoclax) In combination with azacitidine or decitabine or low-dose cytarabine for newly-diagnosed AML in adults 75 years or older, or who have comorbidities that preclude use of intensive induction chemotherapy",Venclexta (venetoclax),"In combination with azacitidine or decitabine or low-dose cytarabine for newly-diagnosed AML in adults 75 years or older, or who have comorbidities that preclude use of intensive induction chemotherapy",11/21/2018,10/16/2020,NA,combination,combination,combination,combination,FALSE,NA,NA,"FDA approves venetoclax in combination for AML in adults
+Drugs
+Regulatory Science Research and Education
+Development & Approval Process | Drugs
+Drug Safety and Availability
+Emergency Preparedness | Drugs
+Guidance, Compliance, & Regulatory Information
+News & Events for Human Drugs
+Resources | Drugs
+Science and Research | Drugs
+
+On November 21, 2018, the Food and Drug Administration granted accelerated approval to venetoclax (VENCLEXTA, AbbVie Inc. and Genentech Inc.) in combination with azacitidine or decitabine or low-dose cytarabine for the treatment of newly-diagnosed acute myeloid leukemia (AML) in adults who are age 75 years or older, or who have comorbidities that preclude use of intensive induction chemotherapy.
+
+Approval was based on two open-label non-randomized trials in patients with newly- diagnosed AML who were > 75 years of age or had comorbidities that precluded the use of intensive induction chemotherapy. Efficacy was established based on the rate of complete remission (CR) and CR duration. 
+
+Study M14-358 (NCT02203773) was a non-randomized, open-label clinical trial of venetoclax in combination with azacitidine (n=67) or decitabine (n=13) in newly- diagnosed patients with AML. In combination with azacitidine, 25 patients achieved a CR (37%, 95% CI: 26, 50) with a median observed time in remission of 5.5 months (range: 0.4-30 months). In combination with decitabine, 7 patients achieved a CR (54%, 95% CI: 25, 81) with a median observed time in remission of 4.7 months (range: 1.0-18 months). The observed time in remission is the time from start of CR to data cut-off date or relapse from CR. 
+
+Study M14-387 (NCT02287233) was a non-randomized, open-label trial of venetoclax in combination with low-dose cytarabine (n=61) in newly-diagnosed patients with AML, including patients with previous exposure to a hypomethylating agent for an antecedent hematologic disorder. In combination with low-dose cytarabine, 13 patients achieved a CR (21%, 95% CI: 12, 34) with a median observed time in remission of 6 months (range: 0.03-25 months).
+
+The most common adverse reactions (≥30%) to venetoclax in combination with azacitidine or decitabine or low-dose cytarabine were nausea, diarrhea, thrombocytopenia, constipation, neutropenia, febrile neutropenia, fatigue, vomiting, peripheral edema, pneumonia, dyspnea, hemorrhage, anemia, rash, abdominal pain, sepsis, back pain, myalgia, dizziness, cough, oropharyngeal pain, pyrexia, and hypotension.
+
+The recommended venetoclax dose depends upon the combination regimen and is described in prescribing information for VENCLEXTA.
+
+This indication is approved under accelerated approval and continued approval for this indication may be contingent upon verification and description of clinical benefit in confirmatory trials. FDA granted this application priority review, breakthrough therapy designation and orphan product designation. A description of FDA expedited programs is in the Guidance for Industry: Expedited Programs for Serious Conditions-Drugs and Biologics.
+
+The ongoing phase 3 studies, VIALE-A (NCT02993523) and VIALE-C (NCT03069352), evaluate venetoclax in combination with azacitidine or low-dose cytarabine with overall survival as the primary endpoint and are intended as the confirmatory trials.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+Healthcare professionals should report all serious adverse events suspected to be associated with the use of any medicine and device to FDA’s MedWatch Reporting System or by calling 1-800-FDA-1088.
+
+Follow the Oncology Center of Excellence on Twitter @FDAOncology.
+
+Check out recent approvals at the OCE’s podcast, Drug Information Soundcast in Clinical Oncology (D.I.S.C.O.).
+
+Content current as of:
+
+12/14/2018
+
+Regulated Product(s)
+Drugs",study_ 241,NCT02203773;NCT02287233;NCT02993523;NCT03069352,combination_efficacy;combination_efficacy;combination_efficacy;combination_efficacy

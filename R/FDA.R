@@ -977,20 +977,28 @@ approval_notifications_combinations %>%
 
 # 184
 
-tmp <- approval_notifications_combinations %>%
-  mutate(nct = str_split(nct, ";")) %>% 
-  unnest(nct)
-
-which(duplicated(tmp$row_ID))
-
-# Keep only studies with one NCT
-
-combination_approvals_filtered <- combination_approvals %>%
-  filter(!is.na(nct) & !str_detect(nct, ","))
-
-#openxlsx2::write_xlsx(combination_approvals_filtered, "results/FDA/approval_notifications_combinations_1stdraft.xlsx")
+multi_nct_rows <- approval_notifications_combinations %>%
+  filter(str_detect(nct, ";"))
+#write.csv(multi_nct_rows, "results/FDA/multi_nct_rows.csv")
 
 
+multi_nct_rows <- read.csv("results/FDA/multi_nct_rows_curated.csv")
+
+multi_nct_rows <- multi_nct_rows %>% mutate(
+  nct = str_split(nct, ";"),
+  nct_claim = str_split(nct_claim, ";")) %>% 
+  unnest(cols = c(nct, nct_claim))
 
 
+approval_notifications_combinations <- approval_notifications_combinations %>% mutate(
+  nct = str_split(nct, ";")
+) %>% unnest(nct)
+
+
+single_efficacy <- multi_nct_rows %>% filter(nct_claim == "single_efficacy")
+
+approval_notifications_combinations <- approval_notifications_combinations %>% 
+  filter(!nct %in% single_efficacy$nct, !is.na(nct), nct != "NA")
+
+openxlsx2::write_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
 
