@@ -49,11 +49,11 @@ clin_trials_response <- function(url, cond = NULL, intr = NULL, term = NULL, adv
 
 
 clintrials <- clin_trials_response(url = clin_trials_url, 
-                                   cond = "cancer OR neoplasms OR tumor", 
-                                   #intr = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
-                                   #term = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
+                                   cond = "cancer OR neoplasms OR tumor OR carcinoma", 
+                                   intr = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
+                                   term = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
                                    advFilter = NULL,
-                                   aggFilters = "phase:2 3 4,results:with,status:act com ter",
+                                   aggFilters = "phase:2 3 4,status:act com ter",
                                    pageSize = 1000)
 
 
@@ -70,14 +70,14 @@ studies_id <- clintrials %>%
 # Name the studies with the IDs
 names(clintrials) <- studies_id$study_id
 
-combination_approvals_filtered <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_1stdraft.xlsx")
+combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
 
 
 # Filter approved studies for drug combinations based on NCT
 
-combination_approvals_filtered$clinicaltrialgov <- combination_approvals_filtered$nct %in% studies_id$study_id
+combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
 
-table(duplicated(combination_approvals_filtered$nct))
+table(combination_approvals$clinicaltrialgov)
 
 combination_approvals_filtered[duplicated(combination_approvals_filtered$nct), ]
 
