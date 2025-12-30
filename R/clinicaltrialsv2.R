@@ -178,7 +178,8 @@ studies_id <- clintrials %>%
 
 # Name the studies with the IDs
 names(clintrials) <- studies_id$study_id
-save(clintrials, "results/ClinicalTrials/clintrials.Rdata")
+save(clintrials, file = "results/ClinicalTrials/clintrials.Rdata")
+load("results/ClinicalTrials/clintrials.Rdata")
 
 # Filter approved studies for drug combinations based on NCT
 combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
