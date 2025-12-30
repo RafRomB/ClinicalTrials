@@ -6,54 +6,81 @@ library(rollama)
 
 curl_translate("curl -X GET https://clinicaltrials.gov/search?cond=cancer%20OR%20neoplasm%20OR%20tumor&term=combination%20OR%20combined%20OR%20drug%20combination%20OR%20combination%20therapy%20OR%20multi-agent&intr=Drug&aggFilters=phase:2%203%204,results:with,status:act%20com%20ter")
 
-# Extract Data from clinicaltrials.com API ----
+# 1. Extract Data from clinicaltrials.com API ----
 clin_trials_url <- "https://clinicaltrials.gov/api/v2/studies"
 
 # Retrieve studies
 
-clin_trials_response <- function(url, cond = NULL, intr = NULL, term = NULL, advFilter = NULL, aggFilters = NULL, pageSize = 10){
-  response <- request(url) %>%
-    req_method("GET") %>% 
-    req_url_query(
-      query.cond = cond,
-      query.intr = intr,
-      query.term = term,
-      filter.advanced = advFilter,
-      aggFilters = aggFilters,
-      pageSize = pageSize) %>% 
-    req_perform()
+clin_trials_response <- function(url,
+                                 cond = NULL,
+                                 titles = NULL,
+                                 term = NULL,
+                                 intr = NULL,
+                                 advFilter = NULL,
+                                 aggFilters = NULL,
+                                 overallStatus = NULL,
+                                 pageSize = 1000) {
+  studies <- list()
+  pageToken <- NULL
   
-  body <- response %>% resp_body_json()
-  
-  studies <- body[["studies"]] %||% list()
-  nextPageToken <- body[["nextPageToken"]]
-  
-  while (!is.null(nextPageToken)){
-    response <- request(url) %>%
-      req_method("GET") %>% 
+  repeat {
+    resp <- request(url) |>
+      req_method("GET") |>
       req_url_query(
         query.cond = cond,
+        query.titles = titles,
         query.term = term,
+        query.intr = intr,
+        filter.advanced = advFilter,
         aggFilters = aggFilters,
+        filter.overallStatus = overallStatus,
         pageSize = pageSize,
-        pageToken = nextPageToken) %>% 
+        pageToken = pageToken
+      ) |>
       req_perform()
     
-    body <- response %>% resp_body_json()
-    studies <- c(studies, body[["studies"]])
-    nextPageToken <- body[["nextPageToken"]]
+    body <- resp_body_json(resp)
+    studies <- c(studies, body[["studies"]] %||% list())
+    
+    pageToken <- body[["nextPageToken"]]
+    if (is.null(pageToken))
+      break
   }
   
   return(studies)
 }
 
+## 1.1 Initial search ----
+
+# oncology_cond <- paste(
+#   c(
+#     "cancer","neoplasm","tumor","carcinoma","malignancy","\"solid tumor\"",
+#     "leukemia","lymphoma","myeloma", "neuroblastoma"
+#   ),
+#   collapse = " OR "
+# )
+# 
+combo_titles <- paste(
+  '(',
+  '"in combination" OR combination OR combined OR "combination therapy" OR',
+  '"multi-agent" OR multiagent OR multidrug OR "multi drug" OR regimen OR doublet OR triplet OR',
+  '"add-on" OR addon OR adjunct OR "co-administered" OR coadministered OR',
+  'plus OR with',
+  ')',
+  # capture titles like "... with placebo/chemo/immunotherapy"
+  'OR (with AND (placebo OR chemotherapy OR immunotherapy))',
+  # capture titles like NCT01168973: "X and Y versus X alone"
+  'OR ((versus OR vs OR "compared with") AND (alone OR placebo) AND (chemotherapy OR immunotherapy OR antibody OR inhibitor OR targeted))'
+)
 
 clintrials <- clin_trials_response(url = clin_trials_url, 
-                                   cond = "cancer OR neoplasms OR tumor OR carcinoma", 
-                                   intr = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
-                                   term = "combination OR combined OR drug combination OR combination therapy OR multi-agent", 
+                                   cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma 
+                                   OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma 
+                                   OR blastoma OR neuroblastoma OR myelodysplastic)", 
+                                   titles = combo_titles, 
                                    advFilter = NULL,
-                                   aggFilters = "phase:2 3 4,status:act com ter",
+                                   aggFilters = "phase:1 2 3 4",
+                                   overallStatus = "NOT_YET_RECRUITING,RECRUITING,ENROLLING_BY_INVITATION,ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
                                    pageSize = 1000)
 
 
@@ -71,6 +98,46 @@ studies_id <- clintrials %>%
 names(clintrials) <- studies_id$study_id
 
 combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+(length(unique(combination_approvals$nct)))
+
+# Filter approved studies for drug combinations based on NCT
+
+combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
+
+table(combination_approvals$clinicaltrialgov)
+
+no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
+
+combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+
+length(unique(combination_approvals$nct))
+
+## 1.2 Phase 2, 3, 4 ----
+
+
+clintrials <- clin_trials_response(url = clin_trials_url, 
+                                   cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma 
+                                   OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma 
+                                   OR blastoma OR neuroblastoma OR myelodysplastic)", 
+                                   titles = combo_titles, 
+                                   advFilter = NULL,
+                                   aggFilters = "phase:2 3 4",
+                                   overallStatus = "NOT_YET_RECRUITING,RECRUITING,ENROLLING_BY_INVITATION,ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
+                                   pageSize = 1000)
+
+
+
+# Save studies NIH Clinical Trials IDs
+studies_id <- clintrials %>%
+  map_dfr(\(x) {
+    tibble(
+      study_id = x %>% pluck("protocolSection", "identificationModule", "nctId")
+    )
+  })
+
+
+# Name the studies with the IDs
+names(clintrials) <- studies_id$study_id
 
 
 # Filter approved studies for drug combinations based on NCT
@@ -78,6 +145,97 @@ combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notification
 combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
 
 table(combination_approvals$clinicaltrialgov)
+
+no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
+
+combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+length(unique(combination_approvals$nct))
+
+
+## 1.3 ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN ----
+
+
+clintrials <- clin_trials_response(url = clin_trials_url, 
+                                   cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma 
+                                   OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma 
+                                   OR blastoma OR neuroblastoma OR myelodysplastic)", 
+                                   titles = combo_titles, 
+                                   advFilter = NULL,
+                                   aggFilters = "phase:2 3 4",
+                                   overallStatus = "ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
+                                   pageSize = 1000)
+
+
+# Save studies NIH Clinical Trials IDs
+studies_id <- clintrials %>%
+  map_dfr(\(x) {
+    tibble(
+      study_id = x %>% pluck("protocolSection", "identificationModule", "nctId")
+    )
+  })
+
+
+# Name the studies with the IDs
+names(clintrials) <- studies_id$study_id
+
+
+# Filter approved studies for drug combinations based on NCT
+
+combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
+
+table(combination_approvals$clinicaltrialgov)
+
+no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
+
+combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+length(unique(combination_approvals$nct))
+
+## 1.4 WITH RESULTS ----
+
+clintrials <- clin_trials_response(url = clin_trials_url, 
+                                   cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma 
+                                   OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma 
+                                   OR blastoma OR neuroblastoma OR myelodysplastic)", 
+                                   titles = combo_titles, 
+                                   advFilter = NULL,
+                                   aggFilters = "phase:2 3 4,results:with",
+                                   overallStatus = "ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
+                                   pageSize = 1000)
+
+
+# Save studies NIH Clinical Trials IDs
+studies_id <- clintrials %>%
+  map_dfr(\(x) {
+    tibble(
+      study_id = x %>% pluck("protocolSection", "identificationModule", "nctId")
+    )
+  })
+
+
+# Name the studies with the IDs
+names(clintrials) <- studies_id$study_id
+
+
+# Filter approved studies for drug combinations based on NCT
+
+combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
+
+table(combination_approvals$clinicaltrialgov)
+
+no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
+
+combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+length(unique(combination_approvals$nct))
+
+
+
+
+
+
+
+
+
+
 
 combination_approvals_filtered[duplicated(combination_approvals_filtered$nct), ]
 
