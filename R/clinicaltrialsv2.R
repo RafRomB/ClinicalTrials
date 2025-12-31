@@ -702,8 +702,10 @@ names(llm_results) <- models
 
 # Bind back to the data frame
 for (m in models) {
-  sample_protocolSection[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
+  protocolSection_251230[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
 }
+
+openxlsx2::write_xlsx(protocolSection_251230, "results/ClinicalTrials/protocolSection_251230_llm.xlsx")
 
 llm_results <- sample_protocolSection %>% select(qwen3_8b, deepseek_r1_8b, phi4)
 
