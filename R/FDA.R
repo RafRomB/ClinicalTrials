@@ -709,6 +709,13 @@ retrieve_metrics <- function(data, reference, models) {
 
 retrieve_metrics(data = approval_notifications_test, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
 
+yardstick::conf_mat(approval_notifications_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue")
+
+
+df <- tibble()
+
+
 tmp <- approval_notifications_test[approval_notifications_test$ensemble != approval_notifications_test$manual_eval,]
 
 prop.table(table(approval_notifications_test$manual_eval))
@@ -864,6 +871,8 @@ approval_notifications_combinations <- openxlsx2::read_xlsx("results/FDA/approva
 approval_notifications_combinations$row_ID <- paste("study_", 1:nrow(approval_notifications_combinations))
 
 
+length(unique(approval_notifications_combinations$row_ID))
+
 # 3. Extract NCT ID and drug names ----
 
 ## 3.1 Extract NCT ID ----
@@ -977,6 +986,7 @@ approval_notifications_combinations %>%
 
 # 184
 
+
 multi_nct_rows <- approval_notifications_combinations %>%
   filter(str_detect(nct, ";"))
 #write.csv(multi_nct_rows, "results/FDA/multi_nct_rows.csv")
@@ -994,11 +1004,16 @@ approval_notifications_combinations <- approval_notifications_combinations %>% m
   nct = str_split(nct, ";")
 ) %>% unnest(nct)
 
+approval_notifications_combinations %>% group_by(nct) %>% summarise(count = n()) %>% filter(count > 1, nct != "NA")
 
 single_efficacy <- multi_nct_rows %>% filter(nct_claim == "single_efficacy")
 
 approval_notifications_combinations <- approval_notifications_combinations %>% 
   filter(!nct %in% single_efficacy$nct, !is.na(nct), nct != "NA")
+
+length(unique(approval_notifications_combinations$row_ID))
+length(unique(approval_notifications_combinations$nct))
+
 
 openxlsx2::write_xlsx(approval_notifications_combinations, "results/FDA/approval_notifications_combinations_final.xlsx")
 

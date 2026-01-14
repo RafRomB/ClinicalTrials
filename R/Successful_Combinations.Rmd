@@ -20,7 +20,6 @@ output:
 </style>
 
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       fig.align = "center", # center all figures
@@ -29,113 +28,48 @@ knitr::opts_chunk$set(echo = TRUE,
                       out.width = "80%" # scale figure width in the HTML
 )
 
-```
 
-# 1. [FDA Approval Notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications)
+# Function to collapse fields
 
-Retrieve [approval notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications) from the FDA:
+collapse_field <- function(x,
+                           field,
+                           inner_sep = "|",  # between multiple values inside one element
+                           outer_sep = ";") { # between different elements of x
+  
+  # If the whole thing is missing/empty
+  if (is.null(x) || length(x) == 0) {
+    return(NA_character_)
+  }
+  
+  vals <- vapply(
+    x,
+    function(el) {
+      if (is.null(el)) return(NA_character_)
+      
+      val <- el[[field]]
+      if (is.null(val)) return(NA_character_)
+      
+      # Flatten possible nested lists like interventionNames
+      if (is.list(val)) {
+        val <- unlist(val, use.names = FALSE)
+      }
+      
+      val <- as.character(val)
+      # Collapse multiple values within *one* element (e.g., multiple interventionNames)
+      paste(val, collapse = inner_sep)
+    },
+    character(1)
+  )
+  
+  # Remove all-NA / empty cases
+  vals <- vals[!is.na(vals) & vals != ""]
+  if (!length(vals)) return(NA_character_)
+  
+  # Collapse across elements (e.g., across armGroups)
+  paste(vals, collapse = outer_sep)
+}
 
-```{r, echo=FALSE, fig.cap="FDA approval notifications web page"}
-knitr::include_graphics("../www/FDA_Approvals.png")
-```
-
-
-For each notification, there is a description text with information, including the **NCTxxxxxxxx** IDs:
-
-```{r, echo=FALSE, fig.cap="Notifications approval text"}
-knitr::include_graphics("../www/Notification_url.png")
-```
-
-
-## 1.1 Filter to keep approvals for drug combinations
-
-**First simple strategy**
-
-1. Use three LLM (phi4, qwen2.5, llama3.1) to classify the approval notifications in `single` or `combination` based on the **Description** text.
-2. First approach: keep only those in which there is agreement in the three LLM result.
-3. Access to the notification url and extract the **NCT** IDs if present.
-
-**Results:**
-
-```{r, echo=FALSE, message=FALSE}
-library(DT)
-library(tidyverse)
-approval_notifications_annotated <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_combinations_1stdraft.xlsx")
-approval_notifications_annotated <- approval_notifications_annotated %>%
-  mutate(text = str_trunc(text, width = 80, side = "right"),
-         description = str_trunc(description, width = 80, side = "right"),
-         phi4 = str_trunc(phi4, width = 80, side = "right"))
-
-datatable(
-  width = "100%",
-  approval_notifications_annotated,
-  #filter = "top",
-  options = list(pageLength = 5, scrollX = TRUE)
-)
-
-```
-
-### TO DO
-
-1. Solve conflicting LLM results regarding single vs combination notification approvals.
-2. Estimation of accuracy of LLM classification.
-3. Obtain NCT for those notification for which no NCT was found.
-
-
-# 2. [ClinicalTrials.gov](https://www.clinicaltrials.gov/)
-
-Retrieve information from studies using the [ClinicalTrials.gov API](https://www.clinicaltrials.gov/data-api/api) and the **NCT** identifiers:
-
-- Condition: `cancer OR neoplasms OR tumor`
-- Filters: `phase:2 3 4,results:with,status:act com ter` (phase 2, 3, or 4, with results, status: active nor recruiting, completed, or terminated)
-
-Some figures:
-
-- 23 approval notifications originate from some clinical trial that has been also used for granting another approval.
-  - This is due, for example, for re-definitions or ratification of accelerated approvals.
-- 26 approval notifications do not have a linked study from ClinicalTrials.gov due to:
-  - Results not posted
-  - The condition is not cancer. E.g.: [FDA grants accelerated approval to Darzalex Faspro for newly diagnosed light chain amyloidosis](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-darzalex-faspro-newly-diagnosed-light-chain-amyloidosis)
-
-
-## 2.1 Retrieve drug InChi keys from [ClinicalTrials.gov API](https://www.clinicaltrials.gov/data-api/api) and [ChEMBL](https://chembl.gitbook.io/chembl-interface-documentation)
-
-1. Extract drug names from ClinicalTrials.gov API interventions module.
-2. Query ChEMBL to retrieve InChi keys.
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-approval_notifications_InChi <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_combinations_1stdraft_InChIKeys_filtered.xlsx")
-
-approval_notifications_InChi <- approval_notifications_InChi %>%
-  mutate(text = str_trunc(text, width = 80, side = "right"),
-         description = str_trunc(description, width = 80, side = "right"),
-         phi4 = str_trunc(phi4, width = 80, side = "right"),
-         armGroupLabels = str_trunc(armGroupLabels, width = 80, side = "right"))
-
-datatable(
-  width = "100%",
-  approval_notifications_InChi,
-  #filter = "top",
-  options = list(pageLength = 5, scrollX = TRUE)
-)
-
-```
-
-Drugs with no InChI keys:
-
-- Clinical trial information not retrieved (because of the reasons given above).
-- InChI key not available (e.g., antibodies, metal-containing compounds).
-
-## 2.2 Retrive clinical trials information
-
-Glimpse of retrieval (just from the protocol section) for studies in which:
-
-- For drug combinations (as filtered above).
-- NCT was available in the FDA web.
-- Study fit the filters in the ClinicalTrial.gov API.
-- Have drugs with InChI keys
-
-```{r, eval=FALSE}
+# Protocol Section
 
 protocolSection <- function(study) {
 
@@ -294,85 +228,468 @@ protocolSection <- function(study) {
     
   )
 }
-```
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-protSection <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection.xlsx")
-
-
-datatable(
-  width = "100%",
-  str_trunc(protSection, width = 80, side = "right"),
-  #filter = "top",
-  options = list(pageLength = 5, scrollX = TRUE)
-)
 
 ```
 
-## 2.3 Filtering strategy to select drug combination studies
 
-Use `qwen3:8b` and `deepseek-r1:8b` to classify studies based on **brief summary**, **arm group labels**, and **arm group descriptions**:
 
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(DT)
+
+approval_notifications_test <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_test_ensembled.xlsx")
+
+approval_notifications_test_curated <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_test.xlsx") %>% select(manual_eval)
+
+approval_notifications_test$manual_eval <- approval_notifications_test_curated$manual_eval
+
+#approval_notifications_test <- approval_notifications_test %>% mutate(across(.cols = c(qwen3_8b, deepseek_r1_8b, phi4, ensemble, manual_eval), .fns = as.factor))
+
+approval_notifications_test[c("qwen3_8b",
+                              "deepseek_r1_8b",
+                              "phi4",
+                              "ensemble",
+                              "manual_eval")] <- lapply(approval_notifications_test[c("qwen3_8b",
+                                                                                      "deepseek_r1_8b",
+                                                                                      "phi4",
+                                                                                      "ensemble",
+                                                                                      "manual_eval")], function(x) {
+                                                                                        x <- as.character(x)
+                                                                                        x[!x %in% c("single", "combination")] <- "single"
+                                                                                        factor(x, levels = c("single", "combination"))
+                                                                                      })
+
+
+retrieve_metrics <- function(data, reference, models) {
+  metrics <- tibble()
+  
+  for (m in models){
+    model <- m
+    
+    df <- tibble(model = m, 
+                 accuracy = yardstick::accuracy(data, reference, m)$.estimate, 
+                 sensitivity = yardstick::sens(data, reference, m)$.estimate,
+                 specificity = yardstick::spec(data, reference, m)$.estimate,
+                 precision = yardstick::precision(data, reference, m)$.estimate,
+                 recall = yardstick::recall(data, reference, m)$.estimate,
+                 f1 = yardstick::f_meas(data, reference, m)$.estimate,
+                 mcc = yardstick::mcc(data, reference, m)$.estimate)
+    
+    metrics <- bind_rows(metrics, df)
+    
+  }
+  
+  return(metrics)
+}
+
+```
+
+
+# 1. [FDA Approval Notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications)
+
+
+The list of approved drug combinations was generated based on the resources and approval notifications provided by the FDA. Specifically, three datasets, [oncology (cancer)/hematologic malignancies approval notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications), [verified clinical benefit | cancer accelerated approvals](https://www.fda.gov/drugs/resources-information-approved-drugs/verified-clinical-benefit-cancer-accelerated-approvals), and [withdrawn | cancer accelerated approvals](https://www.fda.gov/drugs/resources-information-approved-drugs/withdrawn-cancer-accelerated-approvals) were considered for the analysis. 
+
+Each of these datasets included notifications for the periods 2006 - 2025, 1997 - 2025, and 1999 - 2025, respectively.
+
+Initially, **902 approval notifications were retrieved**, which were further filtered based on the description text to include only those corresponding to drug combinations. Three different large language models (LLM) were used for this task: qwen:8b, deepseek-r1:8b, and phi4, retrieved from Ollama. 
+An initial dataset containing 15% (134/902) of the total notifications, with proportional distribution from each dataset, was manually labeled by an expert blinded to the model output. Agreement between human and model labels was very high.
+
+
+
+```{r, message=FALSE, fig.align='center', warning=FALSE}
+
+DT::datatable(retrieve_metrics(data = approval_notifications_test, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
+              %>% dplyr::mutate(across(where(is.numeric), round, 3)), caption = "'ensemble' refers to the result corresponding to the majority vote of the three different LLMs.")
+
+yardstick::conf_mat(approval_notifications_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for combination approvals classification")
+```
+
+
+The whole list of approval notifications were then evaluated by the three LLM. **Those studies in which there was any discrepancy in the classification between the models were manually evaluated to ensure a correct retrieval of approvals for drug combinations**.
+
+
+The full texts of the approval notification were then examined to retrieve the clinicaltrials.gov NCT identifiers, indicating the studies that were used for granting the FDA approval. 
+67 did not explicitly report any NCT in the approval text. These were further examined to retrieve the NCT IDs based on the name or acronyms of the studies, if present. 
+
+41 FDA notifications did not unambiguously refer to the clinical studies on which the approval was based on, and therefore were discarded from the analysis.
+
+25 notifications included more than one NCT IDs, while 40 clinical trials (NCT IDs) were referenced in more than one approval. Those approvals that referenced more than one clinical trial were further examined. Of these, 8 clinical trials were testing single drugs, and were therefore discarded.
+
+The final dataset included 204 approval notifications and 176 unique NCT IDs.
+
+![Flow diagram of approval notifications filtering.](../www/Approvals_Filtering.drawio.png)
+
+# 2. ClinicalTrials.gov
+
+Clinical trials were retrieved using the [ClinicalTrials.gov API](https://www.clinicaltrials.gov/data-api/api) and the following search terms:
+
+- **Condition**: `cancer OR tumor OR tumour OR malignant OR carcinoma OR sarcoma OR`
+`lymphoma OR leukemia OR leukaemia OR myeloma OR blastoma OR neuroblastoma OR`
+`myelodysplastic`
+- **Titles**: `"( \"in combination\" OR combination OR combined OR \"combination therapy\" OR`
+`\"multi-agent\" OR multiagent OR multidrug OR \"multi drug\" OR regimen OR doublet OR`
+`triplet OR \"add-on\" OR addon OR adjunct OR \"co-administered\" OR coadministered OR plus OR with )` 
+`OR (with AND (placebo OR chemotherapy OR immunotherapy)) OR ((versus OR vs OR \"compared with\")`
+`AND (alone OR placebo) AND (chemotherapy OR immunotherapy OR antibody OR inhibitor OR targeted))"`
+- **Phase**: `2, 3 OR 4`
+- **Status**: `ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN`
+
+A total of **32319 studies** were obtained from this search. The list of studies were again queried to the 3 LLMs previously mentioned to verify whether the clinical trial corresponded to the evaluation of a drug combination. The **Brief Title**, **Brief Summary**, and **Arm Group Description** fields from each study were provided to the LLMs for the classification. An initial random sample containing 100 clinical trials was manually labeled by an expert blinded to the model output to evaluate the performance of the models. The results show a high agreement between the manual and LLM classification:
+
+
+_Code with the instructions for the LLMs (click 'show'):_
 ```{r, eval=FALSE}
-qwen3_class <- make_query(
-  text     = llm_protSection$classification_text,
-  template = "TRIAL INFORMATION:\n{text}\n\nTASK:\n{prompt}",
-  prompt   = "Categories: single, combination",
-  system = paste(
-    "You are a biomedical trial classifier.",
-    "",
-    "Your task:",
-    "Decide whether each clinical study involves AT LEAST ONE ARM in which",
-    "TWO OR MORE DRUGS are given together as part of the cancer treatment regimen.",
-    "",
-    "Definitions:",
-    "- 'combination' = at least one arm uses TWO OR MORE DRUGS together",
-    "  as active treatment for the disease.",
-    "- 'single' = all arms use at most ONE DRUG at a time for active treatment,",
-    "  even if there are multiple arms (e.g. drug vs placebo, or drug A vs drug B).",
-    "",
-    "Important rules:",
-    "- Only count pharmacologically active DRUGS used to treat the disease.",
-    "- Do NOT count:",
-    "  - placebo, saline, vehicle, or sham treatments;",
-    "  - non-drug interventions (exercise, behavioral, dietary supplement only, devices);",
-    "- If ANY arm clearly treats patients with two or more drugs TOGETHER",
-    "  (e.g. 'T-DM1 + Vinorelbine', 'cisplatin + etoposide'), classify as 'combination'.",
-    "- If all arms are single-drug or non-drug, classify as 'single'.",
-    "",
-    "Output format:",
-    "- Answer with EXACTLY ONE WORD: 'single' or 'combination'.",
-    "- Do NOT explain your answer."
-  ),
-  examples = examples_fs
-) %>%
-  query(model = "qwen3:8b",
-        screen = FALSE,
-        output = "text") |>
-  tolower() %>%
-  trimws()
-```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-llm_clintrials <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_llm.xlsx")
-llm_clintrials <- llm_clintrials %>% select(nctId, BriefSummary, qwen3, deepseek)
-
-datatable(
-  width = "100%",
-  llm_clintrials,
-  #filter = "top",
-  options = list(pageLength = 5, scrollX = TRUE)
+examples_fs <- tibble::tribble(
+  ~text, ~answer,
+  paste0("BRIEF TITLE: Study of Drug A Plus Drug B in Advanced NSCLC
+BRIEF SUMMARY: Evaluate safety and efficacy of Drug A in combination with Drug B versus Drug B alone.
+ARM GROUP DESCRIPTION: Drug A + Drug B;Drug B alone"),
+  "combination",
+  paste0("BRIEF TITLE: Study of Drug C Versus Placebo in Metastatic Cancer
+BRIEF SUMMARY: Randomized placebo-controlled trial evaluating Drug C. Some participants receive placebo.
+ARM GROUP DESCRIPTION: Drug C;Placebo"),
+  "single",
+  paste0("BRIEF TITLE: Drug D With FOLFOX in Colorectal Cancer
+BRIEF SUMMARY: Drug D combined with standard chemotherapy regimen FOLFOX.
+ARM GROUP DESCRIPTION: Drug D + FOLFOX"), 
+  "combination",
+  paste0("BRIEF TITLE: B-CAP Versus Single-Agent Brentuximab Vedotin in Hodgkin Lymphoma
+BRIEF SUMMARY: Compare multi-agent chemotherapy regimen with single-agent therapy.
+ARM GROUP DESCRIPTION: B-CAP (brentuximab vedotin, cyclophosphamide, doxorubicin, prednisolone);Brentuximab vedotin alone"),
+  "combination",
+  paste0("BRIEF TITLE: Dose Escalation of Drug E in Solid Tumors
+BRIEF SUMMARY: Phase 1 dose escalation of Drug E at multiple dose levels and schedules.
+ARM GROUP DESCRIPTION: Drug E low dose;Drug E medium dose;Drug E high dose"),
+  "single",
+  paste0("BRIEF TITLE: Drug F With Radiotherapy in Head and Neck Cancer
+BRIEF SUMMARY: Evaluate Drug F administered with radiotherapy.
+ARM GROUP DESCRIPTION: Drug F + radiotherapy;Radiotherapy alone"),
+  "single",
+  paste0("BRIEF TITLE: Immunotherapy Plus Chemotherapy in Breast Cancer
+BRIEF SUMMARY: Evaluate Drug G (anti-PD-1) plus paclitaxel.
+ARM GROUP DESCRIPTION: Drug G + paclitaxel;Paclitaxel"),
+  "combination",
+  paste0("BRIEF TITLE: Study of Drug H (Subcutaneous Formulation) in Lymphoma
+BRIEF SUMMARY: Evaluate Drug H subcutaneous vs intravenous formulations.
+ARM GROUP DESCRIPTION: Drug H SC;Drug H IV"),
+  "single"
 )
 
+
+classify_single_model_robust <- function(text_vec,
+                                         model,
+                                         batch_size = 32,
+                                         examples_fs = NULL) {
+  n <- length(text_vec)
+  idx_list <- split(seq_len(n), ceiling(seq_len(n) / batch_size))
+  
+  # Pre-allocate with NA so we can see failed/unfinished rows
+  labels <- rep(NA_character_, n)
+  
+  for (idx in idx_list) {
+    cat("Model", model, "- processing indices", min(idx), "-", max(idx), "...\n")
+    
+    q <- make_query(
+      text     = text_vec[idx],
+      template = "{text}\n{prompt}",
+      prompt   = paste(
+        "Classify this study as 'combination' or 'single' using the rules.",
+        "Return exactly one word: combination or single.",
+        sep = "\n"
+      ),
+      system = paste(
+        "You are a biomedical clinical trial text classifier.",
+        "Task: Given a clinicaltrials.gov study text composed of BRIEF TITLE, BRIEF SUMMARY, and ARM GROUP DESCRIPTION,",
+        "classify the study as either:",
+        "- 'combination' if ANY study arm includes two or more distinct systemic anticancer drugs as treatment, or a named multi-drug regimen.",
+        "- 'single' if ALL study arms use only ONE systemic anticancer drug (even if compared to placebo, best supportive care, surgery, or radiotherapy).",
+        "",
+        "How to decide:",
+        "1) Look primarily at ARM GROUP DESCRIPTION. If missing/NA, use title + summary.",
+        "2) Identify systemic anticancer agents in each arm (e.g., chemo drugs, immunotherapy, targeted therapy, ADCs).",
+        "3) If any arm contains >=2 distinct anticancer agents, output 'combination'.",
+        "",
+        "Counts as COMBINATION:",
+        "- Explicit multi-drug arms using connectors like '+', 'plus', 'with', 'in combination with'.",
+        "- Named multi-agent regimens (e.g., FOLFOX, FOLFIRI, FLOT, CHOP, R-CHOP, ABVD, ICE, BEACOPP).",
+        "- Arms where a regimen name is followed by multiple drugs in parentheses (comma-separated).",
+        "- 'Drug A + chemo' or 'Drug A + Drug B' (even if the comparator is single-agent).",
+        "",
+        "Counts as SINGLE (do NOT upgrade to combination):",
+        "- Drug vs placebo / best supportive care.",
+        "- Multiple DOSES, schedules, formulations, or routes of the same drug.",
+        "- Mention of biomarkers, diagnostic tests, imaging, companion diagnostics.",
+        "- Surgery and/or radiotherapy added WITHOUT a second systemic anticancer drug.",
+        "- Non-anticancer supportive meds (antiemetics, analgesics, antibiotics, anticoagulants, growth factors).",
+        "",
+        "Edge rule:",
+        "- If one arm is combination and another is single-agent, label the STUDY as 'combination'.",
+        "",
+        "Output format:",
+        "- Output exactly ONE word, lowercase: combination OR single.",
+        "Do not output any explanations.",
+        sep = "\n"
+      ),
+      examples = examples_fs
+    )
+    
+    res <- tryCatch(
+      {
+        query(q, model = model, screen = FALSE, output = "text")
+      },
+      error = function(e) {
+        message("HTTP/rollama error for model ", model,
+                " indices ", min(idx), "-", max(idx), ": ", e$message)
+        NULL
+      }
+    )
+    
+    if (!is.null(res)) {
+      clean <- res %>%
+        tolower() %>%
+        trimws() #%>%
+        # ensure we keep only the keyword if model adds text
+        # str_extract("\\b(single|combination)\\b")
+      
+      labels[idx] <- ifelse(is.na(clean), "unknown", clean)
+    } else {
+      # leave labels[idx] as NA so you can detect failures
+      labels[idx] <- NA_character_
+    }
+  }
+  
+  labels
+}
 ```
 
 
 
-### TO DO
+```{r, message=FALSE, fig.align='center', warning=FALSE}
 
-1. Create filtering strategy to select drug combinations studies from ClinicalTrials.gov. (in progress)
-2. Review drug names to retrieve InChI keys.
-3. Complete information retrieval from ClinicalTrials.gov.
-4. Harmonize information obtained from ClinicalTrials.gov.
+
+sample_protocolSection_lmm <- openxlsx2::read_xlsx("../results/ClinicalTrials/sample_protocolSection_llm.xlsx")
+
+sample_protocolSection_curated <- openxlsx2::read_xlsx("../results/ClinicalTrials/sample_protocolSection_manual_curated.xlsx") %>% select(manual_eval)
+
+sample_protocolSection_lmm$manual_eval <- sample_protocolSection_curated$manual_eval
+
+
+sample_protocolSection_lmm[c("qwen3_8b",
+                              "deepseek_r1_8b",
+                              "phi4",
+                              "ensemble",
+                              "manual_eval")] <- lapply(sample_protocolSection_lmm[c("qwen3_8b",
+                                                                                      "deepseek_r1_8b",
+                                                                                      "phi4",
+                                                                                      "ensemble",
+                                                                                      "manual_eval")], function(x) {
+                                                                                        x <- as.character(x)
+                                                                                        x[!x %in% c("single", "combination")] <- "single" # Replace NAs or NULL with single
+                                                                                        factor(x, levels = c("single", "combination"))
+                                                                                      })
+
+
+
+DT::datatable(retrieve_metrics(data = sample_protocolSection_lmm, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
+              %>% dplyr::mutate(across(where(is.numeric), round, 3)), caption = "'ensemble' refers to the result corresponding to the majority vote of the three different LLMs.")
+
+yardstick::conf_mat(sample_protocolSection_lmm, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for combination clinical trials classification")
+```
+
+
+#### **Results of LLM Classification**
+
+```{r, message=FALSE, fig.width=16}
+protocolSection_lmm <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_251230_llm.xlsx")
+
+# Clean llm outputs to contain only 'single' or 'combination'
+
+clean_output <- function(x) {
+  x <- tolower(x)
+  # extract the FIRST match of either word
+  m <- stringr::str_extract(x, "\\b(single|combination)\\b")
+  ifelse(is.na(m), "unknown", m)
+}
+
+protocolSection_lmm <- protocolSection_lmm %>% mutate(
+  across(c(qwen3_8b, deepseek_r1_8b, phi4), clean_output)
+)
+
+
+llm_results <- protocolSection_lmm %>% select(qwen3_8b, deepseek_r1_8b, phi4)
+
+
+# Majority of votes
+
+protocolSection_lmm$ensemble <- apply(llm_results, 1, function(x) {
+  prop <- table(x)
+  names(prop)[which.max(prop)]
+})
+
+#### Review disagreement results ----
+
+protocolSection_lmm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
+
+
+barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
+  # Deal with NAs
+  
+  data[[Y]][data[[Y]] == "NA"] <- NA
+  
+  df <- tibble(X = factor(X), Y = as.numeric(table(data[[Y]], useNA = "ifany")))
+  colnames(df) <- c(X_name, Y_name)
+  df %>% ggplot(aes(x = .data[[X_name]], y = .data[[Y_name]])) + 
+    geom_bar(aes(fill = .data[[X_name]], color = .data[[X_name]]), alpha = 0.3, stat = "identity") +
+    geom_text(aes(label = paste(round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+    geom_text(aes(label = .data[[Y_name]]), vjust = 1.6, color = "gray50") +
+    cowplot::theme_cowplot()
+}
+
+
+
+barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement")
+
+p1 <- barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement", 
+                   X_name = "Disagreement", Y_name = "Count") + labs(title = "Disagreement in LLMs Classification")
+
+p2 <- barplot_from_table(data = protocolSection_lmm, X = c("Combination", "Single"),
+                   Y = "ensemble", X_name = "Class", Y_name = "Count") + 
+  labs(title = "'ensemble' Classification Results",
+       subtitle = "Results of the majority voting of the three LLMs")
+
+
+protocolSection_lmm <- protocolSection_lmm %>% filter(ensemble == "combination") 
+
+p3 <- barplot_from_table(protocolSection_lmm, X = c("no", "yes"),
+                         Y = "disagreement", X_name = "Disagreement", Y_name = "Count") + 
+  labs(title = "Disagreement in 'ensemble' Results")
+
+
+cowplot::plot_grid(p1, p2, p3, nrow = 1)
+
+
+```
+
+#### Stats of Combination Clinical Trials
+
+```{r, message=FALSE, fig.width=30, fig.height=15, out.width="100%"}
+load("../results/ClinicalTrials/clintrials.Rdata")
+
+clintrials <- clintrials[names(clintrials) %in% protocolSection_lmm$nctId]
+
+protocolSection_combination <- clintrials %>%
+  map(protocolSection) %>%
+  bind_rows()
+
+var_col <- c("OverallStatus", "Phase", "DesignAllocation", 
+             "DesignInterventionModel", "DesignPrimaryPurpose")
+
+
+p_list <- list()
+
+df <- protocolSection_combination
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          X = unique(df[[v]]),
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = p_list, nrow = 2)
+```
+
+
+#### Overall Recruitment Status
+**Definition**: The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of "Recruiting," then the Overall Recruitment Status for the study must be "Recruiting."
+
+- **Active, not recruiting**: Study is continuing, meaning participants are receiving an intervention or being examined, but new participants are not currently being recruited or enrolled
+- **Completed**: The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant’s last visit has occurred)
+- **Suspended**: Study halted prematurely but potentially will resume
+- **Terminated**: Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention
+- **Withdrawn**: Study halted prematurely, prior to enrollment of first participant
+
+#### Allocation
+**Definitions**: The method by which participants are assigned to arms in a clinical trial.
+
+- **N/A (not applicable)**: For a single-arm trial
+- **Randomized**: Participants are assigned to intervention groups by chance
+- **Nonrandomized**: Participants are expressly assigned to intervention groups through a non-random method, such as physician choice
+
+#### Interventional Study Model
+**Definition**: The strategy for assigning interventions to participants.
+
+- **Single** Group: Clinical trials with a single arm
+- **Parallel**: Participants are assigned to one of two or more groups in parallel for the duration of the study
+- **Crossover**: Participants receive one of two (or more) alternative interventions during the initial phase of the study and receive the other intervention during the second phase of the study
+- **Factorial**: Two or more interventions, each alone and in combination, are evaluated in parallel against a control group
+- **Sequential**: Groups of participants are assigned to receive interventions based on prior milestones being reached in the study, such as in some dose escalation and adaptive design studies
+
+#### Primary Purpose
+**Definition**: The main objective of the intervention(s) being evaluated by the clinical trial. Select one.
+
+- **Treatment**: One or more interventions are being evaluated for treating a disease, syndrome, or condition.
+- **Prevention**: One or more interventions are being assessed for preventing the development of a specific disease or health condition.
+- **Diagnostic**: One or more interventions are being evaluated for identifying a disease or health condition.
+- **Supportive Care**: One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.
+- **Screening**: One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.
+- **Health Services Research**: One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.
+- **Basic Science**: One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).
+- **Other**: None of the other options applies.
+
+#### Approval Notification Studies in the Filtered List of Clinical Trials
+
+From the 204 approval notifications, **6 were not present** in the final list of retrieved clinical studies:
+
+1. [Approval of Lonsurf for recurrent, metastatic gastric and gastroesophageal junction adenocarcinoma](https://wayback.archive-it.org/7993/20201222064349/https://www.fda.gov/drugs/drug-approvals-and-databases/fda-approves-lonsurf-recurrent-metastatic-gastric-and-gastroesophageal-junction-adenocarcinoma), [NCT02500043](https://clinicaltrials.gov/study/NCT02500043). 
+2. [Approval of trifluridine/tipiracil (LONSURF, Taiho Oncology, Inc.) for the treatment of patients with metastatic colorectal cancer who have been previously treated with fluoropyrimidine-, oxaliplatin- , and irinotecan-based chemotherapy, an anti-VEGF biologic product, and an anti-EGFR monoclonal antibody, if RAS wild-type.](https://wayback.archive-it.org/7993/20170111231628/http://www.fda.gov/Drugs/InformationOnDrugs/ApprovedDrugs/ucm463743.htm), [NCT01607957](https://clinicaltrials.gov/study/NCT01607957).
+3. [Approval of treosulfan with fludarabine as a preparative regimen for alloHSCT in adult and pediatric patients with AML or MDS](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-treosulfan-fludarabine-preparative-regimen-allohsct-adult-and-pediatric-patients-aml-or), [NCT00822393](https://clinicaltrials.gov/study/NCT00822393).
+4. [Approval of Alimta (pemetrexed disodium) in combination with pembrolizumab and carboplatin for first-line treatment of metastatic non-squamous NSCLC](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-bosutinib-treatment-newly-diagnosed-ph-cml).
+5. [Approval of asparaginase erwinia chrysanthemi (recombinant) for leukemia and lymphoma](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-asparaginase-erwinia-chrysanthemi-recombinant-leukemia-and-lymphoma), [NCT04145531](https://clinicaltrials.gov/study/NCT04145531).
+6. [Approval of atezolizumab as adjuvant treatment for non-small cell lung cancer](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-atezolizumab-adjuvant-treatment-non-small-cell-lung-cancer), [NCT02486718](https://clinicaltrials.gov/study/NCT02486718).
+
+**Reasons for exclusion**: 
+
+- **Studies 1 and 2**: TAS-102 (Lonsurf) is an orally administered combination of a thymidine-based nucleic acid analogue, trifluridine, and a thymidine phosphorylase inhibitor, tipiracil hydrochloride. Trifluridine is the active cytotoxic component of TAS-102; its triphosphate form is incorporated into DNA, with such incorporation appearing to result in its antitumor effects.5 Tipiracil hydrochloride is a potent inhibitor of thymidine phosphorylase and, when combined with trifluridine to form TAS-102, prevents the rapid degradation of the trifluridine, allowing for the maintenance of adequate plasma levels of the active drug. [ref](https://www.nejm.org/doi/full/10.1056/NEJMoa1414325). In a strict sense, tipiracyl hydrochloride is not an antitumoral drug, and should not be considered part of a drug combination. 
+- **Study 3**: The approval notification mentions _a trial comparing treosulfan to busulfan **with fludarabine** as a preparative regimen for allogeneic transplantation_. This is also mentioned in the brief summary of the study ([NCT00822393](https://clinicaltrials.gov/study/NCT00822393)), but then, the arm descriptions only include two drugs: treosulfan and busulfan.
+- **Study 4**: The provided link in the FDA page is incorrect, linking the Alimta approval to a different full text, and therefore a different NCT/study.
+- **Study 5**: The approval notification mentions _asparaginase erwinia chrysanthemi (recombinant)-rywn) (Rylaze, Jazz Pharmaceuticals, Inc.) as **a component of a multi-agent chemotherapeutic regimen**_. However, the study ([NCT04145531](https://clinicaltrials.gov/study/NCT04145531)) that is referenced for the approval only has one drug (JZP-458). 
+- **Study 6**: Aterolizumab is used as adjuvant on top of cisplatin-based chemotherapy. The arm-defining randomized intervention is atezolizumab monotherapy vs best supportive care, and the cisplatin-based treatment is background therapy applied to both groups. This could be flagged as combination or single depending on how strict is the criteria.
+
+#### Stats of Approved Combination Clinical Trials
+
+```{r,  message=FALSE, fig.width=30, fig.height=15, out.width="100%"}
+combination_approvals <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_combinations_final.xlsx")
+
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct)
+
+p_list <- list()
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          X = unique(df[[v]]),
+                          Y = v,
+                          X_name = v) + labs(title = paste(v, "- Approved Studies"))
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = p_list, nrow = 2)
+```
 
