@@ -3,7 +3,9 @@ library(httr2)
 library(tidyverse)
 library(jsonlite)
 library(rollama)
+library(cowplot)
 
+options(rollama_seed = 42)
 
 curl_translate("curl -X GET https://clinicaltrials.gov/search?cond=cancer%20OR%20neoplasm%20OR%20tumor&term=combination%20OR%20combined%20OR%20drug%20combination%20OR%20combination%20therapy%20OR%20multi-agent&intr=Drug&aggFilters=phase:2%203%204,results:with,status:act%20com%20ter")
 
@@ -759,8 +761,14 @@ protocolSection_lmm$ensemble <- apply(llm_results, 1, function(x) {
 
 protocolSection_lmm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
 
-barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
+barplot_from_table <- function(data, X = NULL, Y, X_name = "X", Y_name = "Count", is.na = FALSE) {
   # Deal with NAs
+  
+  if (is.null(X)) {
+    X <- names(table(data[[Y]], useNA = "ifany"))
+  }
+  
+  if (is.na) {}
   
   data[[Y]][data[[Y]] == "NA"] <- NA
   
@@ -768,7 +776,7 @@ barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
   colnames(df) <- c(X_name, Y_name)
   df %>% ggplot(aes(x = .data[[X_name]], y = .data[[Y_name]])) + 
     geom_bar(aes(fill = .data[[X_name]], color = .data[[X_name]]), alpha = 0.3, stat = "identity") +
-    geom_text(aes(label = paste(round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+    geom_text(aes(label = paste(100*round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
     geom_text(aes(label = .data[[Y_name]]), vjust = 1.6, color = "gray50") +
     cowplot::theme_cowplot()
 }
@@ -777,10 +785,11 @@ barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
 
 #plotly::ggplotly(barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement"))
 
-p1 <- barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement", 
+(p1 <- barplot_from_table(data = protocolSection_lmm, Y = "disagreement", 
                    X_name = "Disagreement", Y_name = "Count") + labs(title = "Disagreement in LLMs Classification")
+)
 
-p2 <- barplot_from_table(data = protocolSection_lmm, X = c("Combination", "Single"),
+p2 <- barplot_from_table(data = protocolSection_lmm,
                    Y = "ensemble", X_name = "Class", Y_name = "Count") + 
   labs(title = "'ensemble' Classification Results",
        subtitle = "Results of the majority voting of the three LLMs")
@@ -788,16 +797,22 @@ p2 <- barplot_from_table(data = protocolSection_lmm, X = c("Combination", "Singl
 
 protocolSection_lmm_filtered <- protocolSection_lmm %>% filter(ensemble == "combination") 
 
-p3 <- barplot_from_table(protocolSection_lmm_filtered, X = c("no", "yes"),
+p3 <- barplot_from_table(protocolSection_lmm_filtered,
                          Y = "disagreement", X_name = "Disagreement", Y_name = "Count") + 
   labs(title = "Disagreement in 'ensemble' Results")
 
 
-#### Aproval notifications in filetered studies ----
+plot_grid(p1, p2, p3, nrow = 1)
+
+#### Aproval notifications in filtered studies ----
 
 ## Run code in point 1.3 to obtain the combination_approvals df
 
+combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+
+
 table(combination_approvals$nct %in% protocolSection_lmm_filtered$nctId)
+
 
 not_found_approvals <- combination_approvals %>% filter(!nct %in% protocolSection_lmm_filtered$nctId)
 
@@ -830,7 +845,6 @@ for (v in var_col) {
   
   
   p <- barplot_from_table(data = df,
-                          X = unique(df[[v]]),
                           Y = v,
                           X_name = v) + labs(title = v)
   p_list <- c(p_list, p)
@@ -857,6 +871,336 @@ for (v in var_col) {
 }
 
 cowplot::plot_grid(plotlist = p_list, nrow = 2)
+
+
+## Definition of Non-Successful Clinical Trials ----
+
+var_col <- c("OverallStatus", "Phase", "DesignPrimaryPurpose")
+
+p_list <- list()
+
+df <- protocolSection_combination
+table(is.na(df$WhyStopped))
+
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct)
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Blues") +
+    scale_fill_discrete(palette = "Blues") +
+    labs(title = paste(v, "- Approved Studies")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = p_list, nrow = 2)
+
+
+### DesignPrimaryPurpose ----
+
+
+var_col <- c("OverallStatus", "Phase")
+
+p_list <- list()
+
+df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT")
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT")
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Blues") +
+    scale_fill_discrete(palette = "Blues") +
+    labs(title = paste(v, "- Approved Studies")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = p_list, nrow = 2)
+
+
+### Why Stopped ----
+
+df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT")
+
+df <- tibble(WhyStopped = factor(c("No", "Yes")), Count = as.numeric(table(!is.na(df$WhyStopped))))
+
+p1 <- df %>% ggplot(aes(WhyStopped, y = Count)) + 
+  geom_bar(aes(fill = WhyStopped, color = WhyStopped), alpha = 0.3, stat = "identity") +
+  geom_text(aes(label = paste(100*round(Count/sum(Count), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+  geom_text(aes(label = Count), vjust = 1.6, color = "gray50") +
+  cowplot::theme_cowplot() + labs(title = "WhyStopped") +
+  scale_color_discrete(palette = "Reds") +
+  scale_fill_discrete(palette = "Reds") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
+var_col <- c("OverallStatus", "Phase")
+
+p_list <- list()
+
+df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT", !is.na(WhyStopped))
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+p_list <- c(p_list, NA)
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct)
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Blues") +
+    scale_fill_discrete(palette = "Blues") +
+    labs(title = paste(v, "- Approved Studies")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = c(p1,p_list), nrow = 2)
+
+
+protocolSection_WhyStopped <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT", !is.na(WhyStopped))
+#openxlsx2::write_xlsx(protocolSection_WhyStopped, "results/ClinicalTrials/protocolSection_WhyStopped.xlsx")
+
+
+protocolSection_WhyStopped$WhyStopped
+
+
+set.seed(123)
+protocolSection_WhyStopped_sample <- protocolSection_WhyStopped[round(runif(n = 100, min = 1, max = nrow(protocolSection_WhyStopped)), 0), ] %>% 
+  select(nctId, WhyStopped)
+#openxlsx2::write_xlsx(protocolSection_WhyStopped_sample, "results/protocolSection_WhyStopped_sample.xlsx")
+
+
+protocolSection_WhyStopped_sample <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_sample_llm.xlsx")
+llm_results <- protocolSection_WhyStopped_sample %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+
+# Majority of votes
+
+protocolSection_WhyStopped_sample$ensemble <- apply(llm_results, 1, function(x) {
+  prop <- table(x)
+  names(prop)[which.max(prop)]
+})
+
+
+protocolSection_WhyStopped_sample$manual_eval <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_sample_manual.xlsx") %>% pull(manual_eval)
+
+
+
+protocolSection_WhyStopped_sample[c("qwen3_14b",
+                             "deepseek_r1_8b",
+                             "phi4",
+                             "ensemble",
+                             "manual_eval")] <- lapply(protocolSection_WhyStopped_sample[c("qwen3_14b",
+                                                                                    "deepseek_r1_8b",
+                                                                                    "phi4",
+                                                                                    "ensemble",
+                                                                                    "manual_eval")], function(x) {
+                                                                                      x <- as.character(x)
+                                                                                      x[!x %in% c("efficacy", "safety", "nonclinical")] <- "nonclinical" # Replace NAs or NULL with single
+                                                                                      factor(x, levels = c("efficacy", "safety", "nonclinical"))
+                                                                                    })
+
+
+retrieve_metrics <- function(data, reference, models) {
+  
+  metrics <- tibble()
+  
+  for (m in models){
+    
+    model <- m
+    
+    df <- tibble(model = m, 
+                 accuracy = yardstick::accuracy(data, reference, m)$.estimate, 
+                 sensitivity = yardstick::sens(data, reference, m)$.estimate,
+                 specificity = yardstick::spec(data, reference, m)$.estimate,
+                 precision = yardstick::precision(data, reference, m)$.estimate,
+                 recall = yardstick::recall(data, reference, m)$.estimate,
+                 f1 = yardstick::f_meas(data, reference, m)$.estimate,
+                 mcc = yardstick::mcc(data, reference, m)$.estimate)
+    
+    metrics <- bind_rows(metrics, df)
+    
+  }
+  
+  return(metrics)
+}
+
+
+retrieve_metrics(data = protocolSection_WhyStopped_sample, reference = "manual_eval", models = c("qwen3_14b", "deepseek_r1_8b", "phi4", "ensemble"))
+
+
+yardstick::conf_mat(protocolSection_WhyStopped_sample, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for WhyStopped clinical trials classification")
+
+
+
+# Run 'llm_clinicaltrials_WhyStopped_tailscale.R' script
+
+
+protocolSection_WhyStopped_llm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm.xlsx")
+llm_results <- protocolSection_WhyStopped_llm %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+protocolSection_WhyStopped_llm$ensemble <- apply(llm_results, 1, function(x) { # Majority of votes
+  prop <- table(x)
+  names(prop)[which.max(prop)]
+})
+
+
+table(protocolSection_WhyStopped_llm$ensemble)
+
+protocolSection_WhyStopped_llm <- protocolSection_WhyStopped_llm %>% filter(ensemble %in% c("efficacy", "safety"))
+
+
+
+var_col <- c("OverallStatus", "Phase")
+
+p_list <- list()
+
+df <- protocolSection_WhyStopped_llm
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT")
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Studies")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = p_list, nrow = 2)
+
+
+library(ggsankey)
+
+
+sankey_nonsuccessful <- protocolSection_WhyStopped_llm %>% make_long(OverallStatus, Phase)
+
+p_nonsucc <- ggplot(sankey_nonsuccessful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
+  geom_sankey(flow.alpha = 0.33) +
+  scale_fill_discrete(palette = "RdGy") +
+  geom_sankey_label(size = 4, color = "black", alpha = 0.75) +
+  theme_sankey(base_size = 18) +
+  labs(x = NULL) +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5)) + 
+  labs(title = "Non-successful Clinical Trials")
+
+
+sankey_successful <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT") %>% make_long(OverallStatus, Phase)
+
+p_succ <- ggplot(sankey_successful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
+  geom_sankey(flow.alpha = 0.33) +
+  scale_fill_discrete(palette = "PRGn") +
+  geom_sankey_label(size = 4, color = "black", alpha = 0.75) +
+  theme_sankey(base_size = 18) +
+  labs(x = NULL) +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5)) + 
+  labs(title = "Successful Clinical Trials")
+
+plot_grid(p_nonsucc, p_succ, nrow = 1)
 
 
 # ChEMBL ----

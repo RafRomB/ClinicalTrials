@@ -535,8 +535,13 @@ protocolSection_lmm$ensemble <- apply(llm_results, 1, function(x) {
 protocolSection_lmm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
 
 
-barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
+
+barplot_from_table <- function(data, X = NULL, Y, X_name = "X", Y_name = "Count") {
   # Deal with NAs
+  
+  if (is.null(X)) {
+    X <- names(table(data[[Y]], useNA = "ifany"))
+  }
   
   data[[Y]][data[[Y]] == "NA"] <- NA
   
@@ -544,14 +549,12 @@ barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
   colnames(df) <- c(X_name, Y_name)
   df %>% ggplot(aes(x = .data[[X_name]], y = .data[[Y_name]])) + 
     geom_bar(aes(fill = .data[[X_name]], color = .data[[X_name]]), alpha = 0.3, stat = "identity") +
-    geom_text(aes(label = paste(round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+    geom_text(aes(label = paste(100*round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
     geom_text(aes(label = .data[[Y_name]]), vjust = 1.6, color = "gray50") +
     cowplot::theme_cowplot()
 }
 
 
-
-barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement")
 
 p1 <- barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement", 
                    X_name = "Disagreement", Y_name = "Count") + labs(title = "Disagreement in LLMs Classification")
@@ -585,8 +588,7 @@ protocolSection_combination <- clintrials %>%
   map(protocolSection) %>%
   bind_rows()
 
-var_col <- c("OverallStatus", "Phase", "DesignAllocation", 
-             "DesignInterventionModel", "DesignPrimaryPurpose")
+var_col <- c("OverallStatus", "Phase", "DesignPrimaryPurpose")
 
 
 p_list <- list()
@@ -600,14 +602,13 @@ for (v in var_col) {
   
   
   p <- barplot_from_table(data = df,
-                          X = unique(df[[v]]),
                           Y = v,
                           X_name = v) + labs(title = v) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p_list <- c(p_list, p)
 }
 
-cowplot::plot_grid(plotlist = p_list, nrow = 2)
+cowplot::plot_grid(plotlist = p_list, nrow = 1)
 ```
 
 
@@ -684,7 +685,6 @@ for (v in var_col) {
   
   
   p <- barplot_from_table(data = df,
-                          X = unique(df[[v]]),
                           Y = v,
                           X_name = v) + labs(title = paste(v, "- Approved Studies"))
   p_list <- c(p_list, p)
@@ -692,4 +692,57 @@ for (v in var_col) {
 
 cowplot::plot_grid(plotlist = p_list, nrow = 2)
 ```
+
+
+# 3. Definition of Non-Successful Drug Combinations
+
+## 3.1 DesignPrimaryPurpose
+
+**Most of the studies' design primary porpuse is _TREATMENT_.**
+
+
+#### Primary Purpose
+**Definition**: The main objective of the intervention(s) being evaluated by the clinical trial. Select one.
+
+- **Treatment**: One or more interventions are being evaluated for treating a disease, syndrome, or condition.
+- **Prevention**: One or more interventions are being assessed for preventing the development of a specific disease or health condition.
+- **Diagnostic**: One or more interventions are being evaluated for identifying a disease or health condition.
+- **Supportive Care**: One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.
+- **Screening**: One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.
+- **Health Services Research**: One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.
+- **Basic Science**: One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).
+- **Other**: None of the other options applies.
+
+
+In the list of successful combinations, only two have a different primary purpose:
+
+1. **[NCT01743131](https://clinicaltrials.gov/study/NCT01743131): PREVENTION**
+
+[FDA approves abatacept for prophylaxis of acute graft versus host disease](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-abatacept-prophylaxis-acute-graft-versus-host-disease). 
+
+This is a GVHD prophylaxis study in the transplant setting. The regimen components here—abatacept, cyclosporine/tacrolimus (calcineurin inhibitors), and methotrexate (used here as immunosuppression)—are being used for immunoprophylaxis, not as a systemic anticancer combination regimen.
+
+2. **[NCT02465060](https://clinicaltrials.gov/study/NCT02465060): OTHER**
+
+[FDA grants accelerated approval to dabrafenib in combination with trametinib for unresectable or metastatic solid tumors with BRAF V600E mutation](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-dabrafenib-combination-trametinib-unresectable-or-metastatic-solid).
+
+The approval specifically mentions the 'Experimental Subprotocol H' (BRAF V600E/R/K/D mutation). Patients with BRAF V600E/R/K/D mutation receive dabrafenib PO BID and trametinib PO QD on days 1-28. It is a drug combination study, but with other experimental subprotocols that are single drug. Importantly, NCT02465060 is just one of the studies referenced in the approval, which also references other two additional clinical trials.
+
+**Keeping only studies with DesignPrimaryPurpose:TREATMENT**
+
+## 3.2 OverallStatus 
+
+#### Overall Recruitment Status
+**Definition**: The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of "Recruiting," then the Overall Recruitment Status for the study must be "Recruiting."
+
+- **Active, not recruiting**: Study is continuing, meaning participants are receiving an intervention or being examined, but new participants are not currently being recruited or enrolled
+- **Completed**: The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant’s last visit has occurred)
+- **Suspended**: Study halted prematurely but potentially will resume
+- **Terminated**: Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention
+- **Withdrawn**: Study halted prematurely, prior to enrollment of first participant
+- **Unknown**: A study on ClinicalTrials.gov whose last known status was recruiting; not yet recruiting; or active, not recruiting but that has passed its completion date, and the status has not been last verified within the past 2 years. Studies with an unknown status are considered closed studies.
+
+**Filter out studies with OverallStatus WITHDRAWN or SUSPENDED**
+
+## 3.3 Phase 
 
