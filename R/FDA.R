@@ -2,7 +2,6 @@
 
 library(tidyverse)
 library(rvest)
-#library(polite)
 library(httr2)
 library(jsonlite)
 library(xml2)
@@ -52,8 +51,7 @@ fda_approvals <- tibble(
   title = title,
   description = description,
   url = urls,
-  date = app_date
-  
+  date = as.Date(app_date, tryFormats = c("%m/%d/%Y", "%m-%d-%Y"))
 )
 
 datatable(
@@ -63,6 +61,9 @@ datatable(
     scrollX = TRUE
   )
 )
+
+# Filter to limit results to 2025
+fda_approvals <- fda_approvals %>% filter(date < as.Date("2026-01-01", format = "%Y-%m-%d"))
 
 # Write table
 write.csv(fda_approvals, file = "results/FDA/approval_notifications_2020_2025.csv")
@@ -541,147 +542,97 @@ AA_withdrawal$query_text <- paste(
   sep = " "
 )
 
-
 merged_table <- bind_rows(approval_notifications, AA_benefit, AA_withdrawal)
-
-
-
+#openxlsx2::write_xlsx(merged_table, "results/FDA/approval_notifications_merged_table.xlsx")
 
 ## 2.2 Ollama LLM Filtering ----
 
-ping_ollama()
+### 2.2.1 LLM Results ----
 
-models <- c("qwen3:8b", "deepseek-r1:8b","phi4")
+## Run script `\R\FDA_tailscale.R`
 
-examples_fs <- tibble::tribble(
-  ~text, ~answer,
-  
-  # COMBINATION 1 – immunotherapy + chemo regimen
-  "The Food and Drug Administration approved the PD-1 inhibitor lumabrex
-   in combination with platinum-based chemotherapy (cisplatin and pemetrexed)
-   for the first-line treatment of adults with metastatic non-small cell lung cancer.",
-  "combination",
-  
-  # COMBINATION 2 – two targeted agents together
-  "The Food and Drug Administration approved the combination of the kinase inhibitor
-   trexanib and the anti-VEGF antibody varelizumab for adults with unresectable
-   hepatocellular carcinoma who have not received prior systemic therapy.",
-  "combination",
-  
-  # COMBINATION 3 – acronym regimen explicitly defined as multiple drugs
-  "The Food and Drug Administration approved zefitolimab in combination with
-   Z-CHOP chemotherapy, consisting of zefitolimab, cyclophosphamide, doxorubicin,
-   vincristine, and prednisone, for adults with previously untreated diffuse
-   large B-cell lymphoma.",
-  "combination",
-  
-  # SINGLE 1 – one drug, prior therapy mentioned but not co-administered
-  "The Food and Drug Administration granted accelerated approval to the kinase inhibitor
-   sevotrinib for adults with metastatic melanoma whose disease has progressed following
-   prior immunotherapy and BRAF inhibitor treatment.",
-  "single",
-  
-  # SINGLE 2 – one drug + diagnostic test
-  "The Food and Drug Administration approved the monoclonal antibody carlumab
-   for adults with locally advanced or metastatic gastric cancer whose tumors
-   overexpress CLX1, as detected by an FDA-approved companion diagnostic test.",
-  "single",
-  
-  # SINGLE 3 – one drug in multiple phases, plus supportive care
-  "The Food and Drug Administration approved the oral agent neraxetine as adjuvant
-   and maintenance monotherapy for adults with resected stage III colorectal cancer.
-   Patients may receive antiemetics and other supportive medications as needed.",
-  "single"
-)
+FDA_llm <- openxlsx2::read_xlsx("results/FDA/approval_notifications_merged_table_llm_results.xlsx")
 
-merged_table$type <- as.factor(merged_table$type)
+# Clean llm outputs to contain only 'single' or 'combination'
 
-prop.table(table(merged_table$type))
-
-
-### 2.2.1 Test set ----
-
-set.seed(123)
-merged_table_test <- rsample::initial_split(merged_table, prop = 0.15, strata = type)
-merged_table_test <- rsample::training(merged_table_test)
-
-prop.table(table(merged_table_test$type))
-
-#openxlsx2::write_xlsx(merged_table_test, "results/FDA/approval_notifications_test.xlsx")
-merged_table_test <- openxlsx2::read_xlsx("results/FDA/approval_notifications_test.xlsx")
-
-
-llm_results <- lapply(models, function(m) {
-  make_query(
-    text     = merged_table_test$query_text,
-    template = "{text}\n{prompt}",
-    prompt   = "Categories: combination, single",
-    system = paste(
-      "You are a biomedical text classifier.",
-      "Task: Given the text of an FDA cancer drug approval notification, decide whether the approval is for:",
-      "- a combination regime treatment that includes more than one distinct anticancer drug ('combination'), or",
-      "- a single anticancer ('single') drug treatment.",
-      "",
-      "Classification rules:",
-      "- 'single' = The approved treatment uses one active anticancer drug.",
-      "  - Multiple names for the same drug (generic name, brand names, or aliases) still count as one drug.",
-      "  - The only addition of hyaluronidase formulations to one active anticancer drug does not count as a combination.",
-      "  - Mention of diagnostic tests, biomarkers, or companion diagnostics does NOT change this to a combination.",
-      "- 'combination' = The approved treatment regimen includes two or more distinct anticancer drugs that are part of the approved regimen, given together or sequentially.",
-      "  - A named chemotherapy regimen composed of multiple drugs (e.g., FOLFOX, FLOT, CHOP) counts as a combination.",
-      "  - Immunotherapy + chemotherapy, targeted therapy + chemotherapy, or any combination of multiple systemic anticancer drugs is 'combination'.",
-      "  - Ignore diagnostic tests when deciding.",
-      "",
-      "Output format:",
-      "- Answer with exactly one word: 'combination' or 'single'.",
-      sep = "\n"
-    ),
-    examples = examples_fs
-  ) %>%
-    query(model = m, screen = FALSE, output = "text") |>
-    tolower() %>%
-    trimws()
-})
-
-names(llm_results) <- models
-
-# Bind back to the data frame
-for (m in models) {
-  merged_table_test[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
+clean_output <- function(x) {
+  x <- tolower(x)
+  # extract the FIRST match of either word
+  m <- stringr::str_extract(x, "\\b(single|combination)\\b")
+  ifelse(is.na(m), "single", m)
 }
 
-llm_results <- merged_table_test %>% select(qwen3_8b, deepseek_r1_8b, phi4)
+FDA_llm <- FDA_llm %>% mutate(
+  across(c(qwen3_14b, deepseek_r1_8b, phi4), clean_output)
+)
+
+FDA_llm <- FDA_llm %>% add_column(ID = paste("ID", 1:nrow(FDA_llm), sep = "_"),.before = "title")
+
+merged_table <- FDA_llm %>% select(-c("qwen3_14b", "deepseek_r1_8b", "phi4"))
+
+llm_results <- FDA_llm %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+
+llm_results <- llm_results %>% mutate(
+  across(c(qwen3_14b, deepseek_r1_8b, phi4), clean_output)
+)
 
 # Majority of votes
 
-merged_table_test$ensemble <- apply(llm_results, 1, function(x) {
+FDA_llm$ensemble <- apply(llm_results, 1, function(x) {
   prop <- table(x)
   names(prop)[which.max(prop)]
 })
 
+#### Review disagreement results ----
 
-#openxlsx2::write_xlsx(merged_table_test, "results/FDA/approval_notifications_test_ensembled.xlsx")
-approval_notifications_test <- openxlsx2::read_xlsx("results/FDA/approval_notifications_test_ensembled.xlsx")
+FDA_llm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
 
-approval_notifications_test_curated <- openxlsx2::read_xlsx("results/FDA/approval_notifications_test.xlsx") %>% select(manual_eval)
+#openxlsx2::write_xlsx(FDA_llm, "results/FDA/approval_notifications_llm_results_ensembled.xlsx")
 
-approval_notifications_test$manual_eval <- approval_notifications_test_curated$manual_eval
+# Column 'ensemble_corrected' indicates those studies for which the 
+# ensemble results were corrected (e.g., if 'yes', the study was for a combination
+# but the majority of votes assigned it to single, so the value was changed to 'combination')
 
-#approval_notifications_test <- approval_notifications_test %>% mutate(across(.cols = c(qwen3_8b, deepseek_r1_8b, phi4, ensemble, manual_eval), .fns = as.factor))
+FDA_llm_curated <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_ensembled_260212.xlsx")
 
-approval_notifications_test[c("qwen3_8b",
-                              "deepseek_r1_8b",
-                              "phi4",
-                              "ensemble",
-                              "manual_eval")] <- lapply(approval_notifications_test[c("qwen3_8b",
-                                                                                      "deepseek_r1_8b",
-                                                                                      "phi4",
-                                                                                      "ensemble",
-                                                                                      "manual_eval")], function(x) {
-                                                                                        x <- as.character(x)
-                                                                                        x[!x %in% c("single", "combination")] <- "single"
-                                                                                        factor(x, levels = c("single", "combination"))
-                                                                                      })
+FDA_llm_curated_combinations <- FDA_llm_curated %>% filter(ensemble == "combination")
+
+### 2.2.2 LLM Performance Evaluation ----
+
+# Calculate manual evaluation sample size, based on https://pmc.ncbi.nlm.nih.gov/articles/PMC4792103/ and assuming an expected accuracy
+# of 0.5 and 95% +- 5% confidence interval
+
+binom_N <- function(Z, p0, E) {
+  N <- (Z^2*p0*(1-p0))/E^2
+  return(ceiling(N))
+}
+
+# infinite-population
+n0 <- binom_N(Z = 1.96, p0 = 0.5, E = 0.05)
+
+# finite-population correction
+
+n <- n0/(1+(n0-1)/nrow(merged_table))
+
+set.seed(123)
+merged_table_test <- rsample::initial_split(merged_table, prop = n/nrow(merged_table), strata = type)
+merged_table_test <- rsample::training(merged_table_test)
+
+prop.table(table(merged_table$type))
+prop.table(table(merged_table_test$type))
+
+#openxlsx2::write_xlsx(merged_table_test, "results/FDA/approval_notifications_test.xlsx")
+
+# Load manually curated table
+merged_table_test <- openxlsx2::read_xlsx("results/FDA/approval_notifications_test.xlsx")
+
+merged_table_test <- merged_table_test %>% left_join(FDA_llm_curated %>% select(ID, qwen3_14b, deepseek_r1_8b, phi4, ensemble), by = "ID")
+
+merged_table_test <- merged_table_test %>% mutate(manual_eval = as.factor(manual_eval),
+                                                  qwen3_14b = as.factor(qwen3_14b),
+                                                  deepseek_r1_8b = as.factor(deepseek_r1_8b),
+                                                  phi4 = as.factor(phi4),
+                                                  ensemble = as.factor(ensemble))
 
 
 retrieve_metrics <- function(data, reference, models) {
@@ -695,7 +646,7 @@ retrieve_metrics <- function(data, reference, models) {
                  sensitivity = yardstick::sens(data, reference, m)$.estimate,
                  specificity = yardstick::spec(data, reference, m)$.estimate,
                  precision = yardstick::precision(data, reference, m)$.estimate,
-                 recall = yardstick::recall(data, reference, m)$.estimate,
+                 #recall = yardstick::recall(data, reference, m)$.estimate,
                  f1 = yardstick::f_meas(data, reference, m)$.estimate,
                  mcc = yardstick::mcc(data, reference, m)$.estimate)
     
@@ -707,119 +658,19 @@ retrieve_metrics <- function(data, reference, models) {
 }
 
 
-retrieve_metrics(data = approval_notifications_test, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
 
-yardstick::conf_mat(approval_notifications_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
-  scale_fill_gradient(low = "white", high = "slateblue")
-
-
-df <- tibble()
-
-
-tmp <- approval_notifications_test[approval_notifications_test$ensemble != approval_notifications_test$manual_eval,]
-
-prop.table(table(approval_notifications_test$manual_eval))
-
-
-## Metrics for combinations studies only
-combination_test <- approval_notifications_test %>% filter(manual_eval == "combination")
-
-retrieve_metrics(data = combination_test, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
-
-
-
-### 2.2.2 Complete data ----
-
-models <- c("qwen3:8b", "deepseek-r1:8b", "phi4")
-
-library(tidyverse)
-library(rollama)
-
-llm_results <- lapply(models, function(m) {
-  make_query(
-    text     = merged_table$query_text,
-    template = "{text}\n{prompt}",
-    prompt   = "Categories: combination, single",
-    system = paste(
-      "You are a biomedical text classifier.",
-      "Task: Given the text of an FDA cancer drug approval notification, decide whether the approval is for:",
-      "- a combination regime treatment that includes more than one distinct anticancer drug ('combination'), or",
-      "- a single anticancer ('single') drug treatment.",
-      "",
-      "Classification rules:",
-      "- 'single' = The approved treatment uses one active anticancer drug.",
-      "  - Multiple names for the same drug (generic name, brand names, or aliases) still count as one drug.",
-      "  - The only addition of hyaluronidase formulations to one active anticancer drug does not count as a combination.",
-      "  - Mention of diagnostic tests, biomarkers, or companion diagnostics does NOT change this to a combination.",
-      "- 'combination' = The approved treatment regimen includes two or more distinct anticancer drugs that are part of the approved regimen, given together or sequentially.",
-      "  - A named chemotherapy regimen composed of multiple drugs (e.g., FOLFOX, FLOT, CHOP) counts as a combination.",
-      "  - Immunotherapy + chemotherapy, targeted therapy + chemotherapy, or any combination of multiple systemic anticancer drugs is 'combination'.",
-      "  - Ignore diagnostic tests when deciding.",
-      "",
-      "Output format:",
-      "- Answer with exactly one word: 'combination' or 'single'.",
-      sep = "\n"
-    ),
-    examples = examples_fs
-  ) %>%
-    query(model = m, screen = FALSE, output = "text") |>
-    tolower() %>%
-    trimws()
-})
-
-names(llm_results) <- models
-
-# Bind back to the data frame
-for (m in models) {
-  merged_table[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
-}
-
-
-# Save table
-#openxlsx2::write_xlsx(merged_table, "results/FDA/approval_notifications_llm_results.xlsx")
-
-merged_table <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results.xlsx")
-llm_results <- merged_table %>% select(qwen3_8b, deepseek_r1_8b, phi4)
-
-
-# Clean llm outputs to contain only 'single' or 'combination'
-
-clean_output <- function(x) {
-  x <- tolower(x)
-  # extract the FIRST match of either word
-  m <- stringr::str_extract(x, "\\b(single|combination)\\b")
-  ifelse(is.na(m), "unknown", m)
-}
-
-merged_table <- merged_table %>% mutate(
-  across(c(qwen3_8b, deepseek_r1_8b, phi4), clean_output)
+(FDA_eval_metrics <- retrieve_metrics(
+    data = merged_table_test,
+    reference = "manual_eval",
+    models = c("qwen3_14b", "deepseek_r1_8b", "phi4", "ensemble")
+  )
 )
+openxlsx2::write_xlsx(FDA_eval_metrics, "results/FDA/FDA_eval_metrics.xlsx")
 
-llm_results <- llm_results %>% mutate(
-  across(c(qwen3_8b, deepseek_r1_8b, phi4), clean_output)
-)
 
-# Majority of votes
-
-merged_table$ensemble <- apply(llm_results, 1, function(x) {
-  prop <- table(x)
-  names(prop)[which.max(prop)]
-})
-
-#### Review disagreement results ----
-
-merged_table$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
-
-#openxlsx2::write_xlsx(merged_table, "results/FDA/approval_notifications_llm_results_ensembled.xlsx")
-approval_notifications_ensembled <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_ensembled.xlsx")
-
-# Column 'ensemble_corrected' indicates those studies for which the 
-# ensemble results were corrected (e.g., if 'yes', the study was for a combination
-# but the majority of votes assigned it to single, so the value was changed to 'combination')
-
-approval_notifications_ens_curated <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_ens_curated.xlsx")
-
-approval_notifications_combinations <- approval_notifications_ens_curated %>% filter(ensemble == "combination")
+conf_matrix <- yardstick::conf_mat(merged_table_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") +
+  labs(title = "Evaluation of LLM performance for FDA approval notifications")
 
 ## 2.3 Retrieve full text for combination approval notifications ----
 
@@ -853,32 +704,26 @@ url_inspect <- function(url) {
   return(central_text)
 }
 
-approval_notifications_combinations$full_text <- map_chr(approval_notifications_combinations$url, .progress = T, ~ {
+FDA_llm_curated_combinations$full_text <- map_chr(FDA_llm_curated_combinations$url, .progress = T, ~ {
   Sys.sleep(1)
   url_inspect(.x)
 })
 
-table(is.na(approval_notifications_combinations$full_text))
+table(is.na(FDA_llm_curated_combinations$full_text))
 
-tmp <- approval_notifications_combinations %>% filter(is.na(full_text))
+tmp <- FDA_llm_curated_combinations %>% filter(is.na(full_text))
 
-#openxlsx2::write_xlsx(approval_notifications_combinations, "results/FDA/approval_notifications_llm_results_combinations.xlsx")
+#openxlsx2::write_xlsx(FDA_llm_curated_combinations, "results/FDA/approval_notifications_llm_results_ensembled_260212_combinations.xlsx")
 
-approval_notifications_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations.xlsx")
+FDA_llm_curated_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_ensembled_260212_combinations.xlsx")
 
-# Add internal row ID for later
-
-approval_notifications_combinations$row_ID <- paste("study_", 1:nrow(approval_notifications_combinations))
-
-
-length(unique(approval_notifications_combinations$row_ID))
 
 # 3. Extract NCT ID and drug names ----
 
 ## 3.1 Extract NCT ID ----
 
 # Extract all raw matches
-approval_notifications_combinations <- approval_notifications_combinations %>%
+FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>%
   mutate(
     # 1) extract all matches (list-column)
     nct_raw = str_extract_all(full_text, "(?i)\\bNCT\\s*\\d{8}\\b"),
@@ -902,7 +747,7 @@ approval_notifications_combinations <- approval_notifications_combinations %>%
 
 # Further analyze studies for which no NCT was found: 67 studies for which no NCT was disclosed
 
-no_nct <- approval_notifications_combinations %>% filter(is.na(nct))
+no_nct <- FDA_llm_curated_combinations %>% filter(is.na(nct))
 
 models <- c("llama3.1:8b-instruct-q4_K_M", "qwen3:4b-instruct-2507-q8_0")
 
@@ -961,38 +806,39 @@ for (m in models) {
 # Manually evaluate the studies acronyms in 'approval_notifications_without_NCT.xlsx' to retrieve
 # NCT
 
-no_nct <- openxlsx2::read_xlsx("results/FDA/approvals_without_NCT_curated.xlsx")
+no_nct_curated <- openxlsx2::read_xlsx("results/FDA/approvals_without_NCT_curated.xlsx")
 
-table(is.na(no_nct$nct))
+table(is.na(no_nct_curated$nct))
 # FALSE  TRUE 
-# 26    41 
+# 27    42 
 
-approval_notifications_combinations <- approval_notifications_combinations %>%
-  left_join(no_nct %>% select(row_ID, nct), by = "row_ID", suffix = c("", ".new")) %>%
+FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>%
+  left_join(no_nct_curated %>% select(ID, nct), by = "ID", suffix = c("", ".new")) %>%
   mutate(nct = coalesce(nct, nct.new)) %>%
   select(-nct.new)
 
-table(is.na(approval_notifications_combinations$nct))
+table(is.na(FDA_llm_curated_combinations$nct))
 # FALSE  TRUE 
-# 218    41 
+# 220    42
 
 
-approval_notifications_combinations %>%
+FDA_llm_curated_combinations %>%
   mutate(nct = str_split(nct, ";")) %>% # split
   unnest(nct) %>%                       # to long vector
   mutate(nct = str_trim(nct)) %>%       # remove spaces
   filter(!is.na(nct), nct != "", nct != "NA") %>% # drop NA/"NA"/""
   pull(nct) %>% unique() %>% length()   # count unique elements
 
-# 184
+# 185
 
+# Evaluate studies with multiple NCT to remove those studies that are only for single drugs
 
-multi_nct_rows <- approval_notifications_combinations %>%
+multi_nct_rows <- FDA_llm_curated_combinations %>%
   filter(str_detect(nct, ";"))
 #write.csv(multi_nct_rows, "results/FDA/multi_nct_rows.csv")
 
 
-multi_nct_rows <- read.csv("results/FDA/multi_nct_rows_curated.csv")
+multi_nct_rows <- read.csv("results/FDA/multi_nct_rows_curated.csv", row.names = 1)
 
 multi_nct_rows <- multi_nct_rows %>% mutate(
   nct = str_split(nct, ";"),
@@ -1000,20 +846,64 @@ multi_nct_rows <- multi_nct_rows %>% mutate(
   unnest(cols = c(nct, nct_claim))
 
 
-approval_notifications_combinations <- approval_notifications_combinations %>% mutate(
+FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>% mutate(
   nct = str_split(nct, ";")
 ) %>% unnest(nct)
 
-approval_notifications_combinations %>% group_by(nct) %>% summarise(count = n()) %>% filter(count > 1, nct != "NA")
+nrow(FDA_llm_curated_combinations %>% group_by(nct) %>% summarise(count = n()) %>% filter(count > 1, nct != "NA"))
+# 40
+
+FDA_llm_curated_combinations %>% group_by(nct) %>% summarise(count = n()) %>% filter(count > 1, nct != "NA")
 
 single_efficacy <- multi_nct_rows %>% filter(nct_claim == "single_efficacy")
+length(unique(single_efficacy$nct))
+# 8
 
-approval_notifications_combinations <- approval_notifications_combinations %>% 
+FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>% 
   filter(!nct %in% single_efficacy$nct, !is.na(nct), nct != "NA")
 
-length(unique(approval_notifications_combinations$row_ID))
-length(unique(approval_notifications_combinations$nct))
+length(unique(FDA_llm_curated_combinations$ID)) # 206
+length(unique(FDA_llm_curated_combinations$nct)) # 177
 
+#openxlsx2::write_xlsx(FDA_llm_curated_combinations, "results/FDA/approval_notifications_llm_results_combinations_final.xlsx")
 
-openxlsx2::write_xlsx(approval_notifications_combinations, "results/FDA/approval_notifications_combinations_final.xlsx")
+# 4. Alignment with ClinicalTrials.gov query ----
 
+FDA_llm_curated_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final.xlsx")
+length(unique(FDA_llm_curated_combinations$ID)) # 206
+length(unique(FDA_llm_curated_combinations$nct)) # 177
+
+protocolSection_llm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230_llm_ensemble.xlsx")
+protocolSection_llm_comb <- protocolSection_llm %>% filter(ensemble == "combination")
+
+FDA_llm_curated_combinations$clinicaltrialgov <- FDA_llm_curated_combinations$nct %in% protocolSection_llm_comb$nctId
+
+not_found_approvals <- FDA_llm_curated_combinations %>% filter(clinicaltrialgov == FALSE)
+
+not_found_approvals$exclusion <- c(
+  "amyloidosis",
+  "only single-drug arms",
+  "only single-drug arms",
+  "only single-drug arms",
+  "amyloidosis",
+  "still recruiting",
+  "phase 1",
+  "still recruiting",
+  "phase 1",
+  "observational study",
+  "amyloidosis",
+  "phase 1",
+  "wrong link provided"
+)
+
+query_align <- not_found_approvals %>% filter(exclusion %in% c("still recruiting", "phase 1", "observational study")) %>% pull(nct)
+tmp_df <- FDA_llm_curated_combinations %>% filter(!nct %in% query_align)
+length(unique(tmp_df$ID)) # 206
+length(unique(tmp_df$nct)) # 173
+
+FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>% filter(clinicaltrialgov == TRUE)
+
+length(unique(FDA_llm_curated_combinations$ID)) # 199
+length(unique(FDA_llm_curated_combinations$nct)) # 168
+
+openxlsx2::write_xlsx(FDA_llm_curated_combinations, "results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")

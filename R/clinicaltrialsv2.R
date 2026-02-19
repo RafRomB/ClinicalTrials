@@ -4,10 +4,12 @@ library(tidyverse)
 library(jsonlite)
 library(rollama)
 library(cowplot)
+library(openxlsx2)
 
 options(rollama_seed = 42)
 
 curl_translate("curl -X GET https://clinicaltrials.gov/search?cond=cancer%20OR%20neoplasm%20OR%20tumor&term=combination%20OR%20combined%20OR%20drug%20combination%20OR%20combination%20therapy%20OR%20multi-agent&intr=Drug&aggFilters=phase:2%203%204,results:with,status:act%20com%20ter")
+
 
 # 1. Extract Data from clinicaltrials.com API ----
 clin_trials_url <- "https://clinicaltrials.gov/api/v2/studies"
@@ -100,9 +102,9 @@ studies_id <- clintrials %>%
 # Name the studies with the IDs
 names(clintrials) <- studies_id$study_id
 
-combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final.xlsx")
 length(unique(combination_approvals$nct))
-length(unique(combination_approvals$row_ID))
+length(unique(combination_approvals$ID))
 
 
 # Filter approved studies for drug combinations based on NCT
@@ -116,10 +118,9 @@ no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
 combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
 
 length(unique(combination_approvals$nct))
-length(unique(combination_approvals$row_ID))
+length(unique(combination_approvals$ID))
 
 ## 1.2 Phase 2, 3, 4 ----
-
 
 clintrials <- clin_trials_response(url = clin_trials_url, 
                                    cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma 
@@ -156,7 +157,7 @@ no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
 
 combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
 length(unique(combination_approvals$nct))
-length(unique(combination_approvals$row_ID))
+length(unique(combination_approvals$ID))
 
 
 ## **1.3 ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN** ----
@@ -199,9 +200,11 @@ studies_id <- clintrials %>%
   })
 
 # Filter approved studies for drug combinations based on NCT
-combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final.xlsx")
 
 combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
+
+write_xlsx(combination_approvals, "results/FDA/approval_notifications_llm_results_combinations_final_ClinTrials.xlsx")
 
 table(combination_approvals$clinicaltrialgov)
 
@@ -209,51 +212,48 @@ no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
 
 combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
 length(unique(combination_approvals$nct))
-length(unique(combination_approvals$row_ID))
+length(unique(combination_approvals$ID))
 
-## 1.4 WITH RESULTS ----
+# ## 1.4 WITH RESULTS
+# # 
+# clintrials <- clin_trials_response(url = clin_trials_url,
+#                                    cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma
+#                                    OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma
+#                                    OR blastoma OR neuroblastoma OR myelodysplastic)",
+#                                    titles = combo_titles,
+#                                    advFilter = NULL,
+#                                    aggFilters = "phase:2 3 4,results:with",
+#                                    overallStatus = "ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
+#                                    pageSize = 1000)
 # 
-clintrials <- clin_trials_response(url = clin_trials_url,
-                                   cond = "(cancer OR tumor OR tumour OR malignant OR carcinoma
-                                   OR sarcoma OR lymphoma OR leukemia OR leukaemia OR myeloma
-                                   OR blastoma OR neuroblastoma OR myelodysplastic)",
-                                   titles = combo_titles,
-                                   advFilter = NULL,
-                                   aggFilters = "phase:2 3 4,results:with",
-                                   overallStatus = "ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN",
-                                   pageSize = 1000)
-
-
-# Save studies NIH Clinical Trials IDs
-studies_id <- clintrials %>%
-  map_dfr(\(x) {
-    tibble(
-      study_id = x %>% pluck("protocolSection", "identificationModule", "nctId")
-    )
-  })
-
-
-# Name the studies with the IDs
-names(clintrials) <- studies_id$study_id
-
-
-# Filter approved studies for drug combinations based on NCT
-
-combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
-
-table(combination_approvals$clinicaltrialgov)
-
-no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
-
-combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
-length(unique(combination_approvals$nct))
-length(unique(combination_approvals$row_ID))
-
+# 
+# # Save studies NIH Clinical Trials IDs
+# studies_id <- clintrials %>%
+#   map_dfr(\(x) {
+#     tibble(
+#       study_id = x %>% pluck("protocolSection", "identificationModule", "nctId")
+#     )
+#   })
+# 
+# 
+# # Name the studies with the IDs
+# names(clintrials) <- studies_id$study_id
+# 
+# 
+# # Filter approved studies for drug combinations based on NCT
+# 
+# combination_approvals$clinicaltrialgov <- combination_approvals$nct %in% studies_id$study_id
+# 
+# table(combination_approvals$clinicaltrialgov)
+# 
+# no_study <- combination_approvals %>% filter(clinicaltrialgov == FALSE)
+# 
+# combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+# length(unique(combination_approvals$nct))
+# length(unique(combination_approvals$row_ID))
+# 
 
 ## 1.5 LLM Classification ----
-
-
-ping_ollama()
 
 
 # Function to collapse fields
@@ -456,282 +456,20 @@ protocolSection <- function(study) {
   )
 }
 
-set.seed(123)
-nct_sample <- studies_id$study_id[runif(n = 100, min = 1, max = length(studies_id$study_id))]
-
-
-sample_protocolSection <- clintrials[nct_sample] %>%
-  map(protocolSection) %>%
-  bind_rows()
-sample_protocolSection <- sample_protocolSection %>% select(nctId, BriefTitle, BriefSummary, ArmGroupDescription)
-#openxlsx2::write_xlsx(sample_protocolSection, "results/ClinicalTrials/sample_protocolSection.xlsx")
-sample_protocolSection <- openxlsx2::read_xlsx("results/ClinicalTrials/sample_protocolSection.xlsx")
-
-
-
-## Ollama LLM Filtering ----
-
-sample_protocolSection$query_text <- str_squish(
-  paste0(
-    "BRIEF TITLE:\n",
-    sample_protocolSection$BriefTitle,
-    "\n\n",
-    "BRIEF SUMMARY:\n",
-    sample_protocolSection$BriefSummary,
-    "\n ARM GROUP DESCRIPTION:\n",
-    sample_protocolSection$ArmGroupDescription,
-    "\n"
-  ))
-
-
-examples_fs <- tibble::tribble(
-  ~text, ~answer,
-  paste0("BRIEF TITLE: Study of Drug A Plus Drug B in Advanced NSCLC
-BRIEF SUMMARY: Evaluate safety and efficacy of Drug A in combination with Drug B versus Drug B alone.
-ARM GROUP DESCRIPTION: Drug A + Drug B;Drug B alone"),
-  "combination",
-  paste0("BRIEF TITLE: Study of Drug C Versus Placebo in Metastatic Cancer
-BRIEF SUMMARY: Randomized placebo-controlled trial evaluating Drug C. Some participants receive placebo.
-ARM GROUP DESCRIPTION: Drug C;Placebo"),
-  "single",
-  paste0("BRIEF TITLE: Drug D With FOLFOX in Colorectal Cancer
-BRIEF SUMMARY: Drug D combined with standard chemotherapy regimen FOLFOX.
-ARM GROUP DESCRIPTION: Drug D + FOLFOX"), 
-  "combination",
-  paste0("BRIEF TITLE: B-CAP Versus Single-Agent Brentuximab Vedotin in Hodgkin Lymphoma
-BRIEF SUMMARY: Compare multi-agent chemotherapy regimen with single-agent therapy.
-ARM GROUP DESCRIPTION: B-CAP (brentuximab vedotin, cyclophosphamide, doxorubicin, prednisolone);Brentuximab vedotin alone"),
-  "combination",
-  paste0("BRIEF TITLE: Dose Escalation of Drug E in Solid Tumors
-BRIEF SUMMARY: Phase 1 dose escalation of Drug E at multiple dose levels and schedules.
-ARM GROUP DESCRIPTION: Drug E low dose;Drug E medium dose;Drug E high dose"),
-  "single",
-  paste0("BRIEF TITLE: Drug F With Radiotherapy in Head and Neck Cancer
-BRIEF SUMMARY: Evaluate Drug F administered with radiotherapy.
-ARM GROUP DESCRIPTION: Drug F + radiotherapy;Radiotherapy alone"),
-  "single",
-  paste0("BRIEF TITLE: Immunotherapy Plus Chemotherapy in Breast Cancer
-BRIEF SUMMARY: Evaluate Drug G (anti-PD-1) plus paclitaxel.
-ARM GROUP DESCRIPTION: Drug G + paclitaxel;Paclitaxel"),
-  "combination",
-  paste0("BRIEF TITLE: Study of Drug H (Subcutaneous Formulation) in Lymphoma
-BRIEF SUMMARY: Evaluate Drug H subcutaneous vs intravenous formulations.
-ARM GROUP DESCRIPTION: Drug H SC;Drug H IV"),
-  "single"
-)
-
-
-classify_single_model_robust <- function(text_vec,
-                                         model,
-                                         batch_size = 32,
-                                         examples_fs = NULL) {
-  n <- length(text_vec)
-  idx_list <- split(seq_len(n), ceiling(seq_len(n) / batch_size))
-  
-  # Pre-allocate with NA so we can see failed/unfinished rows
-  labels <- rep(NA_character_, n)
-  
-  for (idx in idx_list) {
-    cat("Model", model, "- processing indices", min(idx), "-", max(idx), "...\n")
-    
-    q <- make_query(
-      text     = text_vec[idx],
-      template = "{text}\n{prompt}",
-      prompt   = paste(
-        "Classify this study as 'combination' or 'single' using the rules.",
-        "Return exactly one word: combination or single.",
-        sep = "\n"
-      ),
-      system = paste(
-        "You are a biomedical clinical trial text classifier.",
-        "Task: Given a clinicaltrials.gov study text composed of BRIEF TITLE, BRIEF SUMMARY, and ARM GROUP DESCRIPTION,",
-        "classify the study as either:",
-        "- 'combination' if ANY study arm includes two or more distinct systemic anticancer drugs as treatment, or a named multi-drug regimen.",
-        "- 'single' if ALL study arms use only ONE systemic anticancer drug (even if compared to placebo, best supportive care, surgery, or radiotherapy).",
-        "",
-        "How to decide:",
-        "1) Look primarily at ARM GROUP DESCRIPTION. If missing/NA, use title + summary.",
-        "2) Identify systemic anticancer agents in each arm (e.g., chemo drugs, immunotherapy, targeted therapy, ADCs).",
-        "3) If any arm contains >=2 distinct anticancer agents, output 'combination'.",
-        "",
-        "Counts as COMBINATION:",
-        "- Explicit multi-drug arms using connectors like '+', 'plus', 'with', 'in combination with'.",
-        "- Named multi-agent regimens (e.g., FOLFOX, FOLFIRI, FLOT, CHOP, R-CHOP, ABVD, ICE, BEACOPP).",
-        "- Arms where a regimen name is followed by multiple drugs in parentheses (comma-separated).",
-        "- 'Drug A + chemo' or 'Drug A + Drug B' (even if the comparator is single-agent).",
-        "",
-        "Counts as SINGLE (do NOT upgrade to combination):",
-        "- Drug vs placebo / best supportive care.",
-        "- Multiple DOSES, schedules, formulations, or routes of the same drug.",
-        "- Mention of biomarkers, diagnostic tests, imaging, companion diagnostics.",
-        "- Surgery and/or radiotherapy added WITHOUT a second systemic anticancer drug.",
-        "- Non-anticancer supportive meds (antiemetics, analgesics, antibiotics, anticoagulants, growth factors).",
-        "",
-        "Edge rule:",
-        "- If one arm is combination and another is single-agent, label the STUDY as 'combination'.",
-        "",
-        "Output format:",
-        "- Output exactly ONE word, lowercase: combination OR single.",
-        "Do not output any explanations.",
-        sep = "\n"
-      ),
-      examples = examples_fs
-    )
-    
-    res <- tryCatch(
-      {
-        query(q, model = model, screen = FALSE, output = "text")
-      },
-      error = function(e) {
-        message("HTTP/rollama error for model ", model,
-                " indices ", min(idx), "-", max(idx), ": ", e$message)
-        NULL
-      }
-    )
-    
-    if (!is.null(res)) {
-      clean <- res %>%
-        tolower() %>%
-        trimws() #%>%
-        # ensure we keep only the keyword if model adds text
-        # str_extract("\\b(single|combination)\\b")
-      
-      labels[idx] <- ifelse(is.na(clean), "unknown", clean)
-    } else {
-      # leave labels[idx] as NA so you can detect failures
-      labels[idx] <- NA_character_
-    }
-  }
-  
-  labels
-}
-
-models <- c("qwen3:8b", "deepseek-r1:8b", "phi4")
-
-## LLM Performance ----
-
-llm_results <- lapply(models, function(m) {
-  classify_single_model_robust(
-    text_vec    = sample_protocolSection$query_text,
-    model       = m,
-    batch_size  = 32,       
-    examples_fs = examples_fs
-  )
-})
-
-names(llm_results) <- models
-
-# Bind back to the data frame
-for (m in models) {
-  sample_protocolSection[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
-}
-
-llm_results <- sample_protocolSection %>% select(qwen3_8b, deepseek_r1_8b, phi4)
-
-# Majority of votes
-
-sample_protocolSection$ensemble <- apply(llm_results, 1, function(x) {
-  prop <- table(x)
-  names(prop)[which.max(prop)]
-})
-
-#openxlsx2::write_xlsx(sample_protocolSection, "results/ClinicalTrials/sample_protocolSection_llm.xlsx")
-sample_protocolSection_lmm <- openxlsx2::read_xlsx("results/ClinicalTrials/sample_protocolSection_llm.xlsx")
-
-sample_protocolSection_curated <- openxlsx2::read_xlsx("results/ClinicalTrials/sample_protocolSection_manual_curated.xlsx") %>% select(manual_eval)
-
-sample_protocolSection_lmm$manual_eval <- sample_protocolSection_curated$manual_eval
-
-
-sample_protocolSection_lmm[c("qwen3_8b",
-                              "deepseek_r1_8b",
-                              "phi4",
-                              "ensemble",
-                              "manual_eval")] <- lapply(sample_protocolSection_lmm[c("qwen3_8b",
-                                                                                      "deepseek_r1_8b",
-                                                                                      "phi4",
-                                                                                      "ensemble",
-                                                                                      "manual_eval")], function(x) {
-                                                                                        x <- as.character(x)
-                                                                                        x[!x %in% c("single", "combination")] <- "single" # Replace NAs or NULL with single
-                                                                                        factor(x, levels = c("single", "combination"))
-                                                                                      })
-
-
-retrieve_metrics <- function(data, reference, models) {
-  
-  metrics <- tibble()
-  
-  for (m in models){
-    
-    model <- m
-    
-    df <- tibble(model = m, 
-                 accuracy = yardstick::accuracy(data, reference, m)$.estimate, 
-                 sensitivity = yardstick::sens(data, reference, m)$.estimate,
-                 specificity = yardstick::spec(data, reference, m)$.estimate,
-                 precision = yardstick::precision(data, reference, m)$.estimate,
-                 recall = yardstick::recall(data, reference, m)$.estimate,
-                 f1 = yardstick::f_meas(data, reference, m)$.estimate,
-                 mcc = yardstick::mcc(data, reference, m)$.estimate)
-    
-    metrics <- bind_rows(metrics, df)
-    
-  }
-  
-  return(metrics)
-}
-
-
-retrieve_metrics(data = sample_protocolSection_lmm, reference = "manual_eval", models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble"))
-
-## LLM Classification of Studies ----
-
-protocolSection_251230 <- clintrials %>%
-  map(protocolSection) %>%
-  bind_rows()
-protocolSection_251230 <- protocolSection_251230 %>% select(nctId, BriefTitle, BriefSummary, ArmGroupDescription)
+# protocolSection_251230 <- clintrials %>%
+#   map(protocolSection) %>%
+#   bind_rows()
+# protocolSection_251230 <- protocolSection_251230 %>% select(nctId, BriefTitle, BriefSummary, ArmGroupDescription)
 #openxlsx2::write_xlsx(protocolSection_251230, "results/ClinicalTrials/protocolSection_251230.xlsx")
-protocolSection_251230 <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230.xlsx")
 
-protocolSection_251230$query_text <- str_squish(
-  paste0(
-    "BRIEF TITLE:\n",
-    protocolSection_251230$BriefTitle,
-    "\n\n",
-    "BRIEF SUMMARY:\n",
-    protocolSection_251230$BriefSummary,
-    "\n ARM GROUP DESCRIPTION:\n",
-    protocolSection_251230$ArmGroupDescription,
-    "\n"
-  ))
-
-models <- c("qwen3:8b", "deepseek-r1:8b", "phi4")
-
-llm_results <- lapply(models, function(m) {
-  classify_single_model_robust(
-    text_vec    = protocolSection_251230$query_text,
-    model       = m,
-    batch_size  = 50,       
-    examples_fs = examples_fs
-  )
-})
-
-names(llm_results) <- models
-
-# Bind back to the data frame
-for (m in models) {
-  protocolSection_251230[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
-}
-
-#openxlsx2::write_xlsx(protocolSection_251230, "results/ClinicalTrials/protocolSection_251230_llm.xlsx")
+## Run '/R/llm_clinicaltrials_classification_tailscale.R' script in GPU machine.
 
 
-### LLM Results ----
+### 1.5.1 LLM Results ----
 
 load("results/ClinicalTrials/clintrials.Rdata")
 
-protocolSection_lmm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230_llm.xlsx")
+protocolSection_llm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230_llm.xlsx")
 
 # Clean llm outputs to contain only 'single' or 'combination'
 
@@ -739,27 +477,29 @@ clean_output <- function(x) {
   x <- tolower(x)
   # extract the FIRST match of either word
   m <- stringr::str_extract(x, "\\b(single|combination)\\b")
-  ifelse(is.na(m), "unknown", m)
+  ifelse(is.na(m), "single", m)
 }
 
-protocolSection_lmm <- protocolSection_lmm %>% mutate(
+protocolSection_llm <- protocolSection_llm %>% mutate(
   across(c(qwen3_8b, deepseek_r1_8b, phi4), clean_output)
 )
 
-
-llm_results <- protocolSection_lmm %>% select(qwen3_8b, deepseek_r1_8b, phi4)
-
+llm_results <- protocolSection_llm %>% select(qwen3_8b, deepseek_r1_8b, phi4)
 
 # Majority of votes
 
-protocolSection_lmm$ensemble <- apply(llm_results, 1, function(x) {
+protocolSection_llm$ensemble <- apply(llm_results, 1, function(x) {
   prop <- table(x)
   names(prop)[which.max(prop)]
 })
 
 #### Review disagreement results ----
 
-protocolSection_lmm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
+protocolSection_llm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
+
+#write_xlsx(protocolSection_llm, "results/ClinicalTrials/protocolSection_251230_llm_ensemble.xlsx")
+
+protocolSection_llm <- read_xlsx("results/ClinicalTrials/protocolSection_251230_llm_ensemble.xlsx")
 
 barplot_from_table <- function(data, X = NULL, Y, X_name = "X", Y_name = "Count", is.na = FALSE) {
   # Deal with NAs
@@ -781,50 +521,133 @@ barplot_from_table <- function(data, X = NULL, Y, X_name = "X", Y_name = "Count"
     cowplot::theme_cowplot()
 }
 
+#plotly::ggplotly(barplot_from_table(data = protocolSection_llm, X = c("no", "yes"), Y = "disagreement"))
 
-
-#plotly::ggplotly(barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement"))
-
-(p1 <- barplot_from_table(data = protocolSection_lmm, Y = "disagreement", 
+(p1 <- barplot_from_table(data = protocolSection_llm, Y = "disagreement", 
                    X_name = "Disagreement", Y_name = "Count") + labs(title = "Disagreement in LLMs Classification")
 )
 
-p2 <- barplot_from_table(data = protocolSection_lmm,
+p2 <- barplot_from_table(data = protocolSection_llm,
                    Y = "ensemble", X_name = "Class", Y_name = "Count") + 
   labs(title = "'ensemble' Classification Results",
        subtitle = "Results of the majority voting of the three LLMs")
 
 
-protocolSection_lmm_filtered <- protocolSection_lmm %>% filter(ensemble == "combination") 
+protocolSection_llm_filtered <- protocolSection_llm %>% filter(ensemble == "combination") 
 
-p3 <- barplot_from_table(protocolSection_lmm_filtered,
+p3 <- barplot_from_table(protocolSection_llm_filtered,
                          Y = "disagreement", X_name = "Disagreement", Y_name = "Count") + 
   labs(title = "Disagreement in 'ensemble' Results")
 
 
 plot_grid(p1, p2, p3, nrow = 1)
 
-#### Aproval notifications in filtered studies ----
+### 1.5.2 LLM Performance Evaluation ----
+
+# Calculate manual evaluation sample size, based on https://pmc.ncbi.nlm.nih.gov/articles/PMC4792103/ and assuming an expected accuracy
+# of 0.5 and 95% +- 5% confidence interval
+
+binom_N <- function(Z, p0, E) {
+  N <- (Z^2*p0*(1-p0))/E^2
+  return(ceiling(N))
+}
+
+N <- binom_N(Z = 1.96, p0 = 0.5, E = 0.05)
+
+prop.table(table((protocolSection_llm$ensemble)))
+
+set.seed(123)
+protocolSection_llm_test <- rsample::initial_split(protocolSection_llm, prop = N/nrow(protocolSection_llm), strata = ensemble)
+protocolSection_llm_test <- rsample::training(protocolSection_llm_test)
+
+prop.table(table((protocolSection_llm_test$ensemble)))
+
+
+# protocolSection_llm_test %>% arrange(nctId) %>% # to shuffle order of "single" / "combination"
+#   select(-c("qwen3_8b", "deepseek_r1_8b", "phi4","ensemble", "disagreement")) %>% 
+#   openxlsx2::write_xlsx("results/ClinicalTrials/protocolSection_251230_llm_test_manual_eval.xlsx")
+
+# Manual evaluation of classification of test sample
+# Load results
+
+protocolSection_llm_test_manual_eval <- read_xlsx("results/ClinicalTrials/protocolSection_251230_llm_test_manual_eval_260216.xlsx")
+
+protocolSection_llm_test_manual_eval <- protocolSection_llm_test_manual_eval %>% left_join(protocolSection_llm %>% select(nctId, qwen3_8b, deepseek_r1_8b, phi4, ensemble), by = "nctId")
+
+protocolSection_llm_test_manual_eval <- protocolSection_llm_test_manual_eval %>% mutate(manual_eval = as.factor(manual_eval),
+                                                                                        qwen3_8b = as.factor(qwen3_8b),
+                                                                                        deepseek_r1_8b = as.factor(deepseek_r1_8b),
+                                                                                        phi4 = as.factor(phi4),
+                                                                                        ensemble = as.factor(ensemble))
+
+retrieve_metrics <- function(data, reference, models) {
+  
+  metrics <- tibble()
+  
+  for (m in models){
+    
+    model <- m
+    
+    df <- tibble(model = m, 
+                 accuracy = yardstick::accuracy(data, reference, m)$.estimate, 
+                 sensitivity = yardstick::sens(data, reference, m)$.estimate,
+                 specificity = yardstick::spec(data, reference, m)$.estimate,
+                 precision = yardstick::precision(data, reference, m)$.estimate,
+                 #recall = yardstick::recall(data, reference, m)$.estimate,
+                 f1 = yardstick::f_meas(data, reference, m)$.estimate,
+                 mcc = yardstick::mcc(data, reference, m)$.estimate)
+    
+    metrics <- bind_rows(metrics, df)
+    
+  }
+  
+  return(metrics)
+}
+
+
+
+(clintrials_comb_eval_metrics <- retrieve_metrics(
+  data = protocolSection_llm_test_manual_eval,
+  reference = "manual_eval",
+  models = c("qwen3_8b", "deepseek_r1_8b", "phi4", "ensemble")
+  )
+)
+
+write_xlsx(clintrials_comb_eval_metrics, "results/ClinicalTrials/clintrials_comb_eval_metrics.xlsx")
+
+conf_matrix <- yardstick::conf_mat(protocolSection_llm_test_manual_eval, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for single-drug/combination of clinical trials")
+
+
+### 1.5.3 Aproval notifications in filtered studies ----
 
 ## Run code in point 1.3 to obtain the combination_approvals df
 
-combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_combinations_final.xlsx")
+combination_approvals <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_ClinTrials.xlsx")
+length(unique(combination_approvals$ID)) # 203
+
+protocolSection_llm_filtered <- protocolSection_llm %>% filter(ensemble == "combination") 
+
+combination_approvals <- combination_approvals %>% filter(clinicaltrialgov == TRUE)
+
+table(combination_approvals$nct %in% protocolSection_llm_filtered$nctId)
+
+not_found_approvals <- combination_approvals %>% filter(!nct %in% protocolSection_llm_filtered$nctId)
+
+not_found_studies <- protocolSection_llm %>% filter(nctId %in% not_found_approvals$nct)
+
+combination_approvals <- combination_approvals %>% filter(nct %in% protocolSection_llm_filtered$nctId)
+length(unique(combination_approvals$ID)) # 199
+length(unique(combination_approvals$nct)) # 168
 
 
-table(combination_approvals$nct %in% protocolSection_lmm_filtered$nctId)
 
+#2. Final filtering of combination clinical trials ----
 
-not_found_approvals <- combination_approvals %>% filter(!nct %in% protocolSection_lmm_filtered$nctId)
+protocolSection_llm <- protocolSection_llm %>% filter(ensemble == "combination") 
+rm(protocolSection_llm_filtered)
 
-not_found_studies <- protocolSection_lmm %>% filter(nctId %in% not_found_approvals$nct)
-
-
-### Final filtering of combination clinical trials ----
-
-protocolSection_lmm <- protocolSection_lmm %>% filter(ensemble == "combination") 
-rm(protocolSection_lmm_filtered)
-
-clintrials <- clintrials[names(clintrials) %in% protocolSection_lmm$nctId]
+clintrials <- clintrials[names(clintrials) %in% protocolSection_llm$nctId]
 
 protocolSection_combination <- clintrials %>%
   map(protocolSection) %>%
@@ -873,7 +696,7 @@ for (v in var_col) {
 cowplot::plot_grid(plotlist = p_list, nrow = 2)
 
 
-## Definition of Non-Successful Clinical Trials ----
+## 2.1 Definition of Non-Successful Clinical Trials ----
 
 var_col <- c("OverallStatus", "Phase", "DesignPrimaryPurpose")
 
@@ -911,9 +734,9 @@ for (v in var_col) {
   p <- barplot_from_table(data = df,
                           Y = v,
                           X_name = v) + labs(title = v) +
-    scale_color_discrete(palette = "Blues") +
-    scale_fill_discrete(palette = "Blues") +
-    labs(title = paste(v, "- Approved Studies")) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   p_list <- c(p_list, p)
@@ -922,7 +745,7 @@ for (v in var_col) {
 cowplot::plot_grid(plotlist = p_list, nrow = 2)
 
 
-### DesignPrimaryPurpose ----
+### 2.1.1 DesignPrimaryPurpose ----
 
 
 var_col <- c("OverallStatus", "Phase")
@@ -959,9 +782,9 @@ for (v in var_col) {
   p <- barplot_from_table(data = df,
                           Y = v,
                           X_name = v) + labs(title = v) +
-    scale_color_discrete(palette = "Blues") +
-    scale_fill_discrete(palette = "Blues") +
-    labs(title = paste(v, "- Approved Studies")) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   p_list <- c(p_list, p)
@@ -970,7 +793,7 @@ for (v in var_col) {
 cowplot::plot_grid(plotlist = p_list, nrow = 2)
 
 
-### Why Stopped ----
+### 2.1.2 Why Stopped ----
 
 df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT")
 
@@ -1023,9 +846,9 @@ for (v in var_col) {
   p <- barplot_from_table(data = df,
                           Y = v,
                           X_name = v) + labs(title = v) +
-    scale_color_discrete(palette = "Blues") +
-    scale_fill_discrete(palette = "Blues") +
-    labs(title = paste(v, "- Approved Studies")) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   p_list <- c(p_list, p)
@@ -1037,93 +860,48 @@ cowplot::plot_grid(plotlist = c(p1,p_list), nrow = 2)
 protocolSection_WhyStopped <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT", !is.na(WhyStopped))
 #openxlsx2::write_xlsx(protocolSection_WhyStopped, "results/ClinicalTrials/protocolSection_WhyStopped.xlsx")
 
-
-protocolSection_WhyStopped$WhyStopped
-
-
-set.seed(123)
-protocolSection_WhyStopped_sample <- protocolSection_WhyStopped[round(runif(n = 100, min = 1, max = nrow(protocolSection_WhyStopped)), 0), ] %>% 
-  select(nctId, WhyStopped)
-#openxlsx2::write_xlsx(protocolSection_WhyStopped_sample, "results/protocolSection_WhyStopped_sample.xlsx")
-
-
-protocolSection_WhyStopped_sample <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_sample_llm.xlsx")
-llm_results <- protocolSection_WhyStopped_sample %>% select(qwen3_14b, deepseek_r1_8b, phi4)
-
-# Majority of votes
-
-protocolSection_WhyStopped_sample$ensemble <- apply(llm_results, 1, function(x) {
-  prop <- table(x)
-  names(prop)[which.max(prop)]
-})
-
-
-protocolSection_WhyStopped_sample$manual_eval <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_sample_manual.xlsx") %>% pull(manual_eval)
-
-
-
-protocolSection_WhyStopped_sample[c("qwen3_14b",
-                             "deepseek_r1_8b",
-                             "phi4",
-                             "ensemble",
-                             "manual_eval")] <- lapply(protocolSection_WhyStopped_sample[c("qwen3_14b",
-                                                                                    "deepseek_r1_8b",
-                                                                                    "phi4",
-                                                                                    "ensemble",
-                                                                                    "manual_eval")], function(x) {
-                                                                                      x <- as.character(x)
-                                                                                      x[!x %in% c("efficacy", "safety", "nonclinical")] <- "nonclinical" # Replace NAs or NULL with single
-                                                                                      factor(x, levels = c("efficacy", "safety", "nonclinical"))
-                                                                                    })
-
-
-retrieve_metrics <- function(data, reference, models) {
-  
-  metrics <- tibble()
-  
-  for (m in models){
-    
-    model <- m
-    
-    df <- tibble(model = m, 
-                 accuracy = yardstick::accuracy(data, reference, m)$.estimate, 
-                 sensitivity = yardstick::sens(data, reference, m)$.estimate,
-                 specificity = yardstick::spec(data, reference, m)$.estimate,
-                 precision = yardstick::precision(data, reference, m)$.estimate,
-                 recall = yardstick::recall(data, reference, m)$.estimate,
-                 f1 = yardstick::f_meas(data, reference, m)$.estimate,
-                 mcc = yardstick::mcc(data, reference, m)$.estimate)
-    
-    metrics <- bind_rows(metrics, df)
-    
-  }
-  
-  return(metrics)
-}
-
-
-retrieve_metrics(data = protocolSection_WhyStopped_sample, reference = "manual_eval", models = c("qwen3_14b", "deepseek_r1_8b", "phi4", "ensemble"))
-
-
-yardstick::conf_mat(protocolSection_WhyStopped_sample, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
-  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for WhyStopped clinical trials classification")
-
-
+#### WhyStopped - LLM classification ----
 
 # Run 'llm_clinicaltrials_WhyStopped_tailscale.R' script
 
-
 protocolSection_WhyStopped_llm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm.xlsx")
+
+clean_output <- function(x) {
+  x <- tolower(x)
+  # extract the FIRST match of either word
+  m <- stringr::str_extract(x, "\\b(safety|efficacy|nonclinical)\\b")
+  ifelse(is.na(m), "nonclinical", m)
+}
+
+protocolSection_WhyStopped_llm <- protocolSection_WhyStopped_llm %>% mutate(
+  across(c(qwen3_14b, deepseek_r1_8b, phi4), clean_output)
+)
+
 llm_results <- protocolSection_WhyStopped_llm %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+
 protocolSection_WhyStopped_llm$ensemble <- apply(llm_results, 1, function(x) { # Majority of votes
   prop <- table(x)
   names(prop)[which.max(prop)]
 })
 
+protocolSection_WhyStopped_llm$needs_review <- apply(llm_results, 1, function(x) { # Majority of votes
+  agreement = max(table(x))/length(x)
+  (agreement < 2/3)
+})
 
-table(protocolSection_WhyStopped_llm$ensemble)
+#write_xlsx(protocolSection_WhyStopped_llm, "results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed.xlsx")
+# Manual review of ties 1-1-1
 
-protocolSection_WhyStopped_llm <- protocolSection_WhyStopped_llm %>% filter(ensemble %in% c("efficacy", "safety"))
+protocolSection_WhyStopped_llm <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed.xlsx")
+
+df <- protocolSection_WhyStopped_llm
+
+barplot_from_table(data = df,
+                   Y = "ensemble",
+                   X_name = "WhyStopped") + labs(title = "WhyStopped") +
+  scale_color_discrete(palette = "Reds") +
+  scale_fill_discrete(palette = "Reds")  +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
@@ -1131,7 +909,7 @@ var_col <- c("OverallStatus", "Phase")
 
 p_list <- list()
 
-df <- protocolSection_WhyStopped_llm
+df <- protocolSection_WhyStopped_llm %>% filter(ensemble != "nonclinical")
 
 for (v in var_col) {
   
@@ -1141,7 +919,7 @@ for (v in var_col) {
   
   p <- barplot_from_table(data = df,
                           Y = v,
-                          X_name = v) + labs(title = v) +
+                          X_name = v) + labs(title = paste(v, " - Non-successful Clinical Trials")) +
     scale_color_discrete(palette = "Reds") +
     scale_fill_discrete(palette = "Reds") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -1163,44 +941,97 @@ for (v in var_col) {
                           X_name = v) + labs(title = v) +
     scale_color_discrete(palette = "Purples") +
     scale_fill_discrete(palette = "Purples") +
-    labs(title = paste(v, "- Approved Studies")) +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   p_list <- c(p_list, p)
 }
 
-cowplot::plot_grid(plotlist = p_list, nrow = 2)
+p1 <- cowplot::plot_grid(plotlist = p_list, nrow = 2)
 
 
 library(ggsankey)
 
-
-sankey_nonsuccessful <- protocolSection_WhyStopped_llm %>% make_long(OverallStatus, Phase)
+sankey_nonsuccessful <- protocolSection_WhyStopped_llm %>% filter(ensemble != "nonclinical") %>% make_long(OverallStatus, Phase)
 
 p_nonsucc <- ggplot(sankey_nonsuccessful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
   geom_sankey(flow.alpha = 0.33) +
   scale_fill_discrete(palette = "RdGy") +
-  geom_sankey_label(size = 4, color = "black", alpha = 0.75) +
+  geom_sankey_label(size = 6, color = "black", alpha = 0.75) +
   theme_sankey(base_size = 18) +
   labs(x = NULL) +
   theme(legend.position = "none",
         plot.title = element_text(hjust = .5)) + 
   labs(title = "Non-successful Clinical Trials")
 
-
 sankey_successful <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT") %>% make_long(OverallStatus, Phase)
 
 p_succ <- ggplot(sankey_successful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
   geom_sankey(flow.alpha = 0.33) +
   scale_fill_discrete(palette = "PRGn") +
-  geom_sankey_label(size = 4, color = "black", alpha = 0.75) +
+  geom_sankey_label(size = 6, color = "black", alpha = 0.75) +
   theme_sankey(base_size = 18) +
   labs(x = NULL) +
   theme(legend.position = "none",
         plot.title = element_text(hjust = .5)) + 
   labs(title = "Successful Clinical Trials")
 
-plot_grid(p_nonsucc, p_succ, nrow = 1)
+p2 <- plot_grid(p_nonsucc, p_succ, nrow = 2)
+
+
+plot_grid(p1, p2, nrow = 1)
+
+
+
+#### WhyStopped - LLM classification evaluation  ----
+
+# all records predicted as safety were manually annotated (n = 131)
+
+safety <- protocolSection_WhyStopped_llm %>% filter(ensemble == "safety")
+
+# enriched sample of records predicted as efficacy (n = 120) and a random sample of records predicted as nonclinical (n = 200)
+
+efficacy <- protocolSection_WhyStopped_llm %>% filter(ensemble == "efficacy")
+set.seed(123)
+efficacy <- efficacy[sample.int(n = nrow(efficacy), size = 120, replace = FALSE),]
+
+nonclinical <- protocolSection_WhyStopped_llm %>% filter(ensemble == "nonclinical")
+set.seed(123)
+nonclinical <- nonclinical[sample.int(n = nrow(nonclinical), size = 200, replace = FALSE),]
+
+protocolSection_WhyStopped_lmm_eval <- bind_rows(safety, efficacy, nonclinical) %>% arrange(nctId)
+protocolSection_WhyStopped_lmm_eval <- protocolSection_WhyStopped_lmm_eval %>% select(nctId, WhyStopped)
+#write_xlsx(protocolSection_WhyStopped_lmm_eval, "results/ClinicalTrials/protocolSection_WhyStopped_llm_eval.xlsx")
+
+protocolSection_WhyStopped_lmm_eval <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_eval_260217.xlsx")
+
+protocolSection_WhyStopped_lmm_eval <- protocolSection_WhyStopped_lmm_eval %>% left_join(protocolSection_WhyStopped_llm %>% select(nctId, qwen3_14b, deepseek_r1_8b, phi4, ensemble), by = "nctId")
+
+protocolSection_WhyStopped_lmm_eval <- protocolSection_WhyStopped_lmm_eval %>% mutate(manual_eval = as.factor(manual_eval),
+                                                                                        qwen3_14b = as.factor(qwen3_14b),
+                                                                                        deepseek_r1_8b = as.factor(deepseek_r1_8b),
+                                                                                        phi4 = as.factor(phi4),
+                                                                                        ensemble = as.factor(ensemble))
+
+WhyStopped_eval_metrics <- retrieve_metrics(
+  data = protocolSection_WhyStopped_lmm_eval,
+  reference = "manual_eval",
+  models = c("qwen3_14b", "deepseek_r1_8b", "phi4", "ensemble")
+)
+write_xlsx(WhyStopped_eval_metrics, "results/ClinicalTrials/WhyStopped_eval_metrics.xlsx")
+
+WhyStopped_conf_matrix <- yardstick::conf_mat(protocolSection_WhyStopped_lmm_eval, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for WhyStopped labels")
+WhyStopped_conf_matrix
+save(WhyStopped_conf_matrix, file = "results/ClinicalTrials/WhyStopped_conf_matrix.RData")
+
+
+
+
+
+
+
+
 
 
 # ChEMBL ----
@@ -1332,6 +1163,5 @@ combination_approvals_filtered <- openxlsx2::read_xlsx("results/FDA/approval_not
 combination_approvals_filtered <- combination_approvals_filtered %>% filter(!is.na(standard_inchi_key))
 
 #openxlsx2::write_xlsx(combination_approvals_filtered, "results/FDA/approval_notifications_combinations_1stdraft_InChIKeys_filtered.xlsx")
-
 
 

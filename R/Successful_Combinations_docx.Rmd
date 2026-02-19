@@ -9,7 +9,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,
+knitr::opts_chunk$set(echo = TRUE,
                       fig.align = "center", # center all figures
                       fig.width = 10, # width in inches for R plots
                       fig.height = 8, # height in inches for R plots
@@ -224,6 +224,7 @@ protocolSection <- function(study) {
 ```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
 library(DT)
+library(cowplot)
 
 approval_notifications_test <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_test_ensembled.xlsx")
 
@@ -273,7 +274,7 @@ retrieve_metrics <- function(data, reference, models) {
 ```
 
 
-# 1. [FDA Approval Notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications)
+# 1. [Successful Drug Combination Studies - FDA Approval Notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications)
 
 
 The list of approved drug combinations was generated based on the resources and approval notifications provided by the FDA. Specifically, three datasets, [oncology (cancer)/hematologic malignancies approval notifications](https://www.fda.gov/drugs/resources-information-approved-drugs/oncology-cancerhematologic-malignancies-approval-notifications), [verified clinical benefit | cancer accelerated approvals](https://www.fda.gov/drugs/resources-information-approved-drugs/verified-clinical-benefit-cancer-accelerated-approvals), and [withdrawn | cancer accelerated approvals](https://www.fda.gov/drugs/resources-information-approved-drugs/withdrawn-cancer-accelerated-approvals) were considered for the analysis. 
@@ -309,6 +310,9 @@ The final dataset included 204 approval notifications and 176 unique NCT IDs.
 
 ![Flow diagram of approval notifications filtering.](../www/Approvals_Filtering.drawio.png)
 
+\n
+\n
+
 # 2. ClinicalTrials.gov
 
 Clinical trials were retrieved using the [ClinicalTrials.gov API](https://www.clinicaltrials.gov/data-api/api) and the following search terms:
@@ -324,8 +328,12 @@ Clinical trials were retrieved using the [ClinicalTrials.gov API](https://www.cl
 - **Phase**: `2, 3 OR 4`
 - **Status**: `ACTIVE_NOT_RECRUITING,SUSPENDED,COMPLETED,TERMINATED,WITHDRAWN,UNKNOWN`
 
-A total of **32319 studies** were obtained from this search. The list of studies were again queried to the 3 LLMs previously mentioned to verify whether the clinical trial corresponded to the evaluation of a drug combination. The **Brief Title**, **Brief Summary**, and **Arm Group Description** fields from each study were provided to the LLMs for the classification. An initial random sample containing 100 clinical trials was manually labeled by an expert blinded to the model output to evaluate the performance of the models. The results show a high agreement between the manual and LLM classification:
+A total of **32319 studies** were obtained from this search. The list of studies were again queried to the 3 LLMs previously mentioned to verify whether the clinical trial corresponded to the evaluation of a drug combination. The **Brief Title**, **Brief Summary**, and **Arm Group Description** fields from each study were provided to the LLMs for the classification. An initial random sample containing 100 clinical trials was manually labeled by an expert blinded to the model output to evaluate the performance of the models. 
 
+The following definitions were used to classify the studies:
+
+- **combination**: if ANY study arm includes two or more distinct systemic anticancer drugs as treatment, or a named multi-drug regimen.
+- **single**: if ALL study arms use only ONE systemic anticancer drug (even if compared to placebo, best supportive care, surgery, or radiotherapy).
 
 _Code with the instructions for the LLMs (click 'show'):_
 ```{r, eval=FALSE}
@@ -454,6 +462,8 @@ classify_single_model_robust <- function(text_vec,
 ```
 
 
+The results show a high agreement between the manual and LLM classification:
+
 
 ```{r, message=FALSE, fig.align='center', warning=FALSE}
 
@@ -491,7 +501,7 @@ yardstick::conf_mat(sample_protocolSection_lmm, truth = "manual_eval", estimate 
 
 #### **Results of LLM Classification**
 
-```{r, message=FALSE, fig.width=16}
+```{r, message=FALSE, fig.width=16, fig.height=6}
 protocolSection_lmm <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_251230_llm.xlsx")
 
 # Clean llm outputs to contain only 'single' or 'combination'
@@ -523,8 +533,13 @@ protocolSection_lmm$ensemble <- apply(llm_results, 1, function(x) {
 protocolSection_lmm$disagreement <- apply(llm_results, 1, function(x) length(unique(x)) > 1)
 
 
-barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
+
+barplot_from_table <- function(data, X = NULL, Y, X_name = "X", Y_name = "Count") {
   # Deal with NAs
+  
+  if (is.null(X)) {
+    X <- names(table(data[[Y]], useNA = "ifany"))
+  }
   
   data[[Y]][data[[Y]] == "NA"] <- NA
   
@@ -532,14 +547,12 @@ barplot_from_table <- function(data, X, Y, X_name = "X", Y_name = "Count") {
   colnames(df) <- c(X_name, Y_name)
   df %>% ggplot(aes(x = .data[[X_name]], y = .data[[Y_name]])) + 
     geom_bar(aes(fill = .data[[X_name]], color = .data[[X_name]]), alpha = 0.3, stat = "identity") +
-    geom_text(aes(label = paste(round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+    geom_text(aes(label = paste(100*round(.data[[Y_name]]/sum(.data[[Y_name]]), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
     geom_text(aes(label = .data[[Y_name]]), vjust = 1.6, color = "gray50") +
     cowplot::theme_cowplot()
 }
 
 
-
-barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement")
 
 p1 <- barplot_from_table(data = protocolSection_lmm, X = c("no", "yes"), Y = "disagreement", 
                    X_name = "Disagreement", Y_name = "Count") + labs(title = "Disagreement in LLMs Classification")
@@ -564,7 +577,7 @@ cowplot::plot_grid(p1, p2, p3, nrow = 1)
 
 #### Stats of Combination Clinical Trials
 
-```{r, message=FALSE, fig.width=30, fig.height=15, out.width="100%"}
+```{r, message=FALSE, fig.width=28, fig.height=8, out.width="100%"}
 load("../results/ClinicalTrials/clintrials.Rdata")
 
 clintrials <- clintrials[names(clintrials) %in% protocolSection_lmm$nctId]
@@ -573,8 +586,7 @@ protocolSection_combination <- clintrials %>%
   map(protocolSection) %>%
   bind_rows()
 
-var_col <- c("OverallStatus", "Phase", "DesignAllocation", 
-             "DesignInterventionModel", "DesignPrimaryPurpose")
+var_col <- c("OverallStatus", "Phase", "DesignPrimaryPurpose")
 
 
 p_list <- list()
@@ -588,57 +600,20 @@ for (v in var_col) {
   
   
   p <- barplot_from_table(data = df,
-                          X = unique(df[[v]]),
                           Y = v,
                           X_name = v) + labs(title = v) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p_list <- c(p_list, p)
 }
 
-cowplot::plot_grid(plotlist = p_list, nrow = 2)
+cowplot::plot_grid(plotlist = p_list, nrow = 1)
 ```
 
 
-#### Overall Recruitment Status
-**Definition**: The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of "Recruiting," then the Overall Recruitment Status for the study must be "Recruiting."
-
-- **Active, not recruiting**: Study is continuing, meaning participants are receiving an intervention or being examined, but new participants are not currently being recruited or enrolled
-- **Completed**: The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant’s last visit has occurred)
-- **Suspended**: Study halted prematurely but potentially will resume
-- **Terminated**: Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention
-- **Withdrawn**: Study halted prematurely, prior to enrollment of first participant
-
-#### Allocation
-**Definitions**: The method by which participants are assigned to arms in a clinical trial.
-
-- **N/A (not applicable)**: For a single-arm trial
-- **Randomized**: Participants are assigned to intervention groups by chance
-- **Nonrandomized**: Participants are expressly assigned to intervention groups through a non-random method, such as physician choice
-
-#### Interventional Study Model
-**Definition**: The strategy for assigning interventions to participants.
-
-- **Single** Group: Clinical trials with a single arm
-- **Parallel**: Participants are assigned to one of two or more groups in parallel for the duration of the study
-- **Crossover**: Participants receive one of two (or more) alternative interventions during the initial phase of the study and receive the other intervention during the second phase of the study
-- **Factorial**: Two or more interventions, each alone and in combination, are evaluated in parallel against a control group
-- **Sequential**: Groups of participants are assigned to receive interventions based on prior milestones being reached in the study, such as in some dose escalation and adaptive design studies
-
-#### Primary Purpose
-**Definition**: The main objective of the intervention(s) being evaluated by the clinical trial. Select one.
-
-- **Treatment**: One or more interventions are being evaluated for treating a disease, syndrome, or condition.
-- **Prevention**: One or more interventions are being assessed for preventing the development of a specific disease or health condition.
-- **Diagnostic**: One or more interventions are being evaluated for identifying a disease or health condition.
-- **Supportive Care**: One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.
-- **Screening**: One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.
-- **Health Services Research**: One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.
-- **Basic Science**: One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).
-- **Other**: None of the other options applies.
 
 #### Approval Notification Studies in the Filtered List of Clinical Trials
 
-From the 204 approval notifications, **6 were not present** in the final list of retrieved clinical studies:
+From the 201 approval notifications/171 clinical trials, **6 were not present** in the final list of retrieved clinical studies:
 
 1. [Approval of Lonsurf for recurrent, metastatic gastric and gastroesophageal junction adenocarcinoma](https://wayback.archive-it.org/7993/20201222064349/https://www.fda.gov/drugs/drug-approvals-and-databases/fda-approves-lonsurf-recurrent-metastatic-gastric-and-gastroesophageal-junction-adenocarcinoma), [NCT02500043](https://clinicaltrials.gov/study/NCT02500043). 
 2. [Approval of trifluridine/tipiracil (LONSURF, Taiho Oncology, Inc.) for the treatment of patients with metastatic colorectal cancer who have been previously treated with fluoropyrimidine-, oxaliplatin- , and irinotecan-based chemotherapy, an anti-VEGF biologic product, and an anti-EGFR monoclonal antibody, if RAS wild-type.](https://wayback.archive-it.org/7993/20170111231628/http://www.fda.gov/Drugs/InformationOnDrugs/ApprovedDrugs/ucm463743.htm), [NCT01607957](https://clinicaltrials.gov/study/NCT01607957).
@@ -655,9 +630,11 @@ From the 204 approval notifications, **6 were not present** in the final list of
 - **Study 5**: The approval notification mentions _asparaginase erwinia chrysanthemi (recombinant)-rywn) (Rylaze, Jazz Pharmaceuticals, Inc.) as **a component of a multi-agent chemotherapeutic regimen**_. However, the study ([NCT04145531](https://clinicaltrials.gov/study/NCT04145531)) that is referenced for the approval only has one drug (JZP-458). 
 - **Study 6**: Aterolizumab is used as adjuvant on top of cisplatin-based chemotherapy. The arm-defining randomized intervention is atezolizumab monotherapy vs best supportive care, and the cisplatin-based treatment is background therapy applied to both groups. This could be flagged as combination or single depending on how strict is the criteria.
 
+\n
+
 #### Stats of Approved Combination Clinical Trials
 
-```{r,  message=FALSE, fig.width=30, fig.height=15, out.width="100%"}
+```{r,  message=FALSE, fig.width=20, fig.height=8, out.width="100%"}
 combination_approvals <- openxlsx2::read_xlsx("../results/FDA/approval_notifications_combinations_final.xlsx")
 
 
@@ -672,12 +649,440 @@ for (v in var_col) {
   
   
   p <- barplot_from_table(data = df,
-                          X = unique(df[[v]]),
                           Y = v,
-                          X_name = v) + labs(title = paste(v, "- Approved Studies"))
+                          X_name = v) + labs(title = paste(v, "- Approved Clinical Trials")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p_list <- c(p_list, p)
 }
 
-cowplot::plot_grid(plotlist = p_list, nrow = 2)
+cowplot::plot_grid(plotlist = p_list, nrow = 1)
 ```
+
+
+# 3. Definition of Non-Successful Drug Combinations
+
+## 3.1 DesignPrimaryPurpose
+
+**Most of the studies' design primary purpose is _TREATMENT_.**
+
+
+#### Primary Purpose
+**Definition**: The main objective of the intervention(s) being evaluated by the clinical trial. Select one.
+
+- **Treatment**: One or more interventions are being evaluated for treating a disease, syndrome, or condition.
+- **Prevention**: One or more interventions are being assessed for preventing the development of a specific disease or health condition.
+- **Diagnostic**: One or more interventions are being evaluated for identifying a disease or health condition.
+- **Supportive Care**: One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.
+- **Screening**: One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.
+- **Health Services Research**: One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.
+- **Basic Science**: One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).
+- **Other**: None of the other options applies.
+
+
+In the list of successful combinations, only two have a different primary purpose:
+
+1. **[NCT01743131](https://clinicaltrials.gov/study/NCT01743131): PREVENTION**
+
+[FDA approves abatacept for prophylaxis of acute graft versus host disease](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-abatacept-prophylaxis-acute-graft-versus-host-disease). 
+
+This is a GVHD prophylaxis study in the transplant setting. The regimen components here—abatacept, cyclosporine/tacrolimus (calcineurin inhibitors), and methotrexate (used here as immunosuppression)—are being used for immunoprophylaxis, not as a systemic anticancer combination regimen.
+
+2. **[NCT02465060](https://clinicaltrials.gov/study/NCT02465060): OTHER**
+
+[FDA grants accelerated approval to dabrafenib in combination with trametinib for unresectable or metastatic solid tumors with BRAF V600E mutation](https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-dabrafenib-combination-trametinib-unresectable-or-metastatic-solid).
+
+The approval specifically mentions the 'Experimental Subprotocol H' (BRAF V600E/R/K/D mutation). Patients with BRAF V600E/R/K/D mutation receive dabrafenib PO BID and trametinib PO QD on days 1-28. It is a drug combination study, but with other experimental subprotocols that are single drug. Importantly, NCT02465060 is just one of the studies referenced in the approval, which also references other two additional clinical trials.
+
+**Keeping only studies with DesignPrimaryPurpose:TREATMENT**
+
+## 3.2 WhyStopped
+
+**Why Study Stopped**
+
+Definition: A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is "Suspended," "Terminated," or "Withdrawn" prior to its planned completion as anticipated by the protocol).
+
+It might be a good way to distinguish those studies that have stopped due to efficacy/safety reasons. 
+The use of just the overall recruitment status or the phase does not seem to be a robust way to classify the studies in non-successful, given that some approvals are granted for studies that are still active or in phase 2.
+
+```{r, message=FALSE, warning=FALSE, fig.width=20, fig.height=14, fig.cap="OverallStatus and Phase in studies with text in the 'WhyStopped' field and in approved clinical trials"}
+df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT")
+
+df <- tibble(WhyStopped = factor(c("No", "Yes")), Count = as.numeric(table(!is.na(df$WhyStopped))))
+
+p1 <- df %>% ggplot(aes(WhyStopped, y = Count)) + 
+  geom_bar(aes(fill = WhyStopped, color = WhyStopped), alpha = 0.3, stat = "identity") +
+  geom_text(aes(label = paste(100*round(Count/sum(Count), 3), "%", sep = "")), vjust = -0.6, fontface = "bold") +
+  geom_text(aes(label = Count), vjust = 1.6, color = "gray50") +
+  cowplot::theme_cowplot() + labs(title = "WhyStopped") +
+  scale_color_discrete(palette = "Reds") +
+  scale_fill_discrete(palette = "Reds") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
+var_col <- c("OverallStatus", "Phase")
+
+p_list <- list()
+
+df <- protocolSection_combination %>% filter(DesignPrimaryPurpose == "TREATMENT", !is.na(WhyStopped))
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+p_list <- c(p_list, NA)
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct)
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+cowplot::plot_grid(plotlist = c(p1,p_list), nrow = 2)
+
+```
+
+### LLM filtering
+
+The **3151 studies** that provided some information for the termination/suspension/withdrawal of the studie were further analyzed. The list of studies were again queried to 3 LLMs (qwen3:14b, deepseek-r1:8b, phi4) to classify the reason of study termination/suspension/withdrawal into **_efficacy/safety/nonclinical_**. The following definitions were used to classify the reason for study termination/suspension/withdrawal:
+
+- **efficacy**: the text explicitly states futility or insufficient efficacy/benefit (e.g., 'futility', 'lack of efficacy', 'failed to meet endpoint', 'did not meet endpoint', 'insufficient activity', 'interim analysis indicated results not sufficient to continue', 'protocol-specified futility criteria met', 'insufficient responders / response threshold not met').
+- **safety**: the text explicitly states safety/toxicity as the cause (e.g., 'toxicity', 'unacceptable toxicity', 'safety concerns', 'safety signal', 'higher rate of deaths', 'fatal infections', 'DLT', 'DSMB recommended termination due to safety').
+- **nonclinical**: all other reasons (accrual/recruitment/enrollment, funding, sponsor/company/business decision, reprioritization, administrative/regulatory/IRB/IND issues, site not activated, competing studies, protocol redesign, drug supply/manufacturing, feasibility/dropouts).
+
+
+_Code with the instructions for the LLMs (click 'show'):_
+
+```{r, eval=FALSE}
+examples_fs <- tibble::tribble(
+  ~text, ~answer,
+  
+  # Negation / business
+  "Business decision, not driven by safety concerns; no new safety signals have been observed in the ociperlimab program.",
+  "nonclinical",
+  "Company decision to discontinue the AVE1642 development program, not due to any safety or efficacy concerns",
+  "nonclinical",
+  "The Sponsor decided to discontinue this study due to a corporate restructuring intended to prioritize clinical development of select programs. No patients enrolled in this study and no patients received investigational product.",
+  "nonclinical",
+  
+  # Vague / should be nonclinical by your design
+  "Stopping rules met",
+  "nonclinical",
+  "Interim Analysis",
+  "nonclinical",
+  "withdrawn",
+  "nonclinical",
+  
+  # Accrual / enrollment (nonclinical)
+  "slow enrollment",
+  "nonclinical",
+  "Due to poor clinical trial accrual, the study was terminated.",
+  "nonclinical",
+  "Study was terminated due to slow subject accrual",
+  "nonclinical",
+
+  # Admin/regulatory/logistics (nonclinical)
+  "Study was never submitted to the IRB & never opened. PI is leaving institution.",
+  "nonclinical",
+  "Drug supply issues",
+  "nonclinical",
+  "Required re-formulation of DFMO from IV to capsule to maintain safety",
+  "nonclinical",
+  
+  # Efficacy / futility (explicit)
+  "Lack of efficacy",
+  "efficacy",
+  "DSMB futility analysis",
+  "efficacy",
+  "Study terminated for meeting protocol specified futility criteria.",
+  "efficacy",
+  "Phase 2 of recruitment was contingent on 5 of 15 patients responding, which did not occur.",
+  "efficacy",
+  "The study was stopped after interim analysis indicated that overall result was not sufficient to satisfy per-protocol criteria to move forward in metastatic, castration-resistant prostate cancer (mCRPC) and non-small cell lung cancer (NSCLC) cohorts.",
+  "efficacy",
+  "It did not show a significant benefit to justify completing the full target accrual.",
+  "efficacy",
+  
+  # Safety / toxicity (explicit)
+  "Withdrawn due to toxicity",
+  "safety",
+  "Two patients in the first dose level be counted as reaching DLT. DSMB recommend terminated early this trial.",
+  "safety",
+  "Due to safety; specifically a higher rate of deaths, including fatal infections, in the SGN33A arm versus the control arm",
+  "safety"
+)
+
+
+
+classify_single_model_robust <- function(text_vec,
+                                         model,
+                                         batch_size = 32,
+                                         examples_fs = NULL) {
+  n <- length(text_vec)
+  idx_list <- split(seq_len(n), ceiling(seq_len(n) / batch_size))
+  
+  # Pre-allocate with NA so we can see failed/unfinished rows
+  labels <- rep(NA_character_, n)
+  
+  for (idx in idx_list) {
+    cat("Model", model, "- processing indices", min(idx), "-", max(idx), "...\n")
+    
+    q <- make_query(
+      text     = text_vec[idx],
+      template = "{text}\n{prompt}",
+      prompt   = paste(
+        "Classify the study stop reason.",
+        "Return exactly one label: efficacy, safety, or nonclinical",
+        sep = "\n"
+      ),
+      system = paste(
+        "You are a biomedical clinical trial discontinuation classifier.",
+        "Input: one free-text reason for why a clinical trial was terminated/suspended/withdrawn (ClinicalTrials.gov).",
+        "Task: Return EXACTLY ONE label from this set:",
+        "- efficacy",
+        "- safety",
+        "- nonclinical",
+        "",
+        "Definitions:",
+        "- 'efficacy': the text explicitly states futility or insufficient efficacy/benefit (e.g., 'futility', 'lack of efficacy', 'failed to meet endpoint', 'did not meet endpoint', 'insufficient activity', 'interim analysis indicated results not sufficient to continue', 'protocol-specified futility criteria met', 'insufficient responders / response threshold not met').",
+        "- 'safety': the text explicitly states safety/toxicity as the cause (e.g., 'toxicity', 'unacceptable toxicity', 'safety concerns', 'safety signal', 'higher rate of deaths', 'fatal infections', 'DLT', 'DSMB recommended termination due to safety').",
+        "- 'nonclinical': all other reasons (accrual/recruitment/enrollment, funding, sponsor/company/business decision, reprioritization, administrative/regulatory/IRB/IND issues, site not activated, competing studies, protocol redesign, drug supply/manufacturing, feasibility/dropouts).",
+        "Critical rules (precision-first):",
+        "1) Negations override keywords: if the text says 'no safety concerns/signals' or 'not due to safety/efficacy', then output 'nonclinical' unless there is an explicit efficacy or safety failure stated elsewhere.",
+        "2) Be conservative: choose efficacy or safety ONLY when the reason is explicit. If vague (e.g., 'Stopping rules met', 'Interim analysis'), output 'nonclinical'.",
+        "3) If multiple reasons are given, choose the primary causal reason. If a nonclinical reason is stated clearly and the efficacy/safety language is weak or indirect (e.g., 'not encouraging'), output 'nonclinical.'",
+        "",
+        "Output format:",
+        "Output must be exactly ONE label: efficacy OR safety OR nonclinical, lowercase, and nothing else (no punctuation, no explanations).",
+        "Do not output any explanations.",
+        sep = "\n"
+      ),
+      examples = examples_fs
+    )
+    
+    res <- tryCatch(
+      {
+        query(q, model = model, screen = FALSE, output = "text")
+      },
+      error = function(e) {
+        message("HTTP/rollama error for model ", model,
+                " indices ", min(idx), "-", max(idx), ": ", e$message)
+        NULL
+      }
+    )
+    
+    if (!is.null(res)) {
+      clean <- res %>%
+        tolower() %>%
+        trimws() #%>%
+      # ensure we keep only the keyword if model adds text
+      # str_extract("\\b(single|combination)\\b")
+      
+      labels[idx] <- ifelse(is.na(clean), "unknown", clean)
+    } else {
+      # leave labels[idx] as NA so you can detect failures
+      labels[idx] <- NA_character_
+    }
+  }
+  
+  labels
+}
+
+```
+
+An initial random sample containing 100 clinical trials was manually labeled by an expert blinded to the model output to evaluate the performance of the models. The results show a high agreement between the manual and LLM classification:
+
+```{r, message=FALSE, fig.align='center', warning=FALSE}
+
+protocolSection_WhyStopped_sample <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_WhyStopped_sample_llm.xlsx")
+llm_results <- protocolSection_WhyStopped_sample %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+
+# Majority of votes
+
+protocolSection_WhyStopped_sample$ensemble <- apply(llm_results, 1, function(x) {
+  prop <- table(x)
+  names(prop)[which.max(prop)]
+})
+
+
+protocolSection_WhyStopped_sample$manual_eval <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_WhyStopped_sample_manual.xlsx") %>% pull(manual_eval)
+
+
+
+protocolSection_WhyStopped_sample[c("qwen3_14b",
+                             "deepseek_r1_8b",
+                             "phi4",
+                             "ensemble",
+                             "manual_eval")] <- lapply(protocolSection_WhyStopped_sample[c("qwen3_14b",
+                                                                                    "deepseek_r1_8b",
+                                                                                    "phi4",
+                                                                                    "ensemble",
+                                                                                    "manual_eval")], function(x) {
+                                                                                      x <- as.character(x)
+                                                                                      x[!x %in% c("efficacy", "safety", "nonclinical")] <- "nonclinical" # Replace NAs or NULL with nonclinical
+                                                                                      factor(x, levels = c("efficacy", "safety", "nonclinical"))
+                                                                                    })
+
+
+
+knitr::kable(
+  retrieve_metrics(
+    data = protocolSection_WhyStopped_sample,
+    reference = "manual_eval",
+    models = c("qwen3_14b", "deepseek_r1_8b", "phi4", "ensemble")
+  )  %>% dplyr::mutate(across(where(is.numeric), round, 3))
+)
+
+
+yardstick::conf_mat(protocolSection_WhyStopped_sample, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for WhyStopped clinical trials classification")
+
+```
+
+**Results of LLM Classification of WhyStopped**
+
+```{r, fig.height=12, fig.width=12, out.width="60%"}
+protocolSection_WhyStopped_llm <- openxlsx2::read_xlsx("../results/ClinicalTrials/protocolSection_WhyStopped_llm.xlsx")
+llm_results <- protocolSection_WhyStopped_llm %>% select(qwen3_14b, deepseek_r1_8b, phi4)
+protocolSection_WhyStopped_llm$ensemble <- apply(llm_results, 1, function(x) { # Majority of votes
+  prop <- table(x)
+  names(prop)[which.max(prop)]
+})
+
+df <- protocolSection_WhyStopped_llm
+df$ensemble[!df$ensemble %in%  c("efficacy", "safety", "nonclinical")] <- NA
+barplot_from_table(data = df,
+                   Y = "ensemble",
+                   X_name = "WhyStopped") + labs(title = "WhyStopped") +
+  scale_color_discrete(palette = "Reds") +
+  scale_fill_discrete(palette = "Reds")  +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Studies without label:
+
+- 2 studies were terminated due to "toxicity and lack of efficacy".
+- 1 study was terminated due to "inability to achieve and optimize a dose that could provide a positive benefit risk profile".
+
+All of them were manually labelled as terminated due to "safety".
+
+
+## 3.3 Final List of Non-Successful Clinical Trials
+
+![Flow diagram of non-successful clinical trials filtering.](../www/NonSuccessful_Filtering.drawio.png)
+
+
+**Overall Status and Phase in Successful and Non-successful Clinical Trials**
+
+```{r, warning=FALSE, fig.height=18, fig.width=32, out.width="100%"}
+
+protocolSection_WhyStopped_llm$ensemble[!protocolSection_WhyStopped_llm$ensemble %in%  c("efficacy", "safety", "nonclinical")] <- "safety"
+
+protocolSection_WhyStopped_llm <- protocolSection_WhyStopped_llm %>% filter(ensemble != "nonclinical")
+
+var_col <- c("OverallStatus", "Phase")
+
+p_list <- list()
+
+df <- protocolSection_WhyStopped_llm
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = paste(v, " - Non-successful Clinical Trials")) +
+    scale_color_discrete(palette = "Reds") +
+    scale_fill_discrete(palette = "Reds") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+
+df <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT")
+
+for (v in var_col) {
+  
+  
+  df[[v]][df[[v]] == "NA"] <- NA
+  
+  
+  p <- barplot_from_table(data = df,
+                          Y = v,
+                          X_name = v) + labs(title = v) +
+    scale_color_discrete(palette = "Purples") +
+    scale_fill_discrete(palette = "Purples") +
+    labs(title = paste(v, "- Approved Clinical Trials")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  p_list <- c(p_list, p)
+}
+
+p1 <- cowplot::plot_grid(plotlist = p_list, nrow = 2)
+
+
+library(ggsankey)
+
+
+sankey_nonsuccessful <- protocolSection_WhyStopped_llm %>% make_long(OverallStatus, Phase)
+
+p_nonsucc <- ggplot(sankey_nonsuccessful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
+  geom_sankey(flow.alpha = 0.33) +
+  scale_fill_discrete(palette = "RdGy") +
+  geom_sankey_label(size = 6, color = "black", alpha = 0.75) +
+  theme_sankey(base_size = 18) +
+  labs(x = NULL) +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5)) + 
+  labs(title = "Non-successful Clinical Trials")
+
+
+sankey_successful <- protocolSection_combination %>% filter(nctId %in% combination_approvals$nct, DesignPrimaryPurpose == "TREATMENT") %>% make_long(OverallStatus, Phase)
+
+p_succ <- ggplot(sankey_successful, aes(x = x, next_x = next_x, node = node, next_node = next_node, fill = factor(node), label = node)) +
+  geom_sankey(flow.alpha = 0.33) +
+  scale_fill_discrete(palette = "PRGn") +
+  geom_sankey_label(size = 6, color = "black", alpha = 0.75) +
+  theme_sankey(base_size = 18) +
+  labs(x = NULL) +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5)) + 
+  labs(title = "Successful Clinical Trials")
+
+p2 <- plot_grid(p_nonsucc, p_succ, nrow = 2)
+
+
+plot_grid(p1, p2, nrow = 1)
+```
+
 
