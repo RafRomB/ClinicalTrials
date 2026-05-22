@@ -1,7 +1,6 @@
 # FDA-Approved vs. Non-Approved Drug Combination Clinical Trials: Comparative Analysis of ClinicalTrials.gov Records
 
-
-## Project overvies
+## Project Structure
 
 ```
 .
@@ -80,4 +79,25 @@
 12 directories, 69 files
 
 ```
+
+## Data Sources
+
+- [FDA Approval Notifications](https://www.fda.gov/drugs/drug-approvals-and-databases/resources-information-approved-drugs)
+- [ClinicalTrials.gov API](https://clinicaltrials.gov/data-api/api)
+- [Aggregated Analysis of ClinicalTrials.gov database (AACT)](https://aact.ctti-clinicaltrials.org/connect)
+- [DrugBank](https://go.drugbank.com/)
+
+Each page contains information and resources explaining the contained data. 
+FDA approvals information was retrieved using web scrapping.
+ClinicalTrials.gov API and AACT database data were retrieved programatically in R.
+DrugBank dictionary was downloaded from the webpage (user account needed).
+
+## R scripts
+
+Description of the R scripts in the `R/` folder:
+
+- `01_FDA.R`: Script for information retrieval and processing of the FDA approval notifications.
+  - `02_FDA_tailscale.R`: Script for LLM classification of FDA approval notifications.
+- `03_0_clinicaltrials.R`: Script for ClinicalTrials.gov API data retrieval and processing.
+  - `03_01_llm_clinicaltrials_classification_tailscale.R`: Script for LLM classification of oncology trials into drug combination or single.
 
