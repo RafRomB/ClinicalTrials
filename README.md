@@ -121,3 +121,8 @@ These additional files are also provided:
 
 - `data/drugbank_all_full_database/drugbank vocabulary.csv`: DrugBank vocabulary with drug names and associated information, including DrugBank IDs.
 - `results/leukemiaApprovalsSuspensions.csv`: Studies information for CLL and AML.
+
+
+A Google Docs document with an initial draft of the "Methods" can be accessed [here](https://docs.google.com/document/d/1mWLI3vYvP-fpJYjBvCxxRgg-uYzoRQ5xLtzP7L2URYY/edit?usp=sharing).
+And also a summary presentation with the initial results can be found [here](https://docs.google.com/presentation/d/14KhR4ZtK8wW7aoagB7CsEYwR98XE7PSWPP9Ke0eghME/edit?slide=id.p1#slide=id.p1).
+
