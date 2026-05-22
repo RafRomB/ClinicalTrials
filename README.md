@@ -96,8 +96,28 @@ DrugBank dictionary was downloaded from the webpage (user account needed).
 
 Description of the R scripts in the `R/` folder:
 
-- `01_FDA.R`: Script for information retrieval and processing of the FDA approval notifications.
-  - `02_FDA_tailscale.R`: Script for LLM classification of FDA approval notifications.
-- `03_0_clinicaltrials.R`: Script for ClinicalTrials.gov API data retrieval and processing.
-  - `03_01_llm_clinicaltrials_classification_tailscale.R`: Script for LLM classification of oncology trials into drug combination or single.
+- `01_FDA.R`: Information retrieval and processing of the FDA approval notifications.
+  - `02_FDA_tailscale.R`: LLM classification of FDA approval notifications.
+- `03_0_clinicaltrials.R`: ClinicalTrials.gov API data retrieval and processing.
+  - `03_01_llm_clinicaltrials_classification_tailscale.R`: LLM classification of oncology trials into drug combination or single.
+  - `03_2_llm_clinicaltrials_WhyStopped_tailscale.R`: LLM classification of TERMINATED/SUSPENDED/WITHDRAWN clinical trials into efficacy/safety/nonclinical reasons for failure.
+- `04_clinicaltrialsAPI_info.R`: Studies information retrieval directly from the ClinicalTrials.gov API.
+- `05_0_AACT.R`: Studies information retrieval using AACT database.
+  - `05_1_AACT_DrugMapping_llmR`: Drug names extraction for clinical trials groups.
+  - `05_2_AACT_DesignGroupInterventionsDrugs_Mapping.R`: Normalization, processing, curation, and mapping of drug names from study arm groups to DrugBank IDs.
+  - `05_3_drug_map_evaluation.R`: Generation of sample of studies for the evaluation of the drug name retrieval and DrugBank ID mapping.
+- `06_AACT_Analysis.R`: Comparative analysis of approved vs. non-approved drug combination clinical trials.
+- `figures.R`: Generation of figures summarizing the LLM performance metrics.
+- `leukemia_JieZhu.R`: Retrieval of studies information for chronic lymphocytic leukemia (CLL) and  acute myeloid leukemia (AML) [(10.64898/2026.05.18.725869)](https://www.biorxiv.org/content/10.64898/2026.05.18.725869v1).
 
+The complete execution of `01_FDA.R`, `03_0_clinicaltrials.R`, and `05_0_AACT.R` scripts depend on data generated in the nested scripts. 
+It is indicated in the code when those files should be run to generate the data (which is provided in the folder in any case).
+
+## Data and Files
+
+The `FileList.xlsx` contains a description of the different files contained in `/data/` and `/results/` folders. 
+
+These additional files are also provided:
+
+- `data/drugbank_all_full_database/drugbank vocabulary.csv`: DrugBank vocabulary with drug names and associated information, including DrugBank IDs.
+- `results/leukemiaApprovalsSuspensions.csv`: Studies information for CLL and AML.
