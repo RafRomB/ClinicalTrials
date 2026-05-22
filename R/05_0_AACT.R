@@ -7,6 +7,9 @@ library(httr2)
 
 # 1. Load data and connect to DB ----
 
+## You need to create an account in AACT in order to access the database. Once created
+## substitute the 'user' and 'password' with your username and password.
+
 drv <- dbDriver('PostgreSQL')
 con <- dbConnect(drv, dbname="aact",host="aact-db.ctti-clinicaltrials.org", port=5432, user="your_user", password="your_password")
 
