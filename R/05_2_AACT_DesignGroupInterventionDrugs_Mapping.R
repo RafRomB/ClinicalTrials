@@ -8,9 +8,9 @@ library(openxlsx2)
 
 # 1. Define paths ----
 drugbank_path <- "data/drugbank_all_full_database/drugbank vocabulary.csv"
-output_path <- "results/ClinicalTrials/groups_drugbank_mapping.xlsx"
-manual_review_path <- "results/ClinicalTrials/drugbiol_drugbank_mapping_unresolved_query_names_reviewed.xlsx"
-fuzzy_review_path <- "results/ClinicalTrials/drugbiol_drugbank_mapping_unresolved_review_suggestions.xlsx"
+output_path <- "results/DrugBank/groups_drugbank_mapping.xlsx"
+manual_review_path <- "results/DrugBank/drugbiol_drugbank_mapping_unresolved_query_names_reviewed.xlsx"
+fuzzy_review_path <- "results/DrugBank/drugbiol_drugbank_mapping_unresolved_review_suggestions.xlsx"
 fuzzy_top_n <- 2L
 
 # 2. Load local data ----
@@ -986,7 +986,7 @@ write_xlsx(x = list(
   unresolved_names = unresolved_search,
   unresolved_query_review = unresolved_query_review,
   unresolved_review_suggestions = unresolved_review_suggestions),
-  file = "results/ClinicalTrials/drugbank_mapping_unresolved.xlsx"
+  file = "results/DrugBank/drugbank_mapping_unresolved.xlsx"
   )
 
 
@@ -1162,7 +1162,7 @@ drugs <- mapped_names %>% select(drugbank_id, drugbank_common_name, accession_nu
 
 # 10. Save results ----
 
-write_xlsx(drugs, "results/ClinicalTrials/drugs.xlsx")
+#write_xlsx(drugs, "results/DrugBank/drugs.xlsx")
 
 DesignGroupInterventionDrugs_mapped <- DesignGroupInterventionDrugs_llm %>% 
   left_join(group_map %>% select(group_id, drugbank_id), by = "group_id")
@@ -1180,7 +1180,7 @@ group_drugs <- DesignGroupInterventionDrugs_mapped %>%
   ) %>%
   mutate(id = paste0("ID0", 1:length(group_id)), .before = group_id)
 
-write_xlsx(group_drugs, "results/ClinicalTrials/group_drugs.xlsx")
+#write_xlsx(group_drugs, "results/DrugBank/group_drugs.xlsx")
 
 
 write_xlsx(
