@@ -567,6 +567,12 @@ protocolSection_WhyStopped_llm$needs_review <- apply(llm_results, 1, function(x)
 protocolSection_WhyStopped_llm <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed.xlsx")
 
 
+protocolSection_WhyStopped_llm <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed.xlsx")
+protocolSection_WhyStopped_llm_safety_efficacy <- protocolSection_WhyStopped_llm %>% filter(ensemble %in% c("efficacy", "safety"))
+write_xlsx(protocolSection_WhyStopped_llm_safety_efficacy, "results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed_safety_efficacy.xlsx")
+
+
+
 #### WhyStopped - LLM classification evaluation  ----
 
 # all records predicted as safety were manually annotated (n = 131)
