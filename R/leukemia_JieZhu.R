@@ -1,8 +1,10 @@
 library(tidyverse)
+library(openxlsx2)
 
-
-FDA_llm_curated_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_ClinTrials.xlsx")
+FDA_llm_curated_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")
 FDA_llm_curated_combinations <- FDA_llm_curated_combinations %>% select(nct, title, description, full_text, url)
+
+Conditions <- read_xlsx("results/AACT/Conditions.xlsx")
 
 successful <- read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")
 successful <- successful %>% pull(nct) %>% unique()
@@ -23,18 +25,21 @@ NCT_df <- bind_rows(
   )
 )
 
-protocolSectionCond <- protocolSection_df %>% select(nct_id, Condition)
-
 # Filter for CLL and AML related conditions
-leukemia_conditions <- protocolSectionCond %>%
-  filter(str_detect(Condition, 
+leukemia_conditions <- Conditions %>%
+  filter(str_detect(name, 
                     regex("chronic lymphocytic leukemia|CLL|acute myeloid leukemia|AML", 
                           ignore_case = TRUE)))
 
 
-NCT_leukemia <- leukemia_conditions %>% left_join(NCT_df, by = c("nct_id" = "NCT"))
+NCT_leukemia <- leukemia_conditions %>% group_by(nct_id) %>% summarise(name = paste(name, collapse = "; "))
+NCT_leukemia <- NCT_leukemia %>% left_join(
+  leukemia_conditions %>% select(nct_id, FDA_Approved) %>% distinct(nct_id, FDA_Approved), 
+  by = "nct_id")
+
 
 
 NCT_leukemia <- NCT_leukemia %>% left_join(FDA_llm_curated_combinations, by = join_by("nct_id" == "nct"))
 
 write.csv(NCT_leukemia, "results/leukemiaApprovalsSuspensions.csv")
+
