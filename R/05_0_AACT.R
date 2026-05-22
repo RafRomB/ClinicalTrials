@@ -8,7 +8,7 @@ library(httr2)
 # 1. Load data and connect to DB ----
 
 drv <- dbDriver('PostgreSQL')
-con <- dbConnect(drv, dbname="aact",host="aact-db.ctti-clinicaltrials.org", port=5432, user="rafrombec", password="f@Q8JysbAxCgTd8")
+con <- dbConnect(drv, dbname="aact",host="aact-db.ctti-clinicaltrials.org", port=5432, user="your_user", password="your_password")
 
 successful <- read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")
 successful <- successful %>% pull(nct) %>% unique()
