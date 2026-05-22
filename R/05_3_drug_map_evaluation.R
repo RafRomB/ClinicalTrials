@@ -5,15 +5,15 @@ library(openxlsx2)
 library(ggpubr)
 
 # 1. Load data ----
-drugs = read_xlsx("results/ClinicalTrials/groups_drugbank_mapping.xlsx", sheet = "drugs")
-mapped_names = read_xlsx("results/ClinicalTrials/groups_drugbank_mapping.xlsx", sheet = "mapped_names")
-group_map = read_xlsx("results/ClinicalTrials/groups_drugbank_mapping.xlsx", sheet = "group_map")
-group_drugs = read_xlsx("results/ClinicalTrials/groups_drugbank_mapping.xlsx", sheet = "group_drugs")
-unresolved_groups = read_xlsx("results/ClinicalTrials/groups_drugbank_mapping.xlsx", sheet = "unresolved_groups")
-unresolved_names = read_xlsx("results/ClinicalTrials/drugbank_mapping_unresolved.xlsx", sheet = "unresolved_names")
-unresolved_query_review = read_xlsx("results/ClinicalTrials/drugbank_mapping_unresolved.xlsx", sheet = "unresolved_query_review")
+drugs = read_xlsx("results/DrugBank/groups_drugbank_mapping.xlsx", sheet = "drugs")
+mapped_names = read_xlsx("results/DrugBank/groups_drugbank_mapping.xlsx", sheet = "mapped_names")
+group_map = read_xlsx("results/DrugBank/groups_drugbank_mapping.xlsx", sheet = "group_map")
+group_drugs = read_xlsx("results/DrugBank/groups_drugbank_mapping.xlsx", sheet = "group_drugs")
+unresolved_groups = read_xlsx("results/DrugBank/groups_drugbank_mapping.xlsx", sheet = "unresolved_groups")
+unresolved_names = read_xlsx("results/DrugBank/drugbank_mapping_unresolved.xlsx", sheet = "unresolved_names")
+unresolved_query_review = read_xlsx("results/DrugBank/drugbank_mapping_unresolved.xlsx", sheet = "unresolved_query_review")
 
-DesignGroupInterventionDrugs <- read_xlsx("results/ClinicalTrials/DesignGroupInterventionDrugs_llm.xlsx")
+DesignGroupInterventionDrugs <- read_xlsx("results/AACT/DesignGroupInterventionDrugs_llm.xlsx")
 
 # Total intervention arms
 n_groups <- length(unique(DesignGroupInterventionDrugs$group_id))
@@ -30,9 +30,9 @@ n_unresolved <- sum(!DesignGroupInterventionDrugs$group_id %in% group_map$group_
 
 n_drugs <- length(unique(drugs$drugbank_id))
 
-unresolved_reviewed <- read_xlsx("results/ClinicalTrials/drugbiol_drugbank_mapping_unresolved_query_names_reviewed.xlsx")
+unresolved_reviewed <- read_xlsx("results/DrugBank/drugbiol_drugbank_mapping_unresolved_query_names_reviewed.xlsx")
 unresolved_names <- unresolved_names %>% left_join(unresolved_reviewed, by = "query_name_clean")
-write_xlsx(unresolved_names, "results/ClinicalTrials/unresolved_names_drugbankids.xlsx")
+#write_xlsx(unresolved_names, "results/ClinicalTrials/unresolved_names_drugbankids.xlsx")
 
 unresolved_names <- unresolved_names %>% filter(is.na(drugbank_id))
 
