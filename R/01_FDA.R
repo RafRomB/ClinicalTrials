@@ -549,7 +549,7 @@ merged_table <- bind_rows(approval_notifications, AA_benefit, AA_withdrawal)
 
 ### 2.2.1 LLM Results ----
 
-## Run script `\R\FDA_tailscale.R`
+## Run script `\R\02_FDA_tailscale.R` ----
 
 FDA_llm <- openxlsx2::read_xlsx("results/FDA/approval_notifications_merged_table_llm_results.xlsx")
 
@@ -872,6 +872,8 @@ length(unique(FDA_llm_curated_combinations$nct)) # 177
 FDA_llm_curated_combinations <- openxlsx2::read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final.xlsx")
 length(unique(FDA_llm_curated_combinations$ID)) # 206
 length(unique(FDA_llm_curated_combinations$nct)) # 177
+
+## Run scripts /R/03_0_clinicaltrials.R
 
 protocolSection_llm <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230_llm_ensemble.xlsx")
 protocolSection_llm_comb <- protocolSection_llm %>% filter(ensemble == "combination")

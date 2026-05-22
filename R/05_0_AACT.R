@@ -3,7 +3,6 @@
 library(tidyverse)
 library(openxlsx2)
 library(RPostgreSQL)
-library(webchem)
 library(httr2)
 
 # 1. Load data and connect to DB ----
@@ -50,13 +49,23 @@ MESH_HEADING <- dbGetQuery(conn = con, statement = "SELECT id, qualifier, headin
 
 
 query <- sprintf("
-               SELECT id, nct_id, mesh_term, downcase_mesh_term, mesh_type
+               SELECT *
                FROM browse_interventions
                WHERE nct_id IN (%s)
                ", ids_sql)
 BrowseInterventions <- dbGetQuery(con, query)
+BrowseInterventions <- BrowseInterventions %>% left_join(NCT_df, by = "nct_id")
+write_xlsx(BrowseInterventions, "results/AACT/BrowseInterventions.xlsx")
 
-MESH_list <- BrowseInterventions %>% filter(mesh_type == "mesh-list")
+query <- sprintf("
+               SELECT *
+               FROM browse_conditions
+               WHERE nct_id IN (%s)
+               ", ids_sql)
+BrowseConditions <- dbGetQuery(con, query)
+BrowseConditions <- BrowseConditions %>% left_join(NCT_df, by = "nct_id")
+write_xlsx(BrowseConditions, "results/AACT/BrowseConditions.xlsx")
+
 
 ## 2.2 interventions, intervention_other_names ----
 
@@ -67,8 +76,8 @@ query <- sprintf("
                  ", ids_sql)
 
 
-Intervention <- dbGetQuery(con, query)
-write_xlsx(Intervention, "data/AACT/Interventions.xlsx")
+Interventions <- dbGetQuery(con, query)
+write_xlsx(Interventions, "data/AACT/Interventions.xlsx")
 
 query <- sprintf("
                  SELECT id AS other_name_id, intervention_id, name AS other_name
@@ -78,66 +87,6 @@ query <- sprintf("
 
 InterventionOtherNames <- dbGetQuery(con, query)
 write_xlsx(InterventionOtherNames, "data/AACT/InterventionOtherNames.xlsx")
-
-
-### 2.1.1 Map interventions to identifiers ----
-
-# Run script 'ACCT_DrugMapping.R'
-
-## 2.2 studies ----
-
-query <- sprintf("SELECT
-                 nct_id,
-                 study_first_submitted_date, 
-                 results_first_submitted_date, 
-                 last_update_submitted_date, 
-                 last_update_posted_date, 
-                 last_update_posted_date_type, 
-                 start_month_year, 
-                 start_date_type, 
-                 start_date, 
-                 completion_month_year, 
-                 completion_date_type, 
-                 completion_date, 
-                 target_duration, 
-                 study_type, 
-                 acronym, 
-                 baseline_population, 
-                 brief_title, 
-                 official_title, 
-                 overall_status, 
-                 last_known_status, 
-                 phase, enrollment, 
-                 enrollment_type, 
-                 source, 
-                 limitations_and_caveats, 
-                 number_of_arms, 
-                 number_of_groups, 
-                 why_stopped, 
-                 has_expanded_access, 
-                 expanded_access_type_individual, 
-                 expanded_access_type_intermediate, 
-                 expanded_access_type_treatment, 
-                 has_dmc, is_fda_regulated_drug, 
-                 is_fda_regulated_device, 
-                 is_unapproved_device, 
-                 is_us_export, 
-                 biospec_retention, 
-                 biospec_description, 
-                 created_at, 
-                 updated_at, 
-                 source_class, 
-                 expanded_access_nctid, 
-                 expanded_access_status_for_nctid, 
-                 fdaaa801_violation, 
-                 baseline_type_units_analyzed, 
-                 patient_registry 
-                 FROM studies
-                 WHERE nct_id IN (%s)
-                 ", ids_sql)
-
-
-studies <- dbGetQuery(con, query)
 
 ## 2.3 design_groups, design_group_interventions ----
 
@@ -149,7 +98,7 @@ query <- sprintf("
 
 
 DesignGroups <- dbGetQuery(con, query)
-
+write_xlsx(DesignGroups, "data/AACT/DesignGroups.xlsx")
 
 query <- sprintf("
                  SELECT id, nct_id, design_group_id, intervention_id
@@ -159,3 +108,46 @@ query <- sprintf("
 
 
 DesignGroupInterventions <- dbGetQuery(con, query)
+write_xlsx(DesignGroupInterventions, "data/AACT/DesignGroupInterventions.xlsx")
+
+
+## 2.4 Map drugs to groups ----
+
+# Run script 'R/ACCT_DesignGroupInterventionDrugs_Mapping.R' ----
+
+# The resulting data is in 'results/groups_drugbank_mapping.xlsx', which includes
+# several tabs with the retrieved drugs and the mapping
+
+## 2.5 studies ----
+
+query <- sprintf("SELECT *
+                 FROM studies
+                 WHERE nct_id IN (%s)
+                 ", ids_sql)
+
+
+Studies <- dbGetQuery(con, query)
+
+Studies <- Studies %>% left_join(NCT_df, by = "nct_id")
+write_xlsx(Studies, "results/AACT/Studies.xlsx")
+
+## 2.6 Conditions ----
+
+query <- sprintf("
+                 SELECT * FROM conditions WHERE nct_id IN (%s)
+                 ", ids_sql)
+
+Conditions <- dbGetQuery(con, query)
+Conditions <- Conditions %>% left_join(NCT_df, by = "nct_id")
+write_xlsx(Conditions, "results/AACT/Conditions.xlsx")
+
+## 2.7 ResultGroup ----
+
+query <- sprintf("
+                 SELECT * FROM result_groups WHERE nct_id IN (%s)
+                 ", ids_sql)
+
+ResultGroups <- dbGetQuery(con, query)
+
+
+

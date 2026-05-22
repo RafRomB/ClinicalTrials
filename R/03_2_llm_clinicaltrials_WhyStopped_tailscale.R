@@ -8,7 +8,7 @@ library(rollama)
 
 options(rollama_seed = 42)
 
-protocolSection_WhyStopped <- openxlsx2::read_xlsx("results/protocolSection_WhyStopped.xlsx")
+protocolSection_WhyStopped <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped.xlsx")
 
 
 examples_fs <- tibble::tribble(
@@ -164,6 +164,6 @@ for (m in models) {
   protocolSection_WhyStopped[[paste0(gsub("[:\\-]", "_", m))]] <- llm_results[[m]]
 }
 
-openxlsx2::write_xlsx(protocolSection_WhyStopped, "results/protocolSection_WhyStopped_llm.xlsx")
+openxlsx2::write_xlsx(protocolSection_WhyStopped, "results/ClinicalTrials/protocolSection_WhyStopped_llm.xlsx")
 
 

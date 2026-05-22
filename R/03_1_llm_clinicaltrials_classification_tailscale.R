@@ -8,7 +8,7 @@ library(rollama)
 
 options(rollama_seed = 42)
 
-protocolSection_251230 <- openxlsx2::read_xlsx("results/protocolSection_251230.xlsx")
+protocolSection_251230 <- openxlsx2::read_xlsx("results/ClinicalTrials/protocolSection_251230.xlsx")
 
 protocolSection_251230$query_text <- stringr::str_squish(
   paste0(

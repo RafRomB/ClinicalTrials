@@ -1,8 +1,11 @@
 # 0. Load libraries ----
 
+library(tidyverse)
 library(ggplot2)
 library(ggpubr)
 library(cowplot)
+library(openxlsx2)
+library(ggpubr)
 
 # 1. Load data ----
 
@@ -39,6 +42,22 @@ protocolSection_WhyStopped_lmm_eval <- protocolSection_WhyStopped_lmm_eval %>% m
                                                                                       ensemble = as.factor(ensemble))
 
 
+eval_metrics <- function(data, y_true, y_pred) {
+  eval_metrics <- tibble(
+    Accuracy = data %>% yardstick::precision(truth = .data[[y_true]], estimate = .data[[y_pred]], estimator = "macro") %>% pull(.estimate), 
+    Sensitivity = data %>% yardstick::sensitivity(truth = .data[[y_true]], estimate = .data[[y_pred]], estimator = "macro") %>% pull(.estimate), 
+    Precision = data %>% yardstick::precision(truth = .data[[y_true]], estimate = .data[[y_pred]], estimator = "macro") %>% pull(.estimate), 
+    F1 = data %>% yardstick::f_meas(
+      truth = .data[[y_true]],
+      estimate = .data[[y_pred]],
+      event_level = "second",
+      estimator = "macro"
+    ) %>% pull(.estimate),
+    MCC = data %>% yardstick::mcc(truth = .data[[y_true]], estimate = .data[[y_pred]]) %>% pull(.estimate),
+  )
+  return(eval_metrics)
+}
+
 
 # 2. Figures ----
 
@@ -47,15 +66,58 @@ width <- 8.27
 
 ## 2.1 Supplementary Figures ----
 
-FDA_conf_matrix <- yardstick::conf_mat(merged_table_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
-  scale_fill_gradient(low = "white", high = "slateblue") +
-  labs(title = "Evaluation of LLM performance for FDA approval notifications")
 
 clinitrials_comb_conf_matrix <- yardstick::conf_mat(protocolSection_llm_test_manual_eval, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
   scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for single-drug/combination of clinical trials")
 
+bind_rows(
+  protocolSection_llm_test_manual_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "qwen3_8b"),
+  protocolSection_llm_test_manual_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "deepseek_r1_8b"),
+  protocolSection_llm_test_manual_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "phi4"),
+  protocolSection_llm_test_manual_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "ensemble")
+) %>% round(2) %>%
+  mutate(
+    Model = c("Qwen3:8b", "Deepseek-r1:8b", "phi4", "ensemble"),
+    .before = Accuracy) %>%
+  ggtexttable(rows = NULL, theme = ttheme("light", base_size = 16)) %>% 
+  tab_add_title(text = "LLM performance for Fingle-drug/combination\nof clinical trials", face = "bold", size = 18) +
+  theme(plot.margin = unit(c(2, 2, 2, 2), "mm")) -> clintrials_perf
+
 WhyStopped_conf_matrix <- yardstick::conf_mat(protocolSection_WhyStopped_lmm_eval, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
   scale_fill_gradient(low = "white", high = "slateblue") + labs(title = "Evaluation of LLM performance for WhyStopped labels")
 
-plot_grid(FDA_conf_matrix, NULL, clinitrials_comb_conf_matrix, NULL, WhyStopped_conf_matrix, NULL, ncol = 2, rel_widths = c(0.4,0.6), labels = c("a", "", "b", "", "c", ""))
-ggsave("figures/SuppFig01.pdf", height = height, width = 2*width)
+bind_rows(
+  protocolSection_WhyStopped_lmm_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "qwen3_14b"),
+  protocolSection_WhyStopped_lmm_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "deepseek_r1_8b"),
+  protocolSection_WhyStopped_lmm_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "phi4"),
+  protocolSection_WhyStopped_lmm_eval %>% eval_metrics(y_true = "manual_eval", y_pred = "ensemble")
+) %>% round(2) %>%
+  mutate(
+    Model = c("Qwen3:14b", "Deepseek-r1:8b", "phi4", "ensemble"),
+    .before = Accuracy) %>%
+  ggtexttable(rows = NULL, theme = ttheme("light", base_size = 16)) %>% 
+  tab_add_title(text = "LLM performance for for WhyStopped labels", face = "bold", size = 18) +
+  theme(plot.margin = unit(c(2, 2, 2, 2), "mm")) -> WhyStopped_perf
+
+FDA_conf_matrix <- yardstick::conf_mat(merged_table_test, truth = "manual_eval", estimate = "ensemble") %>% autoplot(type = "heatmap") + # Use tiles for the heatmap cells
+  scale_fill_gradient(low = "white", high = "slateblue") +
+  labs(title = "Evaluation of LLM performance for FDA approval notifications")
+
+bind_rows(
+  merged_table_test %>% eval_metrics(y_true = "manual_eval", y_pred = "qwen3_14b"),
+  merged_table_test %>% eval_metrics(y_true = "manual_eval", y_pred = "deepseek_r1_8b"),
+  merged_table_test %>% eval_metrics(y_true = "manual_eval", y_pred = "phi4"),
+  merged_table_test %>% eval_metrics(y_true = "manual_eval", y_pred = "ensemble")
+) %>% round(2) %>%
+  mutate(
+    Model = c("Qwen3:14b", "Deepseek-r1:8b", "phi4", "ensemble"),
+    .before = Accuracy) %>%
+  ggtexttable(rows = NULL, theme = ttheme("light", base_size = 16)) %>% 
+  tab_add_title(text = "LLM performance for FDA approval notifications", face = "bold", size = 18) +
+  theme(plot.margin = unit(c(2, 2, 2, 2), "mm")) -> FDA_perf
+
+
+
+
+plot_grid(clinitrials_comb_conf_matrix, clintrials_perf, WhyStopped_conf_matrix, WhyStopped_perf, FDA_conf_matrix, FDA_perf , ncol = 2, rel_widths = c(0.4,0.6), labels = c("a", "", "b", "", "c", ""))
+ggsave("figures/SuppFig01.pdf", height = height, width = 1.66*width)

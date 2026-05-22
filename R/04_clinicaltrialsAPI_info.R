@@ -5,13 +5,15 @@ library(openxlsx2)
 
 # 1. Load data ----
 
-load("results/ClinicalTrials/clintrials_260219.Rdata")
+load("results/ClinicalTrials/clintrials.Rdata")
 
 successful <- read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")
 successful <- successful %>% pull(nct) %>% unique()
 
 non_successful <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed_safety_efficacy.xlsx")
 non_successful <- non_successful %>% pull(nctId) %>% unique()
+
+clintrials <- clintrials[c(successful, non_successful)]
 
 # Clinical trials dataframe
 
@@ -101,143 +103,6 @@ collapse_field <- function(x, field, sep, keep_na_levels = TRUE) {
 }
 
 
-
-
-# Function to collapse fields
-
-# collapse_field <- function(x,
-#                            field,
-#                            inner_sep = "|",  # between multiple values inside one element
-#                            outer_sep = ";") { # between different elements of x
-# 
-#   # If the whole thing is missing/empty
-#   if (is.null(x) || length(x) == 0) {
-#     return(NA_character_)
-#   }
-# 
-#   vals <- vapply(
-#     x,
-#     function(el) {
-#       if (is.null(el)) return(NA_character_)
-# 
-#       val <- el[[field]]
-#       if (is.null(val)) return(NA_character_)
-# 
-#       # Flatten possible nested lists like interventionNames
-#       if (is.list(val)) {
-#         val <- unlist(val, use.names = FALSE)
-#       }
-# 
-#       val <- as.character(val)
-#       # Collapse multiple values within *one* element (e.g., multiple interventionNames)
-#       paste(val, collapse = inner_sep)
-#     },
-#     character(1)
-#   )
-# 
-#   # Remove all-NA / empty cases
-#   vals <- vals[!is.na(vals) & vals != ""]
-#   if (!length(vals)) return(NA_character_)
-# 
-#   # Collapse across elements (e.g., across armGroups)
-#   paste(vals, collapse = outer_sep)
-# }
-
-# #`%||%` <- function(x, y) if (is.null(x) || length(x) == 0) y else x
-# 
-# collapse_nested <- function(x,
-#                             outer_field,   # e.g. "achievements"
-#                             inner_field,   # e.g. "groupId"
-#                             inner_sep = "|",
-#                             outer_sep = ";") {
-#   if (is.null(x) || length(x) == 0) return(NA_character_)
-#   
-#   vals <- map_chr(x, function(el) {
-#     inner_list <- el[[outer_field]]
-#     if (is.null(inner_list) || length(inner_list) == 0) return(NA_character_)
-#     
-#     inner_vals <- map_chr(inner_list, function(z) {
-#       v <- z[[inner_field]]
-#       if (is.null(v)) return(NA_character_)
-#       if (is.list(v)) v <- unlist(v, use.names = FALSE)
-#       as.character(v)
-#     })
-#     
-#     inner_vals <- inner_vals[!is.na(inner_vals) & inner_vals != ""]
-#     if (!length(inner_vals)) return(NA_character_)
-#     paste(inner_vals, collapse = inner_sep)
-#   })
-#   
-#   vals <- vals[!is.na(vals) & vals != ""]
-#   if (!length(vals)) return(NA_character_)
-#   paste(vals, collapse = outer_sep)
-# }
-# 
-# 
-# collapse_path <- function(x,
-#                           path,                      # character vector, e.g. c("classes","categories","title")
-#                           seps = c(";", "||", "|", ","), # sep per list depth: measures;classes;categories;measurements
-#                           leaf_sep = tail(seps, 1),  # used if a leaf is a vector
-#                           keep_na_levels = 1,        # keep NA placeholders at these collapse levels (e.g. measures)
-#                           na_label = "NA",
-#                           unique = FALSE) {
-#   
-#   stopifnot(is.character(path), length(path) >= 1)
-#   
-#   # 1) Walk down `path`, broadcasting over list-of-items when needed
-#   walk <- function(obj, i = 1) {
-#     if (i > length(path)) return(obj)
-#     if (is.null(obj) || !is.list(obj)) return(NULL)
-#     
-#     key <- path[i]
-#     has_names <- !is.null(names(obj)) && any(nzchar(names(obj)))
-#     
-#     if (has_names && key %in% names(obj)) {
-#       return(walk(obj[[key]], i + 1))
-#     }
-#     
-#     # not a named element here => treat as list-of-items and broadcast
-#     lapply(obj, walk, i = i)
-#   }
-#   
-#   # 2) Collapse the resulting tree with separators by depth
-#   collapse_tree <- function(obj, level = 1) {
-#     if (is.null(obj)) return(NA_character_)
-#     
-#     if (!is.list(obj)) {
-#       v <- obj
-#       if (is.list(v)) v <- unlist(v, use.names = FALSE)
-#       v <- as.character(v)
-#       v <- v[!is.na(v) & v != ""]
-#       if (!length(v)) return(NA_character_)
-#       return(paste(v, collapse = leaf_sep))
-#     }
-#     
-#     vals <- vapply(obj, collapse_tree, character(1), level = level + 1)
-#     if (unique) vals <- unique(vals)
-#     
-#     if (level %in% keep_na_levels) {
-#       if (all(is.na(vals) | vals == "")) return(NA_character_)
-#       vals[is.na(vals) | vals == ""] <- na_label
-#     } else {
-#       vals <- vals[!is.na(vals) & vals != ""]
-#       if (!length(vals)) return(NA_character_)
-#     }
-#     
-#     sep <- seps[min(level, length(seps))]
-#     paste(vals, collapse = sep)
-#   }
-#   
-#   collapse_tree(walk(x, 1), level = 1)
-# }
-# 
-# 
-# # collapse_vec <- function(x, sep = ";") {
-# #   x <- x %||% character(0)
-# #   if (!length(x)) return(NA_character_)
-# #   paste(as.character(x), collapse = sep)
-# # }
-
 # Helper to convert dates
 
 safe_date <- function(x) {
@@ -269,7 +134,7 @@ protocolSection <- function(study, keep_na_levels = TRUE, delims = DELIMS) {
   # Retrieve information
   df <- tibble(
     # IdentificationModule ----
-    NCT = study$protocolSection$identificationModule$nctId,
+    nct_id = study$protocolSection$identificationModule$nctId,
     NCTIdAlias = paste0(study$protocolSection$identificationModule$nctIdAliases, collapse = delims$L1),
     OrgStudyId = study$protocolSection$identificationModule$orgStudyIdInfo$id,
     OrgStudyIdType = study$protocolSection$identificationModule$orgStudyIdInfo$type,
@@ -567,7 +432,7 @@ resultSection <- function(study, keep_na_levels = TRUE, delims = DELIMS) {
   # 
   df <- tibble(
     # IdentificationModule ----
-    NCT = nct,
+    nct_id = nct,
     
     # ParticipantFlowModule ----
     FlowPreAssignmentDetails = study$resultsSection$participantFlowModule$preAssignmentDetails,
@@ -870,32 +735,11 @@ resultSection <- function(study, keep_na_levels = TRUE, delims = DELIMS) {
 
 hasResults <- function(study) {
   df <- tibble(
-    NCT = study$protocolSection$identificationModule$nctId,
+    nct_id = study$protocolSection$identificationModule$nctId,
     hasResults = study$hasResults
   )
   return(df)
 }
-
-
-## Additional columns
-# #NumFlowAchievements: Number of Arms/Groups (for each milestone)
-# df <- df %>% dplyr::mutate(
-#   NumFlowAchievements = count_delimited_elements(
-#     df$FlowAchievementGroupId,
-#     outer_sep = delims$L2,
-#     inner_sep = delims$L3
-#   ), .before = NumFlowMilestones
-# )
-# 
-# #NumFlowReasons: number of arm/group in reason not completed
-# df <- df %>% dplyr::mutate(
-#   NumFlowReasons = count_delimited_elements(
-#     df$FlowReasonGroupId,
-#     outer_sep = delims$L2,
-#     inner_sep = delims$DENOM
-#   ), .after = FlowReasonNumSubjects
-# )
-
 
 
 # 3. Retrieve data ----
@@ -906,156 +750,19 @@ protocolSection_df <- clintrials %>%
   map(protocolSection) %>%
   bind_rows()
 
-protocolColumns <- c("NCT
-  NCTIdAlias
-  OrgStudyId
-  OrgStudyIdType
-  BriefTitle
-  OfficialTitle
-  Acronym
-  OrgFullName
-  OrgClass
-  StatusVerifiedDate
-  OverallStatus
-  WhyStopped
-  HasExpandedAccess
-  ExpandedAccessStatusForNCTId
-  StartDate
-  StartDateType
-  PrimaryCompletionDate
-  PrimaryCompletionDateType
-  CompletionDate
-  CompletionDateType
-  StudyFirstPostDate
-  StudyFirstPostDateType
-  ResultsWaived
-  ResultsFirstPostDate
-  DispFirstPostDate
-  DispFirstPostDateType
-  LastUpdatePostDate
-  LastUpdatePostDateType
-  ResponsiblePartyType
-  LeadSponsorName
-  LeadSponsorClass
-  CollaboratorName
-  CollaboratorClass
-  NumCollaborators
-  OversightHasDMC
-  IsFDARegulatedDrug
-  IsFDARegulatedDevice
-  IsUnapprovedDevice
-  IsUSExport
-  FDAAA801Violation
-  BriefSummary
-  DetailedDescription
-  Condition
-  NumConditions
-  Keyword
-  StudyType
-  NPtrsToThisExpAccNCTId
-  ExpAccTypeIndividual
-  ExpAccTypeIntermediate
-  ExpAccTypeTreatment
-  PatientRegistry
-  TargetDuration
-  Phase
-  NumPhases
-  DesignAllocation
-  DesignInterventionModel
-  DesignInterventionModelDescription
-  DesignPrimaryPurpose
-  DesignObservationalModel
-  DesignTimePerspective
-  DesignMasking
-  DesignMaskingDescription
-  DesignWhoMasked
-  BioSpecRetention
-  BioSpecDescription
-  EnrollmentCount
-  EnrollmentType
-  ArmGroupLabel
-  ArmGroupType
-  ArmGroupDescription
-  ArmGroupInterventionName
-  NumArmGroups
-  InterventionType
-  InterventionName
-  InterventionDescription
-  InterventionArmGroupLabel
-  InterventionOtherName
-  NumInterventions
-  PrimaryOutcomeMeasure
-  PrimaryOutcomeDescription
-  PrimaryOutcomeTimeFrame
-  NumPrimaryOutcomes
-  SecondaryOutcomeMeasure
-  SecondaryOutcomeDescription
-  SecondaryOutcomeTimeFrame
-  NumSecondaryOutcomes
-  OtherOutcomeMeasure
-  OtherOutcomeDescription
-  OtherOutcomeTimeFrame
-  NumOtherOutcomes
-  EligibilityCriteria
-  HealthyVolunteers
-  Sex
-  GenderBased
-  GenderDescription
-  MinimumAge
-  MaximumAge
-  StdAge
-  NumStdAges
-  StudyPopulation
-  SamplingMethod
-  NumCentralContacts
-  NumOverallOfficials
-  LocationCountry
-  NumLocations
-  NumUniqueLocationCountries
-  ReferencePMID
-  ReferenceType
-  AvailIPDType
-  IPDSharing
-  IPDSharingDescription
-  IPDSharingInfoType
-  NumIPDSharingInfoTypes"
-)
 
-
-protocolColumns <- protocolColumns %>% str_split(pattern = "\n", simplify = T) %>% as.vector() %>% str_replace("  ", replacement = "")
-
-(protocolColumnsNotInDf <- protocolColumns[!protocolColumns %in% colnames(protocolSection_df)])
-
-(allNAs <- colnames(protocolSection_df[, sapply(protocolSection_df, function(x) all(is.na(x)))]))
-
-ArmGroups <- protocolSection_df %>% select(NCT, ArmGroupLabel, ArmGroupType, ArmGroupDescription, ArmGroupInterventionName)
-
-ArmGroups <- ArmGroups %>% separate_rows(ArmGroupLabel:ArmGroupInterventionName, sep = DELIMS$L1) %>% 
-  separate_rows(ArmGroupInterventionName, sep = DELIMS$L2)
-Interventions <- protocolSection_df %>% select(NCT, InterventionName, InterventionType, InterventionDescription, 
-                                               InterventionArmGroupLabel, InterventionOtherName)
-
-Interventions <- Interventions %>% separate_rows(InterventionName:InterventionOtherName, sep = DELIMS$L1) %>%
-  separate_rows(InterventionArmGroupLabel, sep = DELIMS$L2)
-
-
-
-## 3.3 hasResults ----
+## 3.2 hasResults ----
 
 hasResults_df <- clintrials %>%
   map(hasResults) %>%
   bind_rows()
 
-## 3.2 resultSection ----
+Studies_API <- protocolSection_df %>% left_join(hasResults_df, by = "nct_id")
+Studies_API <- Studies_API %>% mutate(
+  Phase = str_replace_all(Phase, pattern = "\036", replacement = "/")
+)
+write_xlsx(Studies_API, "results/ClinicalTrials/Studies_API.xlsx")
 
-resultSection_df <- clintrials %>%
-  map(resultSection) %>%
-  bind_rows()
+write_xlsx(hasResults_df, "results/ClinicalTrials/hasResults.xlsx")
 
-# 4. Unnest columns ----
 
-tmp <- resultSection_df %>% select(NCT, OtherEventTerm, OtherEventStatsGroupId, OtherEventStatsNumEvents)
-
-# Unnest multiple columns with the same separator
-unnestmp <- tmp %>%
-  separate_rows(OtherEventTerm, OtherEventStatsGroupId, OtherEventStatsNumEvents, sep = delims$L1)
