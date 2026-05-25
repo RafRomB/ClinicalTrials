@@ -616,8 +616,28 @@ WhyStopped_conf_matrix
 save(WhyStopped_conf_matrix, file = "results/ClinicalTrials/WhyStopped_conf_matrix.RData")
 
 
+# 3. Create file with final list of studies ----
 
+successful <- read_xlsx("results/FDA/approval_notifications_llm_results_combinations_final_260218.xlsx")
+successful <- successful %>% pull(nct) %>% unique()
 
+non_successful <- read_xlsx("results/ClinicalTrials/protocolSection_WhyStopped_llm_reviewed_safety_efficacy.xlsx")
+non_successful <- non_successful %>% pull(nctId) %>% unique()
+
+# Clinical trials dataframe
+
+NCT_df <- bind_rows(
+  tibble(
+    nct_id = successful,
+    FDA_Approved = TRUE
+  ),
+  tibble(
+    nct_id = non_successful,
+    FDA_Approved = FALSE
+  )
+)
+
+write_xlsx(NCT_df, "results/Approved_NonApproved_FDA_studies.xlsx")
 
 
 

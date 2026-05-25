@@ -74,6 +74,7 @@
     │   ├── approvals_without_NCT_curated.xlsx
     │   ├── FDA_eval_metrics.xlsx
     │   └── multi_nct_rows_curated.csv
+    ├── Approved_NonApproved_FDA_studies.xlsx
     └── leukemiaApprovalsSuspensions.csv
 
 12 directories, 69 files
