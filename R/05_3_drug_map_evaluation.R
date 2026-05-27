@@ -133,4 +133,7 @@ message(sprintf(
   sum(eval_sample$eval_stratum == "unresolved")
 ))
 
-write_xlsx(eval_sample, "results/ClinicalTrials/drug_map_eval_sample.xlsx")
+write_xlsx(eval_sample, "results/DrugBank/drug_map_eval_sample.xlsx")
+
+
+
