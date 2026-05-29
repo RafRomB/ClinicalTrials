@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-```
+```         
 .
 ├── ClinicalTrials.Rproj
 ├── data
@@ -78,7 +78,6 @@
     └── leukemiaApprovalsSuspensions.csv
 
 12 directories, 69 files
-
 ```
 
 ## Data Sources
@@ -88,10 +87,7 @@
 - [Aggregated Analysis of ClinicalTrials.gov database (AACT)](https://aact.ctti-clinicaltrials.org/connect)
 - [DrugBank](https://go.drugbank.com/)
 
-Each page contains information and resources explaining the contained data. 
-FDA approvals information was retrieved using web scrapping.
-ClinicalTrials.gov API and AACT database data were retrieved programatically in R.
-DrugBank dictionary was downloaded from the webpage (user account needed).
+Each page contains information and resources explaining the contained data. FDA approvals information was retrieved using web scrapping. ClinicalTrials.gov API and AACT database data were retrieved programatically in R. DrugBank dictionary was downloaded from the webpage (user account needed).
 
 ## R scripts
 
@@ -109,21 +105,19 @@ Description of the R scripts in the `R/` folder:
   - `05_3_drug_map_evaluation.R`: Generation of sample of studies for the evaluation of the drug name retrieval and DrugBank ID mapping.
 - `06_AACT_Analysis.R`: Comparative analysis of approved vs. non-approved drug combination clinical trials.
 - `figures.R`: Generation of figures summarizing the LLM performance metrics.
-- `leukemia_JieZhu.R`: Retrieval of studies information for chronic lymphocytic leukemia (CLL) and  acute myeloid leukemia (AML) [(10.64898/2026.05.18.725869)](https://www.biorxiv.org/content/10.64898/2026.05.18.725869v1).
+- `leukemia_JieZhu.R`: Retrieval of studies information for chronic lymphocytic leukemia (CLL) and acute myeloid leukemia (AML) [(10.64898/2026.05.18.725869)](https://www.biorxiv.org/content/10.64898/2026.05.18.725869v1).
 
-The complete execution of `01_FDA.R`, `03_0_clinicaltrials.R`, and `05_0_AACT.R` scripts depend on data generated in the nested scripts. 
-It is indicated in the code when those files should be run to generate the data (which is provided in the folder in any case).
+The complete execution of `01_FDA.R`, `03_0_clinicaltrials.R`, and `05_0_AACT.R` scripts depend on data generated in the nested scripts. It is indicated in the code when those files should be run to generate the data (which is provided in the folder in any case).
 
 ## Data and Files
 
-The `FileList.xlsx` contains a description of the different files contained in `/data/` and `/results/` folders. 
+The `FileList.xlsx` contains a description of the different files contained in `/data/` and `/results/` folders.
 
 These additional files are also provided:
 
 - `data/drugbank_all_full_database/drugbank vocabulary.csv`: DrugBank vocabulary with drug names and associated information, including DrugBank IDs.
 - `results/leukemiaApprovalsSuspensions.csv`: Studies information for CLL and AML.
 
+#### A Google Docs document with an initial draft of the ["Methods" can be downloaded here](https://drive.google.com/uc?export=download&id=1PeWkUEXcuzt3hcaGnlUN8gu-tm3OmGfA). 
 
-A Google Docs document with an initial draft of the "Methods" can be accessed [here](https://docs.google.com/document/d/1mWLI3vYvP-fpJYjBvCxxRgg-uYzoRQ5xLtzP7L2URYY/edit?usp=sharing).
-And also a summary presentation with the initial results can be found [here](https://docs.google.com/presentation/d/14KhR4ZtK8wW7aoagB7CsEYwR98XE7PSWPP9Ke0eghME/edit?slide=id.p1#slide=id.p1).
-
+#### And also a summary presentation with [an introduction and initial results can be downloaded here](https://drive.google.com/uc?export=download&id=1NJwwadZMI5W5yGkwwQb4bTJzBgAsaT-4).
